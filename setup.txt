@@ -1,0 +1,25 @@
+    1  sudo apt-get update
+    2  sudo systemctl status ssh
+    3  sudo systemctl start ssh
+    4  sudo systemctl enable ssh
+    5  sudo systemctl status ssh
+    6  sudo apt-get install -y ufw
+    7  sudo ufw enable
+    8  sudo ufw status
+    9  sudo ufw show listening
+   10  sudo ufw allow ssh
+   11  sudo ufw show listening
+   12  sudo reboot
+   13  sudo nano /etc/apt/sources.list
+   14  sudo apt-get update
+   15  sudo apt-get install apache2 -y
+   16  sudo systemctl status apache2
+   17  sudo ufw allow 80/tcp
+   18  sudo ufw status
+   19  sudo ufw show listening
+   20  sudo apt-get install -y php7.2
+   21  sudo apt-get install mariadb-server php-mysql -y
+   22  php --version
+   23  sudo mysql_secure_installation
+   *24  sudo chmod 644 injection -R (These steps 24-25 are the original permission)
+   *25  sudo chmod 755 injection
