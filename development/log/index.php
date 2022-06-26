@@ -11,8 +11,10 @@
 
 <html>
     <head>
+        <!-- bootstrap css and js -->
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css.map">
+        <script src="../resources/js/jquery-3.6.0.min.js"></script>
         <script src="../resources/js/bootstrap.min.js"></script>
     </head>
     <body>
@@ -34,20 +36,21 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-            <?php 
-                for ($i = 0; $i < count($data) - 20; $i += 20) {
-                    echo "<tr>";
-                    for ($j = 1; $j < 20; $j += 2) {
-                        $k = $i + $j;
-                        if ($data[$k] == "") {
-                            $data[$k] = "-";
+                <?php 
+                    for ($i = 0; $i < count($data) - 20; $i += 20) {
+                        echo "<tr>";
+                        // output all the data in the array
+                        for ($j = 1; $j < 20; $j += 2) {
+                            $k = $i + $j;
+                            if ($data[$k] == "") {
+                                $data[$k] = "-"; // replace emprty string with -
+                            }
+                            echo "<td>$data[$k]</td>";
                         }
-                        echo "<td>$data[$k]</td>";
+                        echo "</tr>";
                     }
-                    echo "</tr>";
-                }
-            ?>
+                ?>
             </tbody>
-    </table>
+        </table>
     </body>
 </html>

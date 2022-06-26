@@ -189,6 +189,9 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
     );
     ```
 3. Populate `users` table with dummy personal data
+    ```SQL
+    INSERT INTO users (role, firstName, lastName, email, mobileNumber, birthday, studentNumber) VALUES ('User', 'Peter', 'Cameron', 'peter.cameron@example.com', '07946 864309', '1993-08-14', '2108475');
+    ```
 
 4. Create `A01` user for using this database
     ```SQL
