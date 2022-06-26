@@ -15,7 +15,8 @@
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css.map">
         <script src="../resources/js/jquery-3.6.0.min.js"></script>
-        <script src="../resources/js/bootstrap.min.js"></script>
+        <script src="../resources/js/bootstrap.bundle.min.js"></script>
+        <script src="../resources/js/bootstrap.bundle.min.js.map"></script>
     </head>
     <body>
         <h1>This is a simple log paraser</h1>
