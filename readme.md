@@ -6,6 +6,8 @@ Kin Ip Mong (2143876), Swansea University
 
 Last Update: 2022-06-25
 
+Acknowledge the example I have used in Bootstrap
+
 ## Raspberry Pi Version
 
 ```bash
@@ -123,7 +125,7 @@ mysql  Ver 15.1 Distrib 10.3.34-MariaDB, for debian-linux-gnueabihf (armv8l) usi
     LogFormat "\"%t\" \"%h\" \"%m\" \"%U\" \"%q\" \"%H\" \"%>s\" \"%O\" \"%{Referer}i\" \"%{User-Agent}i\"" combined
     ```
 4. Add crontab job for retrieving the log content
-    ```
+    ```bash
     * * * * * sudo rm /var/www/html/log/log.txt; sudo touch /var/www/html/log/log.txt; sudo chmod 666 /var/www/html/log/log.txt; sudo tail -n 20 /var/log/apache2/access.log >> /var/www/html/log/log.txt; sudo chmod 644 /var/www/html/log/log.txt;
     ```
 
@@ -202,6 +204,19 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 
 ## Vulnerabilities
 
+### A01:2021-Broken Access Control
+- Allow users enter `admin.php` directly without entering admin credential
+
+```
+webpage idea
+
+keep the aritcheture level
+
+add the discussion of the code
+
+setup a challegne example, without giving hints, let users try out
+```
+
 ### A05:2021-Security Misconfiguration
 - Allow users to view the content of the directory
     ```
@@ -234,6 +249,7 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 | studentNumber | varchar(255) | NO   |     | NULL    |                |
 
 ## References
+- [Examples · Bootstrap v5.2](https://getbootstrap.com/docs/5.2/examples/)
 - [How to Enable SSH on Ubuntu 20.04](https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-20-04/)
 - [Raspberry Pi: Install Apache + MySQL + PHP (LAMP Server)](https://randomnerdtutorials.com/raspberry-pi-apache-mysql-php-lamp-server/)
 - [How To Configure the Apache Web Server on an Ubuntu or Debian VPS](https://www.digitalocean.com/community/tutorials/how-to-configure-the-apache-web-server-on-an-ubuntu-or-debian-vps)
