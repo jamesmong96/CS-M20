@@ -6,14 +6,38 @@
         <script src="../resources/js/jquery-3.6.0.min.js"></script>
         <script src="../resources/js/bootstrap.min.js"></script>
         <style>
+            .custom-scenario.accordion-button {
+                color: #141619;
+                background-color: #d3d3d4;
+                box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+            }
+
             .custom-attack.accordion-button {
                 color: #842029;
                 background-color: #f8d7da;
                 box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
             }
 
+            .custom-defense.accordion-button {
+                color: #0f5132;
+                background-color: #d1e7dd;
+                box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+            }
+
+            .custom-explanation.accordion-button {
+                color: #084298;
+                background-color: #cfe2ff;
+                box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+            }
+
+            .custom-challenge.accordion-button {
+                color: #055160;
+                background-color: #cff4fc;
+                box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+            }
+
             .accordion-button:hover {
-                background-color: #495057;
+                opacity: 75%;
             }
         </style>
     </head>
@@ -24,40 +48,189 @@
             <div class="accordion mx-5" id="accordionExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Scenario
+                        <button class="accordion-button custom-scenario" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Scenario
                         </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                        <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                        <div class="accordion-body text-start m-3">
+                            You are one of the members of student union and the committees are going to release a new console for all the members to view their own details. 
+                            As one of the cyber security students in the university, they would like you to perform a penetration testing on the console page before launching.
+                            <br><br>
+                            Click here to enter the <a href="./loginUser.html" target="_blank">Console</a>
+                            <br>
+                            Your login details are as follow:
+                            <table class="table table-bordered" style="width: auto;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Password</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>peter.cameron738@example.com</td>
+                                        <td>2108475</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingTwo">
                         <button class="accordion-button custom-attack collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                        Attack
+                            Attack
                         </button>
                     </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                        <div class="accordion-body text-start m-3">
+                            Before you start exploiting the console page, please read what is broken access control.
+                            <figure class="text-center m-3">
+                                <blockquote class="blockquote">
+                                    <p><u>Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorized information disclosure, modification, or destruction of all data or performing a business function outside the user's limits.</u></p>
+                                </blockquote>
+                                <figcaption class="blockquote-footer">
+                                    Description in <cite title="Source Title">OWASP Top 10:2021</cite>
+                                </figcaption>
+                            </figure>
+                            There are two vulnerabilities exist in the console page, both of them are related to broken access control.
+                            You can explore the console page by yourself and search for any traces of the weaknesses.
+                            <p>
+                                <button class="btn btn-primary my-3 me-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Show hint #1</button>
+                                <button class="btn btn-primary my-3 mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Show hint #2</button>
+                                <button class="btn btn-primary my-3 ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">Show full exploitations</button>
+                            </p>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="collapse multi-collapse" id="multiCollapseExample1">
+                                        <div class="card card-body">
+                                            <h5>vulnerability #1</h5>
+                                            <p>
+                                                This vulnerability is related to the HTML content. Look closely into the user console page and try editing the HTML content.
+                                                <br>
+                                                (<kbd>F12</kbd> will be your good friend for this weakness)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                        <div class="collapse multi-collapse" id="multiCollapseExample2">
+                                        <div class="card card-body">
+                                            <h5>vulnerability #2</h5>
+                                            <p>
+                                                This vulnerability is related to the login mechanism. Check the cookies and possible links for more clues.
+                                                <br>
+                                                (You may want to find the differences between the user and admin login pages)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <div class="collapse multi-collapse" id="multiCollapseExample3">
+                                        <div class="card card-body">
+                                            <h5>vulnerability #1</h5>
+                                            <p>
+                                                This vulnerability is related to the HTML content in <code>user.php</code>. 
+                                                After logging in into the user console page, you should notice the <strong>ADMIN FUNCTIONS (UNAVAILABLE FOR USERS)</strong> on the bottom of the right side panel.
+                                                As you are logging in as user instead of admin, it is normal to see nothing underneath this section. 
+                                                However just because you can't see something doesn't mean it isn't there. The admin functions are only hidden with an unsecure method.
+                                            </p>
+                                            <h6>Exploitation</h6>
+                                            <ol>
+                                                <li>Press <kbd>F12</kbd> and click on the <code>Elements</code> tab.</li>
+                                                <li>Press <kbd><kbd>ctrl + f</kbd></kbd> and type <code>ADMIN FUNCTIONS</code> in the search box.</li>
+                                                <li>The next element below the highlighted element is a list element <code>&lt;ul&gt;</code>, which has an id <code>admin_functions</code>.</li>
+                                                <li>Double check the <code>&lt;ul&gt;</code> element and remove the <code>hidden</code> attribute.</li>
+                                                <li>Press <kbd>enter</kbd> and observe the changes on the user console page</li>
+                                                <li>You can perform some admin-only functions, such as reset the admin password!</li>
+                                            </ol>
+                                            <h6>Explanation</h6>
+                                            <p>
+                                                This vulnerability is an example of elevation of privilege, acting as an admin when logged in as a user. 
+                                                The console page is poorly designed such that sensitive functions are sent to clients even when the logged in user is not admin. 
+                                                The usage of <code>hidden</code> attribute can only hide the content from viewing, but the content still exists in the page.
+                                                By removing the <code>hidden</code> attribute, anyone can interact with the admin-only functions without being admin users. 
+                                                These admin-only functions should be isolated from regular users, prevent any possible interactions from unauthorized users.
+                                            </p>
+                                            <h5>vulnerability #2</h5>
+                                            <p>
+                                                This vulnerability is related to the login mechanism. Most of the modern web applications have implemented a way to keep the logged in session of different users. 
+                                                This can avoid users to logged in repeatedly when navigating different pages. But the console page has used an unsecure method to track the logged in session. 
+                                                The details are in the cookies and the admin login page.
+                                            </p>
+                                            <h6>Exploitation</h6>
+                                            <ol>
+                                                <li>Visit the user login page and right click to view the page source.</li>
+                                                <li>Do the same on admin login page and compare the differences between two login pages.</li>
+                                                <li>You can spot the differences in the <code>form</code> element <code>action</code> attribute, which user login page pointing to <code>user.php</code> and that of admin pointing to <code>admin.php</code>.</li>
+                                                <li>Sign in to the user console page.</li>
+                                                <li>Look at the address bar, notice that the current site is at <code>user.php</code>.</li>
+                                                <li>Check the cookies used in the console page. Click on the icon on the left of the address bar (red circle), then click on Cookies (red rectangle).<br><img src="./image/cookies.png" class="figure-img img-fluid rounded" alt="Cookies"></li>
+                                                <li>Explore the existing cookies. You can observe that there is a cookie called <code>A01_login_cookie</code> which has the value <code>True</code>.<br><img src="./image/cookiesValues.png" class="figure-img img-fluid rounded" alt="Cookies_Values"></li>
+                                                <li>Combine the previous knowledge, change the address bar to visit <code>admin.php</code>.</li>
+                                                <li>You can read the personal information of all the users in the system!</li>
+                                            </ol>
+                                            <h6>Explanation</h6>
+                                            <p>
+                                                This vulnerability is an example of bypassing access control checks, by modifying the target links. 
+                                                In order to keep the user session, the console page uses a cookie to record the login status of a user. 
+                                                However the cookies do not record the role of the user, such that the login status is only represented by a boolean value. 
+                                                As a result, when a logged in users enter the link to the admin console page, the page cannot identify whether the logged in users is really an admin or not. 
+                                                Thus bypassing the admin login page, entering the admin console page without the admin credentials.
+                                                The session cookies should have a more meaningful value to keep track of the identity of the users.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                        Defense
+                        <button class="accordion-button custom-defense collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Defense
                         </button>
                     </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                        <div class="accordion-body m-3">
+                            There are a lot of methods to defense against the above vulnerabilities. 
+                            The methods describe in this section may not be the best method, but are able to stop similar attacks. 
+                            You are welcome to change the files and test your own defense mechanisms.
                         </div>
                     </div>
                 </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button custom-explanation collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Explanation
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
+                        <div class="accordion-body m-3">
+                            Do we still need this section?
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFive">
+                        <button class="accordion-button custom-challenge collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Challenges
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
+                        <div class="accordion-body m-3">
+                            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </main>
     </body>

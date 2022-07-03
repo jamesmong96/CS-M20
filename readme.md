@@ -206,6 +206,7 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 
 ### A01:2021-Broken Access Control
 - Allow users enter `admin.php` directly without entering admin credential
+- Hide the dummy admin functions by using `hidden` in HTML element
 
 ```
 webpage idea
