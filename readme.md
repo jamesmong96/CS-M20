@@ -8,6 +8,16 @@ Last Update: 2022-06-25
 
 Acknowledge the example I have used in Bootstrap
 
+```
+webpage idea
+
+keep the aritcheture level
+
+add the discussion of the code
+
+setup a challegne example, without giving hints, let users try out
+```
+
 ## Raspberry Pi Version
 
 ```bash
@@ -207,16 +217,6 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 ### A01:2021-Broken Access Control
 - Allow users enter `admin.php` directly without entering admin credential
 - Hide the dummy admin functions by using `hidden` in HTML element
-
-```
-webpage idea
-
-keep the aritcheture level
-
-add the discussion of the code
-
-setup a challegne example, without giving hints, let users try out
-```
 
 ### A05:2021-Security Misconfiguration
 - Allow users to view the content of the directory

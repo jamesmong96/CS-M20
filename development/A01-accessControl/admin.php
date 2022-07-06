@@ -46,13 +46,7 @@
     $result = $sql->get_result();
 
     $conn->close();
-
-// TODO:
-// 1. change the time of cookie
-// 2. add more info to the cookie
-// 3. [optional] don't rely cookie to remember logged in or not, use it to store identity and use that identity in mysql
-// 4. security by obscurity 
-
+    
 ?>
 
 <?php // use the html content in dashboard.php  ?>
