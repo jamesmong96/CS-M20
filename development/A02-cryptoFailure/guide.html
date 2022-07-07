@@ -1,5 +1,6 @@
 <html>
     <head>
+        <link rel="icon" href="../resources/image/favicon.ico">
         <!-- bootstrap css and js -->
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css.map">

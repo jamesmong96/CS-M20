@@ -16,6 +16,9 @@ keep the aritcheture level
 add the discussion of the code
 
 setup a challegne example, without giving hints, let users try out
+
+Ask:
+A01 challenge: use hex or not
 ```
 
 ## Raspberry Pi Version
@@ -179,6 +182,8 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 
 ## Database setup
 
+<details><summary>A01:2021-Broken Access Control</summary>
+
 ### A01:2021-Broken Access Control
 
 1. Create `A01` database and enters it
@@ -211,6 +216,19 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
     GRANT ALL PRIVILEGES ON A01.* TO 'A01'@'localhost';
     FLUSH PRIVILEGES;
     ```
+</details>
+
+<details><summary>A02:2021-Cryptographic Failures</summary>
+
+### A02:2021-Cryptographic Failures
+
+1. Create `A02` database and enters it
+    ```SQL
+    CREATE DATABASE A02;
+    USE A02;
+    ```
+
+</details>
 
 ## Vulnerabilities
 
@@ -235,6 +253,7 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
     ```
 
 ## Schema of all tables
+<details><summary>A01:users</summary>
 
 ### A01:users
 
@@ -248,6 +267,7 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 | mobileNumber  | varchar(255) | NO   |     | NULL    |                |
 | birthday      | varchar(255) | NO   |     | NULL    |                |
 | studentNumber | varchar(255) | NO   |     | NULL    |                |
+</details>
 
 ## References
 - [Examples · Bootstrap v5.2](https://getbootstrap.com/docs/5.2/examples/)
