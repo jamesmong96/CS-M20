@@ -1,5 +1,11 @@
 <?php
 
+    function custom_hash($str) {
+        $hash = "";
+        $hash = strrev(substr(bin2hex($str), 9, 6));
+        return $hash;
+    }
+
     // these are the variables for connecting MySQL database
     $server = "localhost";
     $user = "A02";
@@ -40,7 +46,7 @@
         if ($id != "-1") {
 
             // generate the identification code using the user's information
-            $code = bin2hex($first_name."-".$last_name."-".$id);
+            $code = custom_hash($first_name."-".$last_name."-".$id);
 
             // check if the generated identification code matches with the input code
             if ($code == trim($_POST["code"])) {
@@ -64,7 +70,7 @@
 ?>
 <html>
     <head>
-        <title>A02 - Survey</title>
+        <title>A02 - Challenge</title>
         <link rel="icon" href="../resources/image/favicon.ico">
         <!-- bootstrap css and js -->
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
@@ -129,7 +135,7 @@
 
                     <div class="col-md-7 col-lg-8">
                         <h4 class="mb-3">Feedback</h4>
-                        <form action = "./survey.php" method = "post">
+                        <form action = "./challenge.php" method = "post">
                             <div class="row g-3">
                                 <div class="col-12">
                                     <label for="feedback1" class="form-label">When did you last use our services?</label>
