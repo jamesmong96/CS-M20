@@ -68,6 +68,7 @@
     $sql->execute();
     $result = $sql->get_result();
 
+    $sql->close();
     $conn->close();
 
 ?>

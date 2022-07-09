@@ -2,9 +2,9 @@
 
     // these are the variables for connecting MySQL database
     $server = "localhost";
-    $user = "A02";
-    $password = "password_A02";
-    $database = "A02";
+    $user = "A03";
+    $password = "password_A03";
+    $database = "A03";
 
     // init the connection
     $conn = mysqli_connect($server, $user, $password, $database);
@@ -13,7 +13,7 @@
     }
 
     $default = "0";
-    $sql = $conn->prepare("UPDATE users SET responses=?;");
+    $sql = $conn->prepare("DELETE FROM records;");
     $sql->bind_param("s", $default);
     $sql->execute();
 
@@ -23,7 +23,7 @@
 ?>
 <html>
     <head>
-        <title>A02 - Reset</title>
+        <title>A03 - Reset</title>
         <link rel="icon" href="../resources/image/favicon.ico">
         <!-- bootstrap css and js -->
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">

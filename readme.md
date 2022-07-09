@@ -222,6 +222,10 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 ### A02:2021-Cryptographic Failures
 - Use hex to generate the identification code
 
+### A03:2021-Injection
+- SQL injection in `login.php`
+- Cross-site scripting in `login.php` and `admin.php`
+
 ### A05:2021-Security Misconfiguration
 - Allow users to view the content of the directory
     ```
@@ -264,6 +268,25 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 | mobileNumber | varchar(255) | NO   |     | NULL    |                |
 | birthday     | varchar(255) | NO   |     | NULL    |                |
 | responses    | varchar(255) | NO   |     | NULL    |                |
+
+### A03:users
+
+| Field    | Type         | Null | Key | Default | Extra          |
+|----------|--------------|------|-----|---------|----------------|
+| id       | int(11)      | NO   | PRI | NULL    | auto_increment |
+| username | varchar(255) | NO   |     | NULL    |                |
+| password | varchar(255) | NO   |     | NULL    |                |
+| role     | varchar(255) | YES  |     | NULL    |                |
+
+### A03:records
+
+| Field    | Type         | Null | Key | Default | Extra          |
+|----------|--------------|------|-----|---------|----------------|
+| id       | int(11)      | NO   | PRI | NULL    | auto_increment |
+| time     | varchar(255) | NO   |     | NULL    |                |
+| attempt  | varchar(255) | NO   |     | NULL    |                |
+| username | varchar(255) | NO   |     | NULL    |                |
+| password | varchar(255) | NO   |     | NULL    |                |
 
 ## References
 - [Examples · Bootstrap v5.2](https://getbootstrap.com/docs/5.2/examples/)
