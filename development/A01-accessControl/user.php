@@ -20,6 +20,10 @@
         // check if the user has logged in previously from cookie
         $login = TRUE;
     } else if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        // log post body
+        error_log('"'.str_replace("/var/www/html", "", __FILE__).'" "POST" "'.http_build_query($_POST).'"');
+                
         // check the login credential from database
         $sql = $conn->prepare("SELECT * from users WHERE email=? AND studentNumber=? AND role=?;");
         $sql->bind_param("sss", $_POST["username"], $_POST["password"], $role);

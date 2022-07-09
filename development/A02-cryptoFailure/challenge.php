@@ -22,6 +22,9 @@
     $valid = 0;
     if (isset($_POST["code"]) && isset($_POST["firstName"]) && isset($_POST["lastName"])) {
 
+        // log post body
+        error_log('"'.str_replace("/var/www/html", "", __FILE__).'" "POST" "'.http_build_query($_POST).'"');
+
         // default the identification code is invalid
         $valid = 1;
 

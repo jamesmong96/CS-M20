@@ -16,6 +16,9 @@
     $valid = 0;
     if (isset($_POST["code"]) && isset($_POST["firstName"]) && isset($_POST["lastName"])) {
 
+        // log post body
+        error_log('"'.str_replace("/var/www/html", "", __FILE__).'" "POST" "'.http_build_query($_POST).'"');
+
         // default the identification code is invalid
         $valid = 1;
 
@@ -144,11 +147,11 @@
                                 <div class="col-12">
                                     <label for="feedback3" class="form-label">Do you buy any frozen food from us in your last order?</label>
                                     <div class="form-check">
-                                        <input id="credit" name="feedback3" type="radio" class="form-check-input" checked="" required="">
+                                        <input id="yes" name="feedback3" type="radio" class="form-check-input" checked="" required="">
                                         <label class="form-check-label" for="feedback31">Yes</label>
                                     </div>
                                     <div class="form-check">
-                                        <input id="debit" name="feedback3" type="radio" class="form-check-input" required="">
+                                        <input id="no" name="feedback3" type="radio" class="form-check-input" required="">
                                         <label class="form-check-label" for="feedback32">No</label>
                                     </div>
                                 </div>
