@@ -11,6 +11,7 @@
 
 <html>
     <head>
+        <title>Project Log</title>
         <link rel="icon" href="../resources/image/favicon.ico">
         <!-- bootstrap css and js -->
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">

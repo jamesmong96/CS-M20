@@ -13,10 +13,10 @@
     $admin = FALSE;
     $cookie_name = "A01_login_cookie_challenge";
     if (!isset($_COOKIE[$cookie_name])) {
-        setcookie($cookie_name, bin2hex('User'), time() + (86400 * 365), "/"); 
+        setcookie($cookie_name, 'User', time() + (86400 * 365), "/"); 
     }
 
-    if (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == bin2hex('Admin')) {
+    if (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == 'Admin') {
         $admin = TRUE;
     } 
 

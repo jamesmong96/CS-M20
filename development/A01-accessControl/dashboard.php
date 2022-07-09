@@ -1,5 +1,6 @@
 <html>
     <head>
+        <title>A01 - Dashboard</title>
         <link rel="icon" href="../resources/image/favicon.ico">
         <!-- bootstrap css and js -->
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
@@ -134,13 +135,13 @@
                                     if ($result->num_rows > 0) {
                                         while($row = $result->fetch_assoc()) {
                                             echo "<tr>";
-                                            echo "<td>".$row["id"]."</td>";
-                                            echo "<td>".$row["role"]."</td>";
-                                            echo "<td>".$row["firstName"]." ".$row["lastName"]."</td>";
-                                            echo "<td>".$row["email"]."</td>";
-                                            echo "<td>".$row["mobileNumber"]."</td>";
-                                            echo "<td>".$row["birthday"]."</td>";
-                                            echo "<td>".$row["studentNumber"]."</td>";
+                                            echo "  <td>".$row["id"]."</td>";
+                                            echo "  <td>".$row["role"]."</td>";
+                                            echo "  <td>".$row["firstName"]." ".$row["lastName"]."</td>";
+                                            echo "  <td>".$row["email"]."</td>";
+                                            echo "  <td>".$row["mobileNumber"]."</td>";
+                                            echo "  <td>".$row["birthday"]."</td>";
+                                            echo "  <td>".$row["studentNumber"]."</td>";
                                             echo "</tr>";
                                         }
                                     } else {

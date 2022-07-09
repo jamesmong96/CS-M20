@@ -17,8 +17,6 @@ add the discussion of the code
 
 setup a challegne example, without giving hints, let users try out
 
-Ask:
-A01 challenge: use hex or not
 ```
 
 ## Raspberry Pi Version
@@ -182,15 +180,12 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 
 ## Database setup
 
-<details><summary>A01:2021-Broken Access Control</summary>
-
-### A01:2021-Broken Access Control
-
 1. Create `A01` database and enters it
     ```SQL
     CREATE DATABASE A01;
     USE A01;
     ```
+
 2. Create `users` table
     ```SQL
     CREATE TABLE users (
@@ -205,6 +200,7 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
         PRIMARY KEY(id)
     );
     ```
+
 3. Populate `users` table with dummy personal data
     ```SQL
     INSERT INTO users (role, firstName, lastName, email, mobileNumber, birthday, studentNumber) VALUES ('User', 'Peter', 'Cameron', 'peter.cameron@example.com', '07946 864309', '1993-08-14', '2108475');
@@ -216,25 +212,15 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
     GRANT ALL PRIVILEGES ON A01.* TO 'A01'@'localhost';
     FLUSH PRIVILEGES;
     ```
-</details>
-
-<details><summary>A02:2021-Cryptographic Failures</summary>
-
-### A02:2021-Cryptographic Failures
-
-1. Create `A02` database and enters it
-    ```SQL
-    CREATE DATABASE A02;
-    USE A02;
-    ```
-
-</details>
 
 ## Vulnerabilities
 
 ### A01:2021-Broken Access Control
 - Allow users enter `admin.php` directly without entering admin credential
 - Hide the dummy admin functions by using `hidden` in HTML element
+
+### A02:2021-Cryptographic Failures
+- Use hex to generate the identification code
 
 ### A05:2021-Security Misconfiguration
 - Allow users to view the content of the directory
@@ -253,7 +239,6 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
     ```
 
 ## Schema of all tables
-<details><summary>A01:users</summary>
 
 ### A01:users
 
@@ -267,7 +252,18 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
 | mobileNumber  | varchar(255) | NO   |     | NULL    |                |
 | birthday      | varchar(255) | NO   |     | NULL    |                |
 | studentNumber | varchar(255) | NO   |     | NULL    |                |
-</details>
+
+### A02:users
+
+| Field        | Type         | Null | Key | Default | Extra          |
+|--------------|--------------|------|-----|---------|----------------|
+| id           | int(11)      | NO   | PRI | NULL    | auto_increment |
+| firstName    | varchar(255) | YES  |     | NULL    |                |
+| lastName     | varchar(255) | NO   |     | NULL    |                |
+| email        | varchar(255) | NO   |     | NULL    |                |
+| mobileNumber | varchar(255) | NO   |     | NULL    |                |
+| birthday     | varchar(255) | NO   |     | NULL    |                |
+| responses    | varchar(255) | NO   |     | NULL    |                |
 
 ## References
 - [Examples · Bootstrap v5.2](https://getbootstrap.com/docs/5.2/examples/)
