@@ -4,7 +4,7 @@
 
 Kin Ip Mong (2143876), Swansea University
 
-Last Update: 2022-06-25
+Last Update: 2022-07-10
 
 Acknowledge the example I have used in Bootstrap
 
@@ -212,81 +212,6 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
     GRANT ALL PRIVILEGES ON A01.* TO 'A01'@'localhost';
     FLUSH PRIVILEGES;
     ```
-
-## Vulnerabilities
-
-### A01:2021-Broken Access Control
-- Allow users enter `admin.php` directly without entering admin credential
-- Hide the dummy admin functions by using `hidden` in HTML element
-
-### A02:2021-Cryptographic Failures
-- Use hex to generate the identification code
-
-### A03:2021-Injection
-- SQL injection in `login.php`
-- Cross-site scripting in `login.php` and `admin.php`
-
-### A05:2021-Security Misconfiguration
-- Allow users to view the content of the directory
-    ```
-    <Directory /var/www/>
-    #       Options Indexes FollowSymLinks
-            AllowOverride None
-            Require all granted
-    </Directory>
-
-    <Directory /var/www/html/A05-misconfiguration>
-            Options Indexes FollowSymLinks
-            AllowOverride None
-            Require all granted
-    </Directory>
-    ```
-
-## Schema of all tables
-
-### A01:users
-
-| Field         | Type         | Null | Key | Default | Extra          |
-|---------------|--------------|------|-----|---------|----------------|
-| id            | int(11)      | NO   | PRI | NULL    | auto_increment |
-| role          | varchar(255) | NO   |     | NULL    |                |
-| firstName     | varchar(255) | YES  |     | NULL    |                |
-| lastName      | varchar(255) | NO   |     | NULL    |                |
-| email         | varchar(255) | NO   |     | NULL    |                |
-| mobileNumber  | varchar(255) | NO   |     | NULL    |                |
-| birthday      | varchar(255) | NO   |     | NULL    |                |
-| studentNumber | varchar(255) | NO   |     | NULL    |                |
-
-### A02:users
-
-| Field        | Type         | Null | Key | Default | Extra          |
-|--------------|--------------|------|-----|---------|----------------|
-| id           | int(11)      | NO   | PRI | NULL    | auto_increment |
-| firstName    | varchar(255) | YES  |     | NULL    |                |
-| lastName     | varchar(255) | NO   |     | NULL    |                |
-| email        | varchar(255) | NO   |     | NULL    |                |
-| mobileNumber | varchar(255) | NO   |     | NULL    |                |
-| birthday     | varchar(255) | NO   |     | NULL    |                |
-| responses    | varchar(255) | NO   |     | NULL    |                |
-
-### A03:users
-
-| Field    | Type         | Null | Key | Default | Extra          |
-|----------|--------------|------|-----|---------|----------------|
-| id       | int(11)      | NO   | PRI | NULL    | auto_increment |
-| username | varchar(255) | NO   |     | NULL    |                |
-| password | varchar(255) | NO   |     | NULL    |                |
-| role     | varchar(255) | YES  |     | NULL    |                |
-
-### A03:records
-
-| Field    | Type         | Null | Key | Default | Extra          |
-|----------|--------------|------|-----|---------|----------------|
-| id       | int(11)      | NO   | PRI | NULL    | auto_increment |
-| time     | varchar(255) | NO   |     | NULL    |                |
-| attempt  | varchar(255) | NO   |     | NULL    |                |
-| username | varchar(255) | NO   |     | NULL    |                |
-| password | varchar(255) | NO   |     | NULL    |                |
 
 ## References
 - [Examples · Bootstrap v5.2](https://getbootstrap.com/docs/5.2/examples/)
