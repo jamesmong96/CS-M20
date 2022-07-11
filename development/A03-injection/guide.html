@@ -56,13 +56,13 @@
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
                         <div class="accordion-body text-start m-3">
-                            You, Michael Thomas, are one of the members of a shopping club, which recently launches a survey to collect customers' feedback. 
-                            As a penetration tester, you suspect the survey website is not secure and exploitable. 
-                            You are trying to conduct a proof of concept and let the club knows about it.
+                            You are the security manager of Random Company. The system administrator have just implemented a login page for all the staffs and an admin page to log recent login attempts. 
+                            You want to make sure the pages are secure and protected before launching it into the production environment. 
+                            Thus you are going to do some penetration testings on the pages to discover any potential weaknesses.
                             <br><br>
-                            Click here to enter the <a href="./survey.php" target="_blank">Survey</a>
+                            Click here to enter the <a href="./login.php" target="_blank">Login Page</a>
                             <br>
-                            Your identification code: <code>4d69636861656c2d54686f6d61732d31</code>
+                            Click here to enter the <a href="./admin.php" target="_blank">Admin Page</a>
                             <br><br>
                             You can reset the database by visiting this page <strong>(You will delete all the records in the database, think clearly before you reset)</strong>: <a href="./reset.php" target="_blank">Reset</a>
                         </div>
@@ -76,17 +76,17 @@
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                         <div class="accordion-body text-start m-3">
-                            Before you start exploiting the console page, please read what is broken access control.
+                            Before you start exploiting the console page, please read what is injection.
                             <figure class="text-center m-3">
                                 <blockquote class="blockquote">
-                                    <p><u>Access control enforces policy such that users cannot act outside of their intended permissions. Failures typically lead to unauthorized information disclosure, modification, or destruction of all data or performing a business function outside the user's limits.</u></p>
+                                    <p><u>Almost any source of data can be an injection vector, environment variables, parameters, external and internal web services, and all types of users. Injection flaws occur when an attacker can send hostile data to an interpreter.</u></p>
                                 </blockquote>
                                 <figcaption class="blockquote-footer">
-                                    Description in <cite title="Source Title">OWASP Top 10:2021</cite>
+                                    Description in <cite title="Source Title">OWASP Top 10:2017</cite>
                                 </figcaption>
                             </figure>
-                            There are two vulnerabilities exist in the console page, both of them are related to broken access control.
-                            You can explore the console page by yourself and search for any traces of the weaknesses.
+                            There are two vulnerabilities exist in the pages, both of them are related to injection.
+                            You can explore the pages by yourself and search for any traces of the weaknesses.
                             <p>
                                 <button class="btn btn-primary my-3 me-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Show hint #1</button>
                                 <button class="btn btn-primary my-3 mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Show hint #2</button>
@@ -98,9 +98,9 @@
                                         <div class="card card-body">
                                             <h5>Vulnerability #1</h5>
                                             <p>
-                                                This vulnerability is related to the HTML content. Look closely into the user console page and try editing the HTML content.
+                                                This category has a new member, cross-site scripting. Trying different tags/cases will be helpful. Don't let the HTML limits you.
                                                 <br>
-                                                (<kbd>F12</kbd> will be your good friend for this weakness)
+                                                (Some researches online will be very helpful)
                                             </p>
                                         </div>
                                     </div>
@@ -110,9 +110,9 @@
                                         <div class="card card-body">
                                             <h5>Vulnerability #2</h5>
                                             <p>
-                                                This vulnerability is related to the login mechanism. Check the cookies and possible links for more clues.
+                                                SQL injection is one of the most popular attacks in this category, it can help you to login successfully. Don't let the HTML limits you.
                                                 <br>
-                                                (You may want to find the differences between the user and admin login pages)
+                                                (Usually there will be only <u>one</u> matching account in the database)
                                             </p>
                                         </div>
                                     </div>
@@ -124,54 +124,64 @@
                                         <div class="card card-body">
                                             <h5>Vulnerability #1</h5>
                                             <p>
-                                                This vulnerability is related to the HTML content in <code>user.php</code>. 
-                                                After logging in into the user console page, you should notice the <strong>ADMIN FUNCTIONS (UNAVAILABLE FOR USERS)</strong> on the bottom of the right side panel.
-                                                As you are logging in as user instead of admin, it is normal to see nothing underneath this section. 
-                                                However just because you can't see something doesn't mean it isn't there. The admin functions are only hidden with an unsecure method.
+                                                This vulnerability is related to cross-site scripting, which can be exploited in <code>admin.php</code>. 
+                                                As we can see that all the login attempts are shown on the table with its username and password, this is a sign of this page is very likely to be vulnerable against cross-site scripting.
+                                                If there are no proper input sanitization, a malicious user can leverage the weakness and execute Javascript code on other users' browsers. 
+                                                This can lead to serious consequences, including stealing authentication cookies or redirecting to phishing websites. 
                                             </p>
                                             <h6>Exploitation</h6>
                                             <ol>
-                                                <li>Press <kbd>F12</kbd> and click on the <code>Elements</code> tab.</li>
-                                                <li>Press <kbd><kbd>ctrl + f</kbd></kbd> and type <code>ADMIN FUNCTIONS</code> in the search box.</li>
-                                                <li>The next element below the highlighted element is a list element <code>&lt;ul&gt;</code>, which has an id <code>admin_functions</code>.</li>
-                                                <li>Double check the <code>&lt;ul&gt;</code> element and remove the <code>hidden</code> attribute.</li>
-                                                <li>Press <kbd>enter</kbd> and observe the changes on the user console page</li>
-                                                <li>You can perform some admin-only functions, such as reset the admin password!</li>
+                                                <li>(The exploitation uses the function <code>console.log()</code> instead of <code>alert()</code> to avoid massive alert boxes popping out, the results can be viewed by pressing <kbd>F12</kbd> and click on the <code>Console</code> tab.)</li>
+                                                <li>From <code>login.php</code>, we notice there are two input boxes, which are <code>username</code> and <code>password</code>.</li>
+                                                <li>However we also notice that the <code>username</code> input box has a length limitation on input, which is 10 characters.</li>
+                                                <li>There are two ways to bypass this limitation:
+                                                    <ul>
+                                                        <li>Use the <code>password</code> input box to continue the exploitation</li>
+                                                        <li>Remove the <code>maxlength</code> attribute from the HTML content</li>
+                                                    </ul>
+                                                </li>
+                                                <li>We first start with the simplest version of payload: <code>&lt;script&gt; console.log("test1"); &lt;/script&gt;</code></li>
+                                                <li>You should notice after refreshing <code>admin.php</code>, nothing is printed on the console and you can see <code>&lt;script&gt; console.log("test1");</code> on the login attempts table.</li>
+                                                <li>This indicates the page has at least sanitized the term <code>&lt;script&gt;</code> because it is not interpreted as HTML content. Also we found out that <code>&lt;/script&gt;</code> is interpreted as HTML content because it is not visible on the page.</li>
+                                                <li>Therefore we can try to alter the payload a bit to evade the sanitization, such as changing the letter case: <code>&lt;SCRIPT&gt; console.log("test2"); &lt;/SCRIPT&gt;</code></li>
+                                                <li>Then you see <code>test2</code> is printed on the console and the password field of the latest entry is empty, which means the content is interpreted as pure HTML content.</li>
+                                                <li>You can now execute Javascript code on other users' browsers!</li>
                                             </ol>
                                             <h6>Explanation</h6>
                                             <p>
-                                                This vulnerability is an example of elevation of privilege, acting as an admin when logged in as a user. 
-                                                The console page is poorly designed such that sensitive functions are sent to clients even when the logged in user is not admin. 
-                                                The usage of <code>hidden</code> attribute can only hide the content from viewing, but the content still exists in the page.
-                                                By removing the <code>hidden</code> attribute, anyone can interact with the admin-only functions without being admin users. 
-                                                These admin-only functions should be isolated from regular users, prevent any possible interactions from unauthorized users.
+                                                This vulnerability occurs when the page doesn't sanitize the text and the text is treated as part of the HTML content by the browser. 
+                                                Modern browsers rely on different tags to interpret the content of a website. 
+                                                There are many functional tags, such as <code>&lt;meta&gt;</code> for metadata, <code>&lt;style&gt;</code> for styling of the pages and <code>&lt;script&gt;</code> for executing Javascript. 
+                                                When a malicious user entered something with <code>&lt;script&gt;</code>, it is very natural for most of the browsers these days to treat it as Javascript tag and run whatever code in it. 
+                                                Changing the letter case of the tag is only one of the methods to bypass sanitization. 
+                                                Keep in mind that using the <code>&lt;script&gt;</code> tag is only a very simple demonstration here, there are a lot of tags can trigger cross-site scripting, like <code>&lt;body&gt;</code>, <code>&lt;iframe&gt;</code> and the list goes on.
                                             </p>
                                             <h5>Vulnerability #2</h5>
                                             <p>
-                                                This vulnerability is related to the login mechanism. Most of the modern web applications have implemented a way to keep the logged in session of different users. 
-                                                This can avoid users to logged in repeatedly when navigating different pages. But the console page has used an unsecure method to track the logged in session. 
-                                                The details are in the cookies and the admin login page.
+                                                This vulnerability is related to SQL injection, which occurs when the page doesn't implement prepared statements. 
+                                                Most of the applications using SQL databases have to pay extra attentions to SQL injection. 
+                                                The login page is one of the examples which binds the variables and the SQL statement directly without any input validations. 
+                                                As a result, if the variables are carefully crafted with SQL syntax, the query statement can be altered and causes unexpected changes to the database.
                                             </p>
                                             <h6>Exploitation</h6>
                                             <ol>
-                                                <li>Visit the user login page and right click to view the page source.</li>
-                                                <li>Do the same on admin login page and compare the differences between two login pages.</li>
-                                                <li>You can spot the differences in the <code>form</code> element <code>action</code> attribute, which user login page pointing to <code>user.php</code> and that of admin pointing to <code>admin.php</code>.</li>
-                                                <li>Sign in to the user console page.</li>
-                                                <li>Look at the address bar, notice that the current site is at <code>user.php</code>.</li>
-                                                <li>Check the cookies used in the console page. Click on the icon on the left of the address bar (red circle), then click on Cookies (red rectangle).<br><img src="./image/cookies.png" class="figure-img img-fluid rounded" alt="Cookies"></li>
-                                                <li>Explore the existing cookies. You can observe that there is a cookie called <code>A01_login_cookie</code> which has the value <code>True</code>.<br><img src="./image/cookiesValues.png" class="figure-img img-fluid rounded" alt="Cookies_Values"></li>
-                                                <li>Combine the previous knowledge, change the address bar to visit <code>admin.php</code>.</li>
-                                                <li>You can read the personal information of all the users in the system!</li>
+                                                <li>The targets of SQL injection are either the <code>username</code> or <code>password</code> input box.</li>
+                                                <li>Similar to Vulnerability #1, find a way to bypass the input limitation first.</li>
+                                                <li>Then we can try with the simplest form of SQL injection: <code>' OR 1=1 #</code></li>
+                                                <li>We notice the payload fails to login, then we modify it and try to guess some common usernames: <code>admin' #</code> / <code>user' #</code></li>
+                                                <li>After several failed attempts, we check the hint #2. It says it is looking for one matching account in the database.</li>
+                                                <li>Thus we can try this payload: <code>' OR 1=1 LIMIT 1 #</code></li>
+                                                <li>We can login to the page!</li>
                                             </ol>
                                             <h6>Explanation</h6>
                                             <p>
-                                                This vulnerability is an example of bypassing access control checks, by modifying the target links. 
-                                                In order to keep the user session, the console page uses a cookie to record the login status of a user. 
-                                                However the cookies do not record the role of the user, such that the login status is only represented by a boolean value. 
-                                                As a result, when a logged in users enter the link to the admin console page, the page cannot identify whether the logged in users is really an admin or not. 
-                                                Thus bypassing the admin login page, entering the admin console page without the admin credentials.
-                                                The session cookies should have a more meaningful value to keep track of the identity of the users.
+                                                This vulnerability is an example of weak SQL injection prevention measures. 
+                                                It can successfully stop the attackers with the simplest version of the attacks, but it is very easy to bypass. 
+                                                In SQL syntax, <code>#</code> indicates the start of a comment, which means any words after it will be ignored by the query. 
+                                                Therefore in the first payload, the query becomes select all the entries in the database because <code>1=1</code> is always true. 
+                                                However the page has a simple detection logic, such that if the returned data has more than 1 row, it is likely that someone is altering the query. 
+                                                Thus the keyword <code>LIMIT</code> can help us to evade the detection as it limits the number of row returned. 
+                                                By adding the clause <code>LIMIT 1</code>, the query only returns 1 row of data and logged in successfully.
                                             </p>
                                         </div>
                                     </div>
@@ -199,28 +209,35 @@
                                 Before you implement the countermeasures, you have to know what the code is doing and which part of the code you should change.
                                 Below are the code snippets of the relevant logic, please fully understand the code before you proceed.
                             </p>
-                            <h6>dashboard.php (Vulnerability #1)</h6>
+                            <h6>admin.php (Vulnerability #1)</h6>
                             <p>
-                                This is the file responsible for displaying the console page for both users and admin. 
-                                In many real life scenarios, most of the pages will include different templates to facilitate development.
-                                <code>dashboard.php</code> servers as the template of the console pages because they should provide similar functionalities and layout.
-                                Thus the access control of the admin-only functions is done in this file.
+                                This is the file responsible for showing all the login attempts. 
+                                Most of the systems actually store all the login attempts to detect any possible traces of attacks, such as brute force attack. 
+                                How to store and show the data properly is also an important consideration when implementing an admin page like this. 
+                                Remember that all the attack methods and defense mechanisms demonstrated here are only a small portion of the actual real-world scenarios. 
+                                You should try to exploit this vulnerability with newly implemented countermeasures and repeat the process to discover more possibilities of this attack.
                                 <br><br>
-                                Admin-only functions part (line 100-111):
+                                Displaying the data part (line 141-158):
                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                     <tbody>
-                                        <tr><td><code style="color: #000000;">100</code></td><td style="white-space: break-spaces;"><code>&lt;!-- The below session only display to "Admin" role users --&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">101</code></td><td style="white-space: break-spaces;"><code>&lt;h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">102</code></td><td style="white-space: break-spaces;"><code>    &lt;span&gt;Admin functions &lt;?php if ($role != "Admin") {echo "(Unavailable for users)";} ?&gt;&lt;/span&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">103</code></td><td style="white-space: break-spaces;"><code>&lt;/h6&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">104</code></td><td style="white-space: break-spaces;"><code>&lt;ul class="nav flex-column mb-2" id="admin_functions" &lt;?php if ($role != "Admin") {echo "hidden";} ?&gt;&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">105</code></td><td style="white-space: break-spaces;"><code>    &lt;li class="nav-item"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">106</code></td><td style="white-space: break-spaces;"><code>        &lt;a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">107</code></td><td style="white-space: break-spaces;"><code>            &lt;svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke...</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">108</code></td><td style="white-space: break-spaces;"><code>            Reset admin password</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">109</code></td><td style="white-space: break-spaces;"><code>        &lt;/a&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">110</code></td><td style="white-space: break-spaces;"><code>    &lt;/li&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">111</code></td><td style="white-space: break-spaces;"><code>&lt;/ul&gt;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">141</code></td><td style="white-space: break-spaces;"><code>// output the selected data to table</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">142</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows > 0) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">143</code></td><td style="white-space: break-spaces;"><code>    while($row = $result->fetch_assoc()) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">144</code></td><td style="white-space: break-spaces;"><code>        echo "&lt;tr&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">145</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".$row["time"]."&lt;/td&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">146</code></td><td style="white-space: break-spaces;"><code>        if ($row["attempt"] == "success") {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">147</code></td><td style="white-space: break-spaces;"><code>            echo "  &lt;td class='table-success text-success'>&lt;strong&gt;".$row["attempt"]."&lt;/strong&gt;&lt;/td&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">148</code></td><td style="white-space: break-spaces;"><code>        } else {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">149</code></td><td style="white-space: break-spaces;"><code>            echo "  &lt;td class='table-danger text-danger'>&lt;strong&gt;".$row["attempt"]."&lt;/strong&gt;&lt;/td&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">150</code></td><td style="white-space: break-spaces;"><code>        }</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">151</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".str_replace("&lt;s", "&amp;lt;s", $row["username"])."&lt;/td&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">152</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".str_replace("&lt;s", "&amp;lt;s", $row["password"])."&lt;/td&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">153</code></td><td style="white-space: break-spaces;"><code>        echo "&lt;/tr&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">154</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">155</code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">156</code></td><td style="white-space: break-spaces;"><code>    echo "&lt;tr&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">157</code></td><td style="white-space: break-spaces;"><code>    echo "&lt;/tr&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">158</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
                                     </tbody>
                                 </table>
                                 This code snippet is referring to the header of <code>Admin functions (Unavailable for users)</code> and the admin-only functions below it.
@@ -327,6 +344,7 @@
                             <br>
                             <h6>Vulnerability #2</h6>
                             <p>
+                                Wonder why insert works?
                                 As we know the weakness is the cookies validation part, we need to change the way of checking the cookies as well as assigning it. 
                                 The problem with the current cookies is the lack of information about the logged in user. 
                                 One of the intuitive approaches is to add some user information to the cookies, such as the roles, email or name, this can produce a more unique cookies such that admin users can be distinguished from normal users. 

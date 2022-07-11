@@ -148,8 +148,8 @@
                                             } else {
                                                 echo "  <td class='table-danger text-danger'><strong>".$row["attempt"]."</strong></td>";
                                             }
-                                            echo "  <td>".htmlspecialchars($row["username"])."</td>";
-                                            echo "  <td>".$row["password"]."</td>";
+                                            echo "  <td>".str_replace("<s", "&lt;s", $row["username"])."</td>";
+                                            echo "  <td>".str_replace("<s", "&lt;s", $row["password"])."</td>";
                                             echo "</tr>";
                                         }
                                     } else {

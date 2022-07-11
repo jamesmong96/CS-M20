@@ -12,10 +12,20 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    $default = "0";
     $sql = $conn->prepare("DELETE FROM records;");
-    $sql->bind_param("s", $default);
     $sql->execute();
+
+    $sql = $conn->prepare("DELETE FROM users;");
+    $sql->execute();
+
+    for ($i = 0; $i < 3; $i++) {
+        $username = "username0".strval($i)."0".strval($i);
+        $password = "password0".strval($i)."0".strval($i);
+        $role = "User";
+        $sql = $conn->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
+        $sql->bind_param("sss", $username, $password, $role);
+        $sql->execute();
+    }
 
     $sql->close();
     $conn->close();
