@@ -240,59 +240,59 @@
                                         <tr><td><code style="color: #000000;">158</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
                                     </tbody>
                                 </table>
-                                This code snippet is referring to the header of <code>Admin functions (Unavailable for users)</code> and the admin-only functions below it.
-                                In the code snippet, you can see there are several <code>if ($role != "Admin")</code>. This is the condition to check if the logged in user has the role of <code>Admin</code> or not.
-                                On line 102, we can see that if the logged in user is not an admin, the words <code>(Unavailable for users)</code> will be shown, vice versa. 
-                                The same condition applies on line 104 as well, if the logged in user is not an admin, the <code>hidden</code> attribute will be added to the HTML element. 
-                                However, adding the <code>hidden</code> attribute simply makes the element invisible, but cannot stop the users from interacting with it.
+                                This code snippet is the part which output the whole login attempts table. 
+                                The while loop loops all the returned entries from the database and display them in each row. 
+                                The only parts with simple data sanitization are line 151 and line 152, which use the function <code>str_replace</code> to replace the characters of <code>&lt;s</code> with HTML entities <code>&amp;lt;s</code>. 
+                                HTML entities can help the browsers to display special characters without interpret it as part of the tags. 
+                                Therefore all the <code>&lt;script&gt;</code> tag becomes <code>&amp;lt;script&gt;</code> and will not be executed as Javascript function. 
+                                This is the reason why the first attempt of using <code>&lt;script&gt;</code> does not work. 
+                                However when we change the letter case to all upper case, the tag becomes <code>&lt;SCRIPT&gt;</code> and thus the string is not replaced. 
+                                The second attempts work mainly because of HTML is case insensitive and string replace function is case sensitive. 
                             </p>
                             <br>
-                            <h6>admin.php (Vulnerability #2)</h6>
+                            <h6>login.php (Vulnerability #2)</h6>
                             <p>
-                                This is the file handling the login process. Since the code on the login mechanism is the same for <code>admin.php</code> and <code>user.php</code>, you will need to change both of them. 
-                                Cookies is used to remember the login session of the users, but the cookies contains insufficient details, leading to Vulnerability #2. 
-                                Apart from the cookies branch, you can also look into the whole login implementation for more improvements.
+                                This is the file for verifying the login credentials. 
+                                It uses the data sent to the page for querying the database and allow the users to login if there is a match in the database. 
+                                This is a very common practice for modern web applications to identify a user. 
+                                Nevertheless this implementation can also be used for authorization, such that the users are assigned with different privileges or role when they login to the system. 
                                 <br><br>
-                                login mechanism part (line 15-41):
+                                login SQL part (line 24-44):
                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                     <tbody>
-                                        <tr><td><code style="color: #000000;">15</code></td><td style="white-space: break-spaces;"><code>// verify login information</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">16</code></td><td style="white-space: break-spaces;"><code>$login = FALSE;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">17</code></td><td style="white-space: break-spaces;"><code>$cookie_name = "A01_login_cookie";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>$role = "Admin";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>if (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == "True") {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">20</code></td><td style="white-space: break-spaces;"><code>    // check if the user has logged in previously from cookie</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">21</code></td><td style="white-space: break-spaces;"><code>    $login = TRUE;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code>} else if ($_SERVER["REQUEST_METHOD"] == "POST") {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code>    // check the login credential from database</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>    $sql = $conn->prepare("SELECT * from users WHERE email=? AND studentNumber=? AND role=?;");</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>    $sql->bind_param("sss", $_POST["username"], $_POST["password"], $role);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>    $sql->execute();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>    $result = $sql->get_result();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>    </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>    if ($result->num_rows == 1) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>        $login = TRUE;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>    $sql->close();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>if (!$login) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>    // redirect to login failed page</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>    header("location: loginFail.html");</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>    // set a login cookie to identify logged in user</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>    setcookie($cookie_name, "True", time() + (86400 * 365), "/"); </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>// select the login info from database</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>$sql = "SELECT * FROM users WHERE username='".trim($_POST["username"])."' AND password='".trim($_POST["password"])."'";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>$result = $conn->query($sql);</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows == 1) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>    $login = 1;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>// insert the login record</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code>$date = date("Y-m-d H:i:s O");</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>$attempt = "failed";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>$username = trim($_POST["username"]);</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>$password = trim($_POST["password"]);</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>if ($login == 1) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code>    $attempt = "success";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("INSERT INTO records (time, attempt, username, password) VALUES (?, ?, ?, ?)");</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ssss", $date, $attempt, $username, $password);</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
                                     </tbody>
                                 </table>
-                                This code snippet is referring to the whole login mechanism. 
-                                The mechanism consists of two parts, it is validating the cookies from line 19 to line 21 and checking the credential through database from line 22 to line 32. 
-                                The vulnerability exists in the first part, when the code is checking through the cookies. 
-                                From line 17, we can see the cookies is stored in the name of <code>A01_login_cookie</code>. 
-                                Also from line 19, the cookies is checked whether its value is <code>True</code> or not. If the cookies it true, then the user is authenticated. 
-                                Then we can take a look at line 35 to line 41 to see how the cookies is set. 
-                                We can know that as long as the user has logged in successfully once, the cookies will have the value <code>True</code>, regardless the role of the user.
-                                As a result, a user can login to admin console page by typing the correct URL because of this weak authentication method.
+                                This code snippet is referring to the login statement and the insert record statement. 
+                                As we can see in line 25, the SQL statement is constructed by concatenating the SQL query and user input variables. 
+                                The weakness in this code occurs when the SQL statement uses user input directly without sanitization. 
+                                When we look at the SQL statement closely, we notice that the whole statement is only a string, which means the backend is unable to distinguish the original query and the user inputs. 
+                                Thus an attacker can craft a variable, which can alter the SQL query and control the return value. 
+                                Take a look at the exploitation, when the variable is <code>' OR 1=1 #</code>, the complete SQL query becomes <code>SELECT * FROM users WHERE username='' OR 1=1 # AND password='';</code>.
+                                This query means select everything from the users table when users is empty or always true. 
+                                The query will return all the entries because of the always true condition and hence attackers can verify themselves to login the system. 
+                                <br>
+                                (But how come line 40 to line 42 is unaffected? What is the reason behinds it?)
                             </p>
                             <br>
                             <h5>Defense Explanation</h5>
@@ -303,9 +303,10 @@
                             </p>
                             <h6>Vulnerability #1</h6>
                             <p>
-                                Since the vulnerability exists because of the weak <code>hidden</code> attribute, we need to find a better way to hide the admin-only functions from normal users. 
-                                One of the ways to do it is by hiding the whole element from the browsers without using the <code>hidden</code> attribute. 
-                                As we already know that <code>if ($role != "Admin")</code> is the condition checking the users' role, we can change something after the condition to completely hide the element.
+                                The vulnerability exists because of lacking data sanitization on the user input. 
+                                One of the methods to sanitize the data is designing a custom function to handle the data, which is not a very good practice because there are a lot of marginal cases for the payload and it is infeasible to capture all of them. 
+                                Users should use the built-in functions provided by the language, as they are likely to be well maintained and up to date for tackling latest version of exploits. 
+                                Try to find the built-in function for PHP, which can replace all the HTML special characters with HTML entities.
                             </p>
                             <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample4" aria-expanded="false" aria-controls="multiCollapseExample4">Show solution #1</button>
                             <div class="row">
@@ -314,27 +315,31 @@
                                         <div class="card card-body">
                                             <h5>Solution #1</h5>
                                             <p>
-                                                dashboard.php (line 100-113):
+                                                admin.php (line 141-158):
                                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                                     <tbody>
-                                                        <tr><td><code style="color: #000000;">100</code></td><td style="white-space: break-spaces;"><code>&lt;!-- The below session only display to "Admin" role users --&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">101</code></td><td style="white-space: break-spaces;"><code>&lt;?php if ($role == "Admin") { ?&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">102</code></td><td style="white-space: break-spaces;"><code>    &lt;h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase"&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">103</code></td><td style="white-space: break-spaces;"><code>        &lt;span&gt;Admin functions&lt;/span&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">104</code></td><td style="white-space: break-spaces;"><code>    &lt;/h6&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">105</code></td><td style="white-space: break-spaces;"><code>    &lt;ul class="nav flex-column mb-2" id="admin_functions"&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">106</code></td><td style="white-space: break-spaces;"><code>        &lt;li class="nav-item"&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">107</code></td><td style="white-space: break-spaces;"><code>            &lt;a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#exampleModal"&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">108</code></td><td style="white-space: break-spaces;"><code>                &lt;svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke...</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">109</code></td><td style="white-space: break-spaces;"><code>                Reset admin password</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">110</code></td><td style="white-space: break-spaces;"><code>            &lt;/a&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">111</code></td><td style="white-space: break-spaces;"><code>        &lt;/li&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">112</code></td><td style="white-space: break-spaces;"><code>    &lt;/ul&gt;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">113</code></td><td style="white-space: break-spaces;"><code>&lt;?php } ?&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">141</code></td><td style="white-space: break-spaces;"><code>// output the selected data to table</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">142</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows > 0) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">143</code></td><td style="white-space: break-spaces;"><code>    while($row = $result->fetch_assoc()) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">144</code></td><td style="white-space: break-spaces;"><code>        echo "&lt;tr&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">145</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".$row["time"]."&lt;/td&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">146</code></td><td style="white-space: break-spaces;"><code>        if ($row["attempt"] == "success") {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">147</code></td><td style="white-space: break-spaces;"><code>            echo "  &lt;td class='table-success text-success'>&lt;strong&gt;".$row["attempt"]."&lt;/strong&gt;&lt;/td&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">148</code></td><td style="white-space: break-spaces;"><code>        } else {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">149</code></td><td style="white-space: break-spaces;"><code>            echo "  &lt;td class='table-danger text-danger'>&lt;strong&gt;".$row["attempt"]."&lt;/strong&gt;&lt;/td&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">150</code></td><td style="white-space: break-spaces;"><code>        }</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">151</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".htmlspecialchars($row["username"])."&lt;/td&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">152</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".htmlspecialchars($row["password"])."&lt;/td&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">153</code></td><td style="white-space: break-spaces;"><code>        echo "&lt;/tr&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">154</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">155</code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">156</code></td><td style="white-space: break-spaces;"><code>    echo "&lt;tr&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">157</code></td><td style="white-space: break-spaces;"><code>    echo "&lt;/tr&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">158</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
                                                     </tbody>
                                                 </table>
-                                                The PHP condition wraps the whole admin function and only display it when the role of the user is equal to <code>Admin</code>. 
-                                                With this fix, the whole element has disappeared from the page, even if you inspect the page source again.
+                                                After replacing the simple <code>str_replace</code> function with the <code>htmlspecialchars()</code>, all the potential HTML tags are sanitized and displayed as text on the page. 
+                                                Depends on the user requirements and scope of the pages, sometimes you are required to add more sanitization functions as well.
                                             </p>
                                         </div>
                                     </div>
@@ -344,10 +349,11 @@
                             <br>
                             <h6>Vulnerability #2</h6>
                             <p>
-                                Wonder why insert works?
-                                As we know the weakness is the cookies validation part, we need to change the way of checking the cookies as well as assigning it. 
-                                The problem with the current cookies is the lack of information about the logged in user. 
-                                One of the intuitive approaches is to add some user information to the cookies, such as the roles, email or name, this can produce a more unique cookies such that admin users can be distinguished from normal users. 
+                                This vulnerability is related to crafted variables altering the SQL statement. 
+                                Therefore the best practice to prevent this vulnerability is by separating variables and the query, which is known as parameterized query. 
+                                You may wonder, why the SQL statement for inserting login records is not affected by SQL injection? It is because it uses the parameterized query!
+                                By using the parameterized query, variables are marked as variables and they cannot interact with the SQL query. 
+                                This can avoid attackers changing the conditions of the queries to bypass the identity verification. 
                             </p>
                             <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample5" aria-expanded="false" aria-controls="multiCollapseExample5">Show solution #2</button>
                             <div class="row">
@@ -356,42 +362,40 @@
                                         <div class="card card-body">
                                             <h5>Solution #2</h5>
                                             <p>
-                                                admin.php (line 15-41):
+                                                login.php (line 24-46):
                                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                                     <tbody>
-                                                        <tr><td><code style="color: #000000;">15</code></td><td style="white-space: break-spaces;"><code>// verify login information</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">16</code></td><td style="white-space: break-spaces;"><code>$login = FALSE;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">17</code></td><td style="white-space: break-spaces;"><code>$cookie_name = "A01_login_cookie";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>$role = "Admin";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>if (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] == $role) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">20</code></td><td style="white-space: break-spaces;"><code>    // check if the user has logged in previously from cookie</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">21</code></td><td style="white-space: break-spaces;"><code>    $login = TRUE;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code>} else if ($_SERVER["REQUEST_METHOD"] == "POST") {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code>    // check the login credential from database</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>    $sql = $conn->prepare("SELECT * from users WHERE email=? AND studentNumber=? AND role=?;");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>    $sql->bind_param("sss", $_POST["username"], $_POST["password"], $role);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>    $sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>    $result = $sql->get_result();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>    </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>    if ($result->num_rows == 1) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>        $login = TRUE;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>    $sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>if (!$login) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>    // redirect to login failed page</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>    header("location: loginFail.html");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>    // set a login cookie to identify logged in user</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>    setcookie($cookie_name, $role, time() + (86400 * 365), "/"); </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>                                                    </tbody>
+                                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>// select the login info from database</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("SELECT * FROM users WHERE username=? AND password=?");</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ss", trim($_POST["username"]), trim($_POST["password"]));</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>$result = $sql->get_result();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows == 1) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code>    $login = 1;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>// insert the login record</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>$date = date("Y-m-d H:i:s O");</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>$attempt = "failed";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>$username = trim($_POST["username"]);</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code>$password = trim($_POST["password"]);</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>if ($login == 1) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>    $attempt = "success";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("INSERT INTO records (time, attempt, username, password) VALUES (?, ?, ?, ?)");</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ssss", $date, $attempt, $username, $password);</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">45</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">46</code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
+                                                    </tbody>
                                                 </table>
-                                                The cookies is now assigned with the value of logged in user's role. 
-                                                In this case, normal users cannot use their cookies to login the admin console page as the value of the cookies is different. 
-                                                However, this is only a very weak fix because anyone can edit the value of the cookie and a malicious user can directly change the value to <code>Admin</code> for gaining the access. 
-                                                A more proper fix is to use the username/email as the value of the cookies and check it against the database again. 
-                                                You can try to implement it with the help of the code from line 24 to lin 31. 
+                                                The code for selecting data from the database is changed to prepared statement. 
+                                                First in line 25, the query is marked with <code>?</code> for where the variables will be. 
+                                                Then in line 26, we bind the user input and the query to form the final query, while making sure the variables will not alter the SQL statement. 
+                                                At line 27, we execute the query and retrieve the result to verify the identity of the users. 
+                                                Prepared statement should be used for all the SQL queries involved user input. 
+                                                It is one of the standard practice to defense against SQL injection.
                                             </p>
                                         </div>
                                     </div>
@@ -414,11 +418,17 @@
                                 If you are interested in this topic and eager to learn more, here are some good references for you:
                             </p>
                             <ul>
-                                <li><a href="https://owasp.org/Top10/A01_2021-Broken_Access_Control/" target="_blank">A01 Broken Access Control - OWASP Top 10:2021</a></li>
-                                <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/hidden" target="_blank">hidden - HTML: HyperText Markup Language | MDN</a></li>
-                                <li><a href="https://ico.org.uk/your-data-matters/online/cookies/#:~:text=A%20cookie%20is%20a%20small,people%20looking%20at%20a%20website." target="_blank">Cookies | ICO</a></li>
-                                <li><a href="https://www.php.net/manual/en/control-structures.alternative-syntax.php" target="_blank">PHP: Alternative syntax for control structures - Manual</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.setcookie.php" target="_blank">PHP: setcookie - Manual</a></li>
+                                <li><a href="https://owasp.org/Top10/A03_2021-Injection/" target="_blank">A03 Injection - OWASP Top 10:2021</a></li>
+                                <li><a href="https://owasp.org/www-community/attacks/xss/" target="_blank">Cross Site Scripting (XSS) | OWASP Foundation</a></li>
+                                <li><a href="https://owasp.org/www-community/attacks/SQL_Injection" target="_blank">SQL Injection | OWASP Foundation</a></li>
+                                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/console" target="_blank">console - Web APIs | MDN</a></li>
+                                <li><a href="https://www.w3schools.com/tags/att_input_maxlength.asp" target="_blank">HTML input maxlength Attribute</a></li>
+                                <li><a href="https://www.w3schools.com/sql/sql_syntax.asp" target="_blank">SQL Syntax</a></li>
+                                <li><a href="https://www.php.net/manual/en/function.str-replace.php" target="_blank">PHP: str_replace - Manual</a></li>
+                                <li><a href="https://www.w3schools.com/html/html_entities.asp" target="_blank">HTML Entities</a></li>
+                                <li><a href="https://www.w3schools.com/html/html_elements.asp" target="_blank">HTML Elements</a></li>
+                                <li><a href="https://www.php.net/manual/en/function.htmlspecialchars.php" target="_blank">PHP: htmlspecialchars - Manual</a></li>
+                                <li><a href="https://www.w3schools.com/php/php_mysql_prepared_statements.asp" target="_blank">PHP MySQL Prepared Statements</a></li>
                             </ul>
                         </div>
                     </div>
@@ -432,7 +442,7 @@
                     </h2>
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
                         <div class="accordion-body text-start m-3">
-                            This is a user console page, try to show the admin console, which list all the users information!
+                            This is a user login page, try to exploit the injection vulnerabilities!
                             <br>
                             <a href="./challenge.php" target="_blank">Challenge</a>
                         </div>
