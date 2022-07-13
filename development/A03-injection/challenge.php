@@ -37,7 +37,7 @@
 ?>
 <html>
     <head>
-        <title>A03 - User Login</title>
+        <title>A03 - Challenge</title>
         <link rel="icon" href="../resources/image/favicon.ico">
         <!-- bootstrap css and js -->
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
