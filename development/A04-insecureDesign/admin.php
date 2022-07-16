@@ -15,6 +15,20 @@
     // log post body
     error_log('"'.str_replace("/var/www/html", "", __FILE__).'" "POST" "'.http_build_query($_POST).'"');
 
+    // default login to be false
+    $login = FALSE;
+    
+    // check the login credential from database
+    $sql = $conn->prepare("SELECT * from users WHERE email=? AND studentNumber=?;");
+    $sql->bind_param("ss", $_POST["username"], $_POST["password"]);
+    $sql->execute();
+    $result = $sql->get_result();
+
+    if ($result->num_rows == 1) {
+        $login = TRUE;
+    }
+    $sql->close();
+
     // getting the user data from database
     $sql = $conn->prepare("SELECT * from users;");
     $sql->execute();
@@ -36,11 +50,11 @@
         <!-- custom css for this page -->
         <link rel="stylesheet" href="css/console.css">
         <link rel="stylesheet" href="css/login.css">
-        <script>
-            window.onload = function() {
-                document.getElementById("login-form").click();
-            };
-        </script>
+        <?php
+            if (!$login) {
+                echo '<script> window.onload = function() { document.getElementById("login-form").click(); }; </script>';
+            }
+        ?>
     </head>
     <body>
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
@@ -55,7 +69,7 @@
                 </div>
             </div>
         </header>
-        <div class="container-fluid" style="-webkit-filter: blur(5px);">
+        <div class="container-fluid" <?php if (!$login) { echo 'style="-webkit-filter: blur(5px);"'; } ?>>
             <div class="row">
                 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                     <div class="position-sticky pt-3">
@@ -132,7 +146,7 @@
                         </ul>
 
                         <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted text-uppercase" hidden>
-                            <span>Login</span>
+                            <span hidden>Login</span>
                         </h6>
                         <ul class="nav flex-column mb-2" id="admin_functions" hidden>
                             <li class="nav-item">
@@ -154,10 +168,10 @@
                                     <th>ID</th>
                                     <th>Role</th>
                                     <th>Name</th>
-                                    <th>Email</th>
+                                    <th>Username</th>
                                     <th>Mobile Number</th>
                                     <th>Birthday</th>
-                                    <th>Student Number</th>
+                                    <th>Password</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -204,7 +218,7 @@
 
                                 <div class="col-12">
                                     <label for="password" class="form-label">Password:</label>
-                                    <input type="text" class="form-control" name="password" placeholder="" value="" required="">
+                                    <input type="password" class="form-control" name="password" placeholder="" value="" required="">
                                 </div>
                             </div>
                         </div>

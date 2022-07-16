@@ -263,11 +263,11 @@
                                         <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>// select the login info from database</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>$sql = "SELECT * FROM users WHERE username='".trim($_POST["username"])."' AND password='".trim($_POST["password"])."'";</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>$result = $conn->query($sql);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                         <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows == 1) {</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>    $login = 1;</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                         <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>// insert the login record</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code>$date = date("Y-m-d H:i:s O");</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>$attempt = "failed";</code><br></td></tr>
@@ -279,7 +279,7 @@
                                         <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("INSERT INTO records (time, attempt, username, password) VALUES (?, ?, ?, ?)");</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ssss", $date, $attempt, $username, $password);</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                         <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
                                     </tbody>
                                 </table>
@@ -370,11 +370,11 @@
                                                         <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ss", trim($_POST["username"]), trim($_POST["password"]));</code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>$result = $sql->get_result();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows == 1) {</code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code>    $login = 1;</code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>// insert the login record</code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>$date = date("Y-m-d H:i:s O");</code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>$attempt = "failed";</code><br></td></tr>
@@ -386,7 +386,7 @@
                                                         <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("INSERT INTO records (time, attempt, username, password) VALUES (?, ?, ?, ?)");</code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ssss", $date, $attempt, $username, $password);</code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">45</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">45</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                                         <tr><td><code style="color: #000000;">46</code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
                                                     </tbody>
                                                 </table>

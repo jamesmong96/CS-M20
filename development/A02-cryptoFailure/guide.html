@@ -224,23 +224,23 @@
                                         <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ss", $first_name, $last_name);</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code>$result = $sql->get_result();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                         <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows == 1) {</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>    while($row = $result->fetch_assoc()) {</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>        $id = $row["id"];</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                         <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>// if the identity is valid, i.e. id is set</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>if ($id != "-1") {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                         <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>    // generate the identification code using the user's information</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code>    $code = bin2hex($first_name."-".$last_name."-".$id);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                         <tr><td><code style="color: #000000;">45</code></td><td style="white-space: break-spaces;"><code>    // check if the generated identification code matches with the input code</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">46</code></td><td style="white-space: break-spaces;"><code>    if ($code == trim($_POST["code"])) {</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">47</code></td><td style="white-space: break-spaces;"><code>        $valid = 2;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">48</code></td><td style="white-space: break-spaces;"><code></code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">48</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
                                         <tr><td><code style="color: #000000;">49</code></td><td style="white-space: break-spaces;"><code>        // update the responses status</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">50</code></td><td style="white-space: break-spaces;"><code>        $sql = $conn->prepare("UPDATE users SET responses='1' where id=?;");</code><br></td></tr>
                                         <tr><td><code style="color: #000000;">51</code></td><td style="white-space: break-spaces;"><code>        $sql->bind_param("s", $id);</code><br></td></tr>

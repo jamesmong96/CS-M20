@@ -17,6 +17,11 @@ add the discussion of the code
 
 setup a challegne example, without giving hints, let users try out
 
+Question:
+
+should A04 be  more difficult? Have an api which do not do santization, all handle in front end
+-> now challenge
+
 ```
 
 ## Raspberry Pi Version
