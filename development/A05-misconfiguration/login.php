@@ -14,12 +14,12 @@
         $debug = "You have logged in";
     } else if ($_POST["username"] == $old_username && $_POST["password"] == $old_password) {
         $message = "Login failed";
-        $debug = "This account is deprecated, please find the updated account in ../resources/A05/password.txt";
+        $debug = "This testing account is deprecated, please find the updated account in ../resources/A05/testing-account.txt";
     }
 ?>
 <html>
     <head>
-        <title>A05 - User Login</title>
+        <title>A05 - Login</title>
         <link rel="icon" href="../resources/image/favicon.ico">
         <!-- bootstrap css and js -->
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
