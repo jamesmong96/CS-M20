@@ -22,6 +22,8 @@ Question:
 should A04 be  more difficult? Have an api which do not do santization, all handle in front end
 -> now challenge
 
+try hack me?
+
 ```
 
 ## Raspberry Pi Version

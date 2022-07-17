@@ -79,8 +79,8 @@
                                     Description in <cite title="Source Title">OWASP Top 10:2017</cite>
                                 </figcaption>
                             </figure>
-                            There are two vulnerabilities exist in the pages, both of them are related to injection.
-                            You can explore the pages by yourself and search for any traces of the weaknesses.
+                            There are three misconfigurations exist in the page, find all of them to gain access to the console.
+                            You can explore the directory by yourself and search for any traces of the misconfigurations.
                             <p>
                                 <button class="btn btn-primary my-3 me-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Show hint #1</button>
                                 <button class="btn btn-primary my-3 mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Show hint #2</button>
@@ -90,11 +90,11 @@
                                 <div class="col">
                                     <div class="collapse multi-collapse" id="multiCollapseExample1">
                                         <div class="card card-body">
-                                            <h5>Vulnerability #1</h5>
+                                            <h5>Hint #1</h5>
                                             <p>
-                                                This category has a new member, cross-site scripting. Trying different tags/cases will be helpful. Don't let the HTML limits you.
+                                                If you don't know what is symbolic link, you can do some researches online and come back for this task. It is the first step of your exploitation.
                                                 <br>
-                                                (Some researches online will be very helpful)
+                                                (Trying something different in the address bar may gives you some surprises)
                                             </p>
                                         </div>
                                     </div>
@@ -102,11 +102,11 @@
                                 <div class="col">
                                         <div class="collapse multi-collapse" id="multiCollapseExample2">
                                         <div class="card card-body">
-                                            <h5>Vulnerability #2</h5>
+                                            <h5>Hint #2</h5>
                                             <p>
-                                                SQL injection is one of the most popular attacks in this category, it can help you to login successfully. Don't let the HTML limits you.
+                                                It is very common to use the Javascript console for debugging web application, such as displaying responses and recording error messages.
                                                 <br>
-                                                (Usually there will be only <u>one</u> matching account in the database)
+                                                (You may find <kbd>F12</kbd> quite useful for this task)
                                             </p>
                                         </div>
                                     </div>
@@ -116,66 +116,34 @@
                                 <div class="col">
                                     <div class="collapse multi-collapse" id="multiCollapseExample3">
                                         <div class="card card-body">
-                                            <h5>Vulnerability #1</h5>
+                                            <h5>Vulnerability</h5>
                                             <p>
-                                                This vulnerability is related to cross-site scripting, which can be exploited in <code>admin.php</code>. 
-                                                As we can see that all the login attempts are shown on the table with its username and password, this is a sign of this page is very likely to be vulnerable against cross-site scripting.
-                                                If there are no proper input sanitization, a malicious user can leverage the weakness and execute Javascript code on other users' browsers. 
-                                                This can lead to serious consequences, including stealing authentication cookies or redirecting to phishing websites. 
+                                                There are three misconfigurations lead to this vulnerability, you can gain the account information by taking advantages of these misconfigurations. 
+                                                During development process, it is completely normal to have a lot of available resources in the directories. 
+                                                Some of them can aid the development and facilitate the software development cycle. 
+                                                However it is also very common to see these kinds of resources left accessible to public in production environment. 
+                                                As a result, attackers can search for these exposed sensitive information and gain access to the application.
                                             </p>
                                             <h6>Exploitation</h6>
                                             <ol>
-                                                <li>(The exploitation uses the function <code>console.log()</code> instead of <code>alert()</code> to avoid massive alert boxes popping out, the results can be viewed by pressing <kbd>F12</kbd> and click on the <code>Console</code> tab.)</li>
-                                                <li>From <code>login.php</code>, we notice there are two input boxes, which are <code>username</code> and <code>password</code>.</li>
-                                                <li>However we also notice that the <code>username</code> input box has a length limitation on input, which is 10 characters.</li>
-                                                <li>There are two ways to bypass this limitation:
-                                                    <ul>
-                                                        <li>Use the <code>password</code> input box to continue the exploitation</li>
-                                                        <li>Remove the <code>maxlength</code> attribute from the HTML content</li>
-                                                    </ul>
-                                                </li>
-                                                <li>We first start with the simplest version of payload: <code>&lt;script&gt; console.log("test1"); &lt;/script&gt;</code></li>
-                                                <li>You should notice after refreshing <code>admin.php</code>, nothing is printed on the console and you can see <code>&lt;script&gt; console.log("test1");</code> on the login attempts table.</li>
-                                                <li>This indicates the page has at least sanitized the term <code>&lt;script&gt;</code> because it is not interpreted as HTML content. Also we found out that <code>&lt;/script&gt;</code> is interpreted as HTML content because it is not visible on the page.</li>
-                                                <li>Therefore we can try to alter the payload a bit to evade the sanitization, such as changing the letter case: <code>&lt;SCRIPT&gt; console.log("test2"); &lt;/SCRIPT&gt;</code></li>
-                                                <li>Then you see <code>test2</code> is printed on the console and the password field of the latest entry is empty, which means the content is interpreted as pure HTML content.</li>
-                                                <li>You can now execute Javascript code on other users' browsers!</li>
+                                                <li>Find the symbolic link of this directory by going to <a href="./." target="_blank">/A05-misconfiguration/</a>.</li>
+                                                <li>You should notice there is a <code>testing-account.txt</code>, which very likely to have some account information.</li>
+                                                <li>But you should find that the username and password in it cannot login successfully.</li>
+                                                <li>Press <kbd>F12</kbd> and click on the <code>Console</code> tab.</li>
+                                                <li>You should notice that there are some debug messages when you submit the username and password.</li>
+                                                <li>Enter the username and password you found again, there is a debug message like this: <code>This testing account is deprecated, please find the updated account in ../resources/A05/testing-account.txt</code>.</li>
+                                                <li>Follow the link here: <a href="../resources/A05/testing-account.txt" target="_blank">../resources/A05/testing-account.txt</a>.</li>
+                                                <li>Another set of username and password is found in this file.</li>
+                                                <li>You can login to the page successfully with the newly found username and password!</li>
                                             </ol>
                                             <h6>Explanation</h6>
                                             <p>
-                                                This vulnerability occurs when the page doesn't sanitize the text and the text is treated as part of the HTML content by the browser. 
-                                                Modern browsers rely on different tags to interpret the content of a website. 
-                                                There are many functional tags, such as <code>&lt;meta&gt;</code> for metadata, <code>&lt;style&gt;</code> for styling of the pages and <code>&lt;script&gt;</code> for executing Javascript. 
-                                                When a malicious user entered something with <code>&lt;script&gt;</code>, it is very natural for most of the browsers these days to treat it as Javascript tag and run whatever code in it. 
-                                                Changing the letter case of the tag is only one of the methods to bypass sanitization. 
-                                                Keep in mind that using the <code>&lt;script&gt;</code> tag is only a very simple demonstration here, there are a lot of tags can trigger cross-site scripting, like <code>&lt;body&gt;</code>, <code>&lt;iframe&gt;</code> and the list goes on.
-                                            </p>
-                                            <h5>Vulnerability #2</h5>
-                                            <p>
-                                                This vulnerability is related to SQL injection, which occurs when the page doesn't implement prepared statements. 
-                                                Most of the applications using SQL databases have to pay extra attentions to SQL injection. 
-                                                The login page is one of the examples which binds the variables and the SQL statement directly without any input validations. 
-                                                As a result, if the variables are carefully crafted with SQL syntax, the query statement can be altered and causes unexpected changes to the database.
-                                            </p>
-                                            <h6>Exploitation</h6>
-                                            <ol>
-                                                <li>The targets of SQL injection are either the <code>username</code> or <code>password</code> input box.</li>
-                                                <li>Similar to Vulnerability #1, find a way to bypass the input limitation first.</li>
-                                                <li>Then we can try with the simplest form of SQL injection: <code>' OR 1=1 #</code></li>
-                                                <li>We notice the payload fails to login, then we modify it and try to guess some common usernames: <code>admin' #</code> / <code>user' #</code></li>
-                                                <li>After several failed attempts, we check the hint #2. It says it is looking for one matching account in the database.</li>
-                                                <li>Thus we can try this payload: <code>' OR 1=1 LIMIT 1 #</code></li>
-                                                <li>We can login to the page!</li>
-                                            </ol>
-                                            <h6>Explanation</h6>
-                                            <p>
-                                                This vulnerability is an example of weak SQL injection prevention measures. 
-                                                It can successfully stop the attackers with the simplest version of the attacks, but it is very easy to bypass. 
-                                                In SQL syntax, <code>#</code> indicates the start of a comment, which means any words after it will be ignored by the query. 
-                                                Therefore in the first payload, the query becomes select all the entries in the database because <code>1=1</code> is always true. 
-                                                However the page has a simple detection logic, such that if the returned data has more than 1 row, it is likely that someone is altering the query. 
-                                                Thus the keyword <code>LIMIT</code> can help us to evade the detection as it limits the number of row returned. 
-                                                By adding the clause <code>LIMIT 1</code>, the query only returns 1 row of data and logged in successfully.
+                                                This vulnerability occurs because there are three misconfigurations in the web server and the page. 
+                                                These misconfigurations let the attackers discover all the content in this directory and find the correct account information in the server. 
+                                                Listing all the content on the directory can be done intensionally when the website owners want to increase the page rank of the websites. 
+                                                But before doing so, it is very important that there are no unnecessary files on the directory and other directories are not affected by it.  
+                                                Developers should also avoid using error messages which are too informative and contain information that the users don't need to know in the production environment. 
+                                                This will only provide more details of the system and expose sensitive information, such as variable names and file locations etc.  
                                             </p>
                                         </div>
                                     </div>
@@ -194,202 +162,191 @@
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                         <div class="accordion-body text-start m-3">
                             <p>
-                                There are a lot of methods to defense against the above vulnerabilities. 
-                                The methods describe in this section may not be the best method, but are able to stop similar attacks. 
-                                You are welcome to change the files and test your own defense mechanisms.
+                                The best way to avoid misconfigurations is following best practice all the time. 
+                                These best practice maybe suggested by different vendors or security experts, you should understand what the configurations are about before applying them. 
+                                Implementing the configurations blindly may be unable to increase security, or even cause the application malfunctioning. 
                             </p>
-                            <h5>Code Explanation</h5>
+                            <h5>Configurations Explanation</h5>
                             <p>
-                                Before you implement the countermeasures, you have to know what the code is doing and which part of the code you should change.
-                                Below are the code snippets of the relevant logic, please fully understand the code before you proceed.
+                                Before you change the related configurations, you should have an idea of where the configuration file is and what different options means.
+                                Below are locations and permissions of the related files, please fully understand the content before you proceed.
                             </p>
-                            <h6>admin.php (Vulnerability #1)</h6>
+                            <h6>/etc/apache2/apache2.conf (Apache configuration files)</h6>
                             <p>
-                                This is the file responsible for showing all the login attempts. 
-                                Most of the systems actually store all the login attempts to detect any possible traces of attacks, such as brute force attack. 
-                                How to store and show the data properly is also an important consideration when implementing an admin page like this. 
-                                Remember that all the attack methods and defense mechanisms demonstrated here are only a small portion of the actual real-world scenarios. 
-                                You should try to exploit this vulnerability with newly implemented countermeasures and repeat the process to discover more possibilities of this attack.
+                                This is the file responsible for configuring the Apache web server. 
+                                It has a lot of settings and options including the location of root directory, logging format and session management. 
+                                Usually this file is set with default configurations when the user installed the Apache package. 
+                                Besides, there are multiple custom modules which users can install or enable for different functions, such as additional log formatting, advanced security controls etc. 
+                                It is up to users to decide and configure their server and manage the security of it. 
+                                The configuration file used here is not very complicated compared to the commercial file used in actual web application. 
+                                You should spend some time to understand the options and configurations in the file if you are interested.
                                 <br><br>
-                                Displaying the data part (line 141-158):
+                                Allowing the server to follow symbolic links (line 170-180):
                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                     <tbody>
-                                        <tr><td><code style="color: #000000;">141</code></td><td style="white-space: break-spaces;"><code>// output the selected data to table</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">142</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows > 0) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">143</code></td><td style="white-space: break-spaces;"><code>    while($row = $result->fetch_assoc()) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">144</code></td><td style="white-space: break-spaces;"><code>        echo "&lt;tr&gt;";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">145</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".$row["time"]."&lt;/td&gt;";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">146</code></td><td style="white-space: break-spaces;"><code>        if ($row["attempt"] == "success") {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">147</code></td><td style="white-space: break-spaces;"><code>            echo "  &lt;td class='table-success text-success'>&lt;strong&gt;".$row["attempt"]."&lt;/strong&gt;&lt;/td&gt;";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">148</code></td><td style="white-space: break-spaces;"><code>        } else {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">149</code></td><td style="white-space: break-spaces;"><code>            echo "  &lt;td class='table-danger text-danger'>&lt;strong&gt;".$row["attempt"]."&lt;/strong&gt;&lt;/td&gt;";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">150</code></td><td style="white-space: break-spaces;"><code>        }</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">151</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".str_replace("&lt;s", "&amp;lt;s", $row["username"])."&lt;/td&gt;";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">152</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".str_replace("&lt;s", "&amp;lt;s", $row["password"])."&lt;/td&gt;";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">153</code></td><td style="white-space: break-spaces;"><code>        echo "&lt;/tr&gt;";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">154</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">155</code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">156</code></td><td style="white-space: break-spaces;"><code>    echo "&lt;tr&gt;";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">157</code></td><td style="white-space: break-spaces;"><code>    echo "&lt;/tr&gt;";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">158</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">170</code></td><td style="white-space: break-spaces;"><code>&lt;Directory /var/www/&gt;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">171</code></td><td style="white-space: break-spaces;"><code>#       Options Indexes FollowSymLinks</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">172</code></td><td style="white-space: break-spaces;"><code>        AllowOverride None</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">173</code></td><td style="white-space: break-spaces;"><code>        Require all granted</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">174</code></td><td style="white-space: break-spaces;"><code>&lt;/Directory&gt;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">175</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">176</code></td><td style="white-space: break-spaces;"><code>&lt;Directory /var/www/html/A05-misconfiguration&gt;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">177</code></td><td style="white-space: break-spaces;"><code>        Options Indexes FollowSymLinks</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">178</code></td><td style="white-space: break-spaces;"><code>        AllowOverride None</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">179</code></td><td style="white-space: break-spaces;"><code>        Require all granted</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">180</code></td><td style="white-space: break-spaces;"><code>&lt;/Directory&gt;</code><br></td></tr>
                                     </tbody>
                                 </table>
-                                This code snippet is the part which output the whole login attempts table. 
-                                The while loop loops all the returned entries from the database and display them in each row. 
-                                The only parts with simple data sanitization are line 151 and line 152, which use the function <code>str_replace</code> to replace the characters of <code>&lt;s</code> with HTML entities <code>&amp;lt;s</code>. 
-                                HTML entities can help the browsers to display special characters without interpret it as part of the tags. 
-                                Therefore all the <code>&lt;script&gt;</code> tag becomes <code>&amp;lt;script&gt;</code> and will not be executed as Javascript function. 
-                                This is the reason why the first attempt of using <code>&lt;script&gt;</code> does not work. 
-                                However when we change the letter case to all upper case, the tag becomes <code>&lt;SCRIPT&gt;</code> and thus the string is not replaced. 
-                                The second attempts work mainly because of HTML is case insensitive and string replace function is case sensitive. 
+                                This snippet is part of the configuration file which related to this directory. 
+                                We can notice that the only difference between the two directories is the line <code>Options Indexes FollowSymLinks</code> being commented out or not. 
+                                The first directory is the parent directory which includes other OWASP categories directories as well, while the second directory is this directory.
+                                Thus we know by enabling <code>Options Indexes FollowSymLinks</code> will expose the content in the whole directory. 
+                                According to the documents of Apache, we know that: 
+                                <ul>
+                                    <li><code>Options</code> means configure what features are available in this directory</li>
+                                    <li><code>Indexes</code> means returning a formatted list of the directory when there is no index files exist, like <code>index.html</code> or <code>index.php</code></li>
+                                    <li><code>FollowSymLinks</code> means follow the symbolic links in this directory</li>
+                                </ul>
+                                Therefore this is the option which lists all the content of this directory.
                             </p>
                             <br>
-                            <h6>login.php (Vulnerability #2)</h6>
+                            <h6>testing-account.txt (Testing account information)</h6>
                             <p>
-                                This is the file for verifying the login credentials. 
-                                It uses the data sent to the page for querying the database and allow the users to login if there is a match in the database. 
-                                This is a very common practice for modern web applications to identify a user. 
-                                Nevertheless this implementation can also be used for authorization, such that the users are assigned with different privileges or role when they login to the system. 
+                                These are the files which store the username and the password of a testing account. 
+                                It is a very common practice to have testing accounts when developing web applications, they can help to test different permissions control, authorizations and so on. 
+                                However this type of resources should be strictly restricted to the scope of testing environment and must not exist in production environment. 
+                                Moreover the permissions of these files are too loose such that basically anyone can read the account information of them, which is not secure at all.
                                 <br><br>
-                                login SQL part (line 24-44):
+                                testing-account.txt (permissions):
                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                     <tbody>
-                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>// select the login info from database</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>$sql = "SELECT * FROM users WHERE username='".trim($_POST["username"])."' AND password='".trim($_POST["password"])."'";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>$result = $conn->query($sql);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows == 1) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>    $login = 1;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>// insert the login record</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code>$date = date("Y-m-d H:i:s O");</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>$attempt = "failed";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>$username = trim($_POST["username"]);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>$password = trim($_POST["password"]);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>if ($login == 1) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code>    $attempt = "success";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("INSERT INTO records (time, attempt, username, password) VALUES (?, ?, ?, ?)");</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ssss", $date, $attempt, $username, $password);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
+                                        <tr><td style="white-space: break-spaces;"><code>$ ls -al testing-account.txt</code><br></td></tr>
+                                        <tr><td style="white-space: break-spaces;"><code>-rw-r--r-- 1 user user 61 Jul 16 13:10 testing-account.txt</code><br></td></tr>
                                     </tbody>
                                 </table>
-                                This code snippet is referring to the login statement and the insert record statement. 
-                                As we can see in line 25, the SQL statement is constructed by concatenating the SQL query and user input variables. 
-                                The weakness in this code occurs when the SQL statement uses user input directly without sanitization. 
-                                When we look at the SQL statement closely, we notice that the whole statement is only a string, which means the backend is unable to distinguish the original query and the user inputs. 
-                                Thus an attacker can craft a variable, which can alter the SQL query and control the return value. 
-                                Take a look at the exploitation, when the variable is <code>' OR 1=1 #</code>, the complete SQL query becomes <code>SELECT * FROM users WHERE username='' OR 1=1 # AND password='';</code>.
-                                This query means select everything from the users table when users is empty or always true. 
-                                The query will return all the entries because of the always true condition and hence attackers can verify themselves to login the system. 
-                                <br>
-                                (But how come line 40 to line 42 is unaffected? What is the reason behinds it?)
+                                ../resources/A05/testing-account.txt (permissions):
+                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                    <tbody>
+                                        <tr><td style="white-space: break-spaces;"><code>$ ls -al ../resources/A05/testing-account.txt</code><br></td></tr>
+                                        <tr><td style="white-space: break-spaces;"><code>-rw-r--r-- 1 user user 61 Jul 16 13:19 ../resources/A05/testing-account.txt</code><br></td></tr>
+                                    </tbody>
+                                </table>
+                                These are the permissions setting of the testing accounts files. 
+                                The permissions of them are the same, which is <code>-rw-r--r--</code>. 
+                                We know that the permissions of a file is set according to owner, group and others, while each part has three bits which represent read, write and execute permission of the file. 
+                                Judging from the permissions we see here, it is clear that both testing accounts files have granted read permissions to everyone on the server. 
+                                Hence the web server can also host the files and let everyone read the file content without any authorizations.
+                            </p>
+                            <br>
+                            <h6>login.php (Emitting debug messages)</h6>
+                            <p>
+                                These is the file performing login checking and send the debug messages. 
+                                The log in validation in this file is hardcoded for simplicity, unlike other categories which will use database for logging in. 
+                                Debug messages and error messages are very useful when developing and enhancing applications, they can let the developers know the current state of the program, what is the value of each variables etc. 
+                                However these messages can sometimes leak key information of the code and increase the security risks.
+                                <br><br>
+                                Emit debug messages (line 9-18, 64-66):
+                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                    <tbody>
+                                        <tr><td><code style="color: #000000;">9 </code></td><td style="white-space: break-spaces;"><code>$message = "Login failed";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">10</code></td><td style="white-space: break-spaces;"><code>$debug = "Incorrect credentials";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">11</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">12</code></td><td style="white-space: break-spaces;"><code>if ($_POST["username"] == $username && $_POST["password"] == $password) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">13</code></td><td style="white-space: break-spaces;"><code>    $message = "Login succeed";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">14</code></td><td style="white-space: break-spaces;"><code>    $debug = "You have logged in";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">15</code></td><td style="white-space: break-spaces;"><code>} else if ($_POST["username"] == $old_username && $_POST["password"] == $old_password) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">16</code></td><td style="white-space: break-spaces;"><code>    $message = "Login failed";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">17</code></td><td style="white-space: break-spaces;"><code>    $debug = "This testing account is deprecated, please find the updated account in ../resources/A05/testing-account.txt";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">..</code></td><td style="white-space: break-spaces;"><code>...</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">64</code></td><td style="white-space: break-spaces;"><code>if ($_SERVER["REQUEST_METHOD"] == "POST" && $debug != "") {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">65</code></td><td style="white-space: break-spaces;"><code>    echo "&lt;script&gt; console.log('".$debug."') &lt;/script&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">66</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                    </tbody>
+                                </table>
+                                This is the part which responsible for checking the login details and output the relevant console message. 
+                                The debug messages here should not expose the location of the testing account file. 
+                                It is possible that someone wants to login to the testing accounts and do some development or checking on it. 
+                                However it is always better to leave a contact point for requesting the access rather than putting the access information in a place where everyone can access it.
                             </p>
                             <br>
                             <h5>Defense Explanation</h5>
                             <p>
-                                After knowing what the code is doing and how does the vulnerabilities occur, we can start to know more about how to fix them. 
+                                After knowing what the configurations are doing and how does the vulnerabilities occur, we can start to know more about how to fix them. 
                                 Please try to change the code base on your understanding at least once before directly looking into the solutions. 
                                 You should retry the above exploitations after you have fixed the code to find out whether you have done it correctly or not.
                             </p>
-                            <h6>Vulnerability #1</h6>
+                            <h6>Vulnerability</h6>
                             <p>
-                                The vulnerability exists because of lacking data sanitization on the user input. 
-                                One of the methods to sanitize the data is designing a custom function to handle the data, which is not a very good practice because there are a lot of marginal cases for the payload and it is infeasible to capture all of them. 
-                                Users should use the built-in functions provided by the language, as they are likely to be well maintained and up to date for tackling latest version of exploits. 
-                                Try to find the built-in function for PHP, which can replace all the HTML special characters with HTML entities.
+                                The vulnerability exists because of a series of misconfigurations which leaks the account information. 
+                                The fix of this issue is changing the configurations and following the best practices for configuring the web server. 
+                                Also it is important to remove any unnecessary files from the server directory, no matter you think they will expose any information or not. 
+                                Something you find useless may not be the same for others. 
+                                Moreover you can explore more possible options on the Internet and enhance the security level further than the suggested solution.
                             </p>
-                            <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample4" aria-expanded="false" aria-controls="multiCollapseExample4">Show solution #1</button>
+                            <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample4" aria-expanded="false" aria-controls="multiCollapseExample4">Show solution</button>
                             <div class="row">
                                 <div class="col">
                                     <div class="collapse multi-collapse" id="multiCollapseExample4">
                                         <div class="card card-body">
-                                            <h5>Solution #1</h5>
+                                            <h5>Solution</h5>
                                             <p>
-                                                admin.php (line 141-158):
+                                                /etc/apache2/apache2.conf (line 176-180):
                                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                                     <tbody>
-                                                        <tr><td><code style="color: #000000;">141</code></td><td style="white-space: break-spaces;"><code>// output the selected data to table</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">142</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows > 0) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">143</code></td><td style="white-space: break-spaces;"><code>    while($row = $result->fetch_assoc()) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">144</code></td><td style="white-space: break-spaces;"><code>        echo "&lt;tr&gt;";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">145</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".$row["time"]."&lt;/td&gt;";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">146</code></td><td style="white-space: break-spaces;"><code>        if ($row["attempt"] == "success") {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">147</code></td><td style="white-space: break-spaces;"><code>            echo "  &lt;td class='table-success text-success'>&lt;strong&gt;".$row["attempt"]."&lt;/strong&gt;&lt;/td&gt;";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">148</code></td><td style="white-space: break-spaces;"><code>        } else {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">149</code></td><td style="white-space: break-spaces;"><code>            echo "  &lt;td class='table-danger text-danger'>&lt;strong&gt;".$row["attempt"]."&lt;/strong&gt;&lt;/td&gt;";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">150</code></td><td style="white-space: break-spaces;"><code>        }</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">151</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".htmlspecialchars($row["username"])."&lt;/td&gt;";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">152</code></td><td style="white-space: break-spaces;"><code>        echo "  &lt;td&gt;".htmlspecialchars($row["password"])."&lt;/td&gt;";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">153</code></td><td style="white-space: break-spaces;"><code>        echo "&lt;/tr&gt;";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">154</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">155</code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">156</code></td><td style="white-space: break-spaces;"><code>    echo "&lt;tr&gt;";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">157</code></td><td style="white-space: break-spaces;"><code>    echo "&lt;/tr&gt;";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">158</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">176</code></td><td style="white-space: break-spaces;"><code>&lt;Directory /var/www/html/A05-misconfiguration&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">177</code></td><td style="white-space: break-spaces;"><code>#       Options Indexes FollowSymLinks</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">178</code></td><td style="white-space: break-spaces;"><code>        AllowOverride None</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">179</code></td><td style="white-space: break-spaces;"><code>        Require all granted</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">180</code></td><td style="white-space: break-spaces;"><code>&lt;/Directory&gt;</code><br></td></tr>
                                                     </tbody>
                                                 </table>
-                                                After replacing the simple <code>str_replace</code> function with the <code>htmlspecialchars()</code>, all the potential HTML tags are sanitized and displayed as text on the page. 
-                                                Depends on the user requirements and scope of the pages, sometimes you are required to add more sanitization functions as well.
+                                                Comment out the line <code>Options Indexes FollowSymLinks</code> and make listing out the directory become impossible. 
+                                                This can prevent the attackers to gain extra amount of information of the server and hence less security risks. 
+                                                You can also implement an index page to prevent someone entering the directory page.
                                             </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col"></div>
-                            </div>
-                            <br>
-                            <h6>Vulnerability #2</h6>
-                            <p>
-                                This vulnerability is related to crafted variables altering the SQL statement. 
-                                Therefore the best practice to prevent this vulnerability is by separating variables and the query, which is known as parameterized query. 
-                                You may wonder, why the SQL statement for inserting login records is not affected by SQL injection? It is because it uses the parameterized query!
-                                By using the parameterized query, variables are marked as variables and they cannot interact with the SQL query. 
-                                This can avoid attackers changing the conditions of the queries to bypass the identity verification. 
-                            </p>
-                            <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample5" aria-expanded="false" aria-controls="multiCollapseExample5">Show solution #2</button>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="collapse multi-collapse" id="multiCollapseExample5">
-                                        <div class="card card-body">
-                                            <h5>Solution #2</h5>
+                                            <br>
                                             <p>
-                                                login.php (line 24-46):
+                                                testing-account.txt:
                                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                                     <tbody>
-                                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>// select the login info from database</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("SELECT * FROM users WHERE username=? AND password=?");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ss", trim($_POST["username"]), trim($_POST["password"]));</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>$result = $sql->get_result();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows == 1) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code>    $login = 1;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>// insert the login record</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>$date = date("Y-m-d H:i:s O");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>$attempt = "failed";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>$username = trim($_POST["username"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code>$password = trim($_POST["password"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>if ($login == 1) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>    $attempt = "success";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("INSERT INTO records (time, attempt, username, password) VALUES (?, ?, ?, ?)");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ssss", $date, $attempt, $username, $password);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">45</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">46</code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
+                                                        <tr><td style="white-space: break-spaces;"><code>$ sudo chmod 600 testing-account.txt</code><br></td></tr>
+                                                        <tr><td style="white-space: break-spaces;"><code>$ ls -al testing-account.txt</code><br></td></tr>
+                                                        <tr><td style="white-space: break-spaces;"><code>-rw------- 1 user user 61 Jul 16 13:10 testing-account.txt</code><br></td></tr>
                                                     </tbody>
                                                 </table>
-                                                The code for selecting data from the database is changed to prepared statement. 
-                                                First in line 25, the query is marked with <code>?</code> for where the variables will be. 
-                                                Then in line 26, we bind the user input and the query to form the final query, while making sure the variables will not alter the SQL statement. 
-                                                At line 27, we execute the query and retrieve the result to verify the identity of the users. 
-                                                Prepared statement should be used for all the SQL queries involved user input. 
-                                                It is one of the standard practice to defense against SQL injection.
+                                                ../resources/A05/testing-account.txt:
+                                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                                    <tbody>
+                                                        <tr><td style="white-space: break-spaces;"><code>$ sudo chmod 600 ../resources/A05/testing-account.txt</code><br></td></tr>
+                                                        <tr><td style="white-space: break-spaces;"><code>$ ls -al ../resources/A05/testing-account.txt</code><br></td></tr>
+                                                        <tr><td style="white-space: break-spaces;"><code>-rw------- 1 user user 61 Jul 16 13:19 ../resources/A05/testing-account.txt</code><br></td></tr>
+                                                    </tbody>
+                                                </table>
+                                                Change the permissions of the files to <code>600</code> can prevent anyone other than the owner to read the testing accounts files. 
+                                                Since each permissions can be represented by a binary number, which read is <code>100</code> (decimal: 4), write is <code>010</code> (decimal: 2) and execute is <code>001</code> (decimal: 1), we can grant the original permissions to the owner, which is 6 (4+2) and we grant no permissions (0) to the others users. 
+                                                You can also delete the testing account files, which is the best option, if you do not need them at all.
+                                            </p>
+                                            <br>
+                                            <p>
+                                                login.php (line 9-18):
+                                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                                    <tbody>
+                                                        <tr><td><code style="color: #000000;">9 </code></td><td style="white-space: break-spaces;"><code>$message = "Login failed";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">10</code></td><td style="white-space: break-spaces;"><code>$debug = "Incorrect credentials";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">11</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">12</code></td><td style="white-space: break-spaces;"><code>if ($_POST["username"] == $username && $_POST["password"] == $password) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">13</code></td><td style="white-space: break-spaces;"><code>    $message = "Login succeed";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">14</code></td><td style="white-space: break-spaces;"><code>    $debug = "You have logged in";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">15</code></td><td style="white-space: break-spaces;"><code>} else if ($_POST["username"] == $old_username && $_POST["password"] == $old_password) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">16</code></td><td style="white-space: break-spaces;"><code>    $message = "Login failed";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">17</code></td><td style="white-space: break-spaces;"><code>    $debug = "This testing account is deprecated, please find IT department for more assistance";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                                    </tbody>
+                                                </table>
+                                                Changing the debug message to hide the location of the testing accounts information is only a short-term measure here. 
+                                                There should be a proper mechanism to create and request testing accounts information for different purposes in the long-term. 
+                                                Also you should always keep the debug messages precise and avoid providing personal information, such as the email of the IT department in this case.
                                             </p>
                                         </div>
                                     </div>
