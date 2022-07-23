@@ -15,23 +15,23 @@
     // log post body
     error_log('"'.str_replace("/var/www/html", "", __FILE__).'" "GET" "'.http_build_query($_GET).'"');
 
+	// prepare the required statement
+	$stmt = "SELECT * from products WHERE brand=?;";
+	
 	// check the login credential from database
-	parse_str($_GET["search"]); // expected query=xxx
+	parse_str($_GET["search"]); // expected brand=xxx
 
+	// payload
+	// search=brand%3D123%26stmt%3DSELECT%20*%20from%20products%20where%201%3D1%20or%20brand%3D%3F%3B
+	
 	if (isset($brand) && $brand != "") {
-		$stmt = "SELECT * from products WHERE brand=?;";
 		$sql = $conn->prepare($stmt);
 		$sql->bind_param("s", $brand);
 		$sql->execute();
 		$result = $sql->get_result();
-
 		$sql->close();
-
-		while($row = $result->fetch_assoc()) {
-			echo implode(",", $row);
-		}
 	}
-
+	
 	$conn->close();
 ?>
 <html>
@@ -46,6 +46,12 @@
         <script src="../resources/js/bootstrap.bundle.min.js.map"></script>
         <!-- custom css for this page -->
         <link rel="stylesheet" href="css/search.css">
+		<script>
+			function formatQuery() {
+				document.getElementsByTagName('form')[0].search.value = "brand=" + document.getElementsByTagName('form')[0].search.value;
+  				return true;
+			}
+		</script>
     </head>
     <body>
 		<header>
@@ -69,7 +75,7 @@
 			</div>
 			<div class="navbar navbar-dark bg-dark shadow-sm">
 				<div class="container">
-				<a href="#" class="navbar-brand d-flex align-items-center">
+				<a href="./search.php" class="navbar-brand d-flex align-items-center">
 				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>Search</title><circle cx="10.5" cy="10.5" r="7.5"></circle><path d="M21 21l-5.2-5.2"></path></svg>
 					<strong>Search Console</strong>
 				</a>
@@ -85,14 +91,26 @@
 					<div class="ibox float-e-margins">
 						<div class="ibox-content">
 							<h2>
-								160 results found for: <span class="text-navy">"Bootdey"</span>
+								<?php 
+									if (isset($result)) {
+										echo strval($result->num_rows)." results found for: <strong>".htmlspecialchars($brand)."</strong>" ;
+									} else {
+										echo "Enter the brand and start your search";
+									}
+								?>
 							</h2>
-							<small>Request time  (0.23 seconds)</small>
+							<small>
+								<?php 
+									if (isset($result)) {
+										echo "Request time  (0.".rand(0, 99)." seconds)";
+									}
+								?>
+							</small>
 				
 							<div class="search-form">
-								<form action="#" method="get">
+								<form action="#" method="get" onsubmit="formatQuery();">
 									<div class="input-group">
-										<input type="text" placeholder="Bootdey" name="search" class="form-control input-lg">
+										<input type="text" placeholder="Brand" name="search" class="form-control input-lg">
 										<div class="input-group-btn">
 											<button class="btn btn-lg btn-primary" type="submit">
 												Search
@@ -102,54 +120,21 @@
 								</form>
 							</div>
 
-							<div class="hr-line-dashed"></div>
-							<div class="search-result">
-								<h3><a href="#">Bootdey</a></h3>
-								<a href="#" class="search-link">www.bootdey.com</a>
-								<p>
-
-								</p>
-							</div>
-
-							<div class="hr-line-dashed"></div>
-							<div class="search-result">
-								<h3><a href="#">Bootdey</a></h3>
-								<a href="#" class="search-link">https://bootdey.com/</a>
-								<p>
-								Bootdey is a gallery of free snippets resources templates and utilities for bootstrap css hmtl js framework. Codes for developers and web designers
-								</p>
-							</div>
-							<div class="hr-line-dashed"></div>
-
-							<div class="search-result">
-								<h3><a href="#">Bootdey | Facebook</a></h3>
-								<a href="#" class="search-link">https://www.facebook.com/bootdey</a>
-								<p>
-								Bootdey is a gallery of free snippets resources templates and utilities for bootstrap css hmtl js framework. Codes for developers and web designers
-								</p>
-							</div>
-							<div class="hr-line-dashed"></div>
-
-							<div class="search-result">
-								<h3><a href="#">Bootdey | Twitter</a></h3>
-								<a href="#" class="search-link">www.twitter.com/bootdey</a>
-								<p>
-									Bootdey is a gallery of free snippets resources templates and utilities for bootstrap css hmtl js framework. Codes for developers and web designers
-								</p>
-							</div>
+							<?php
+								while($row = $result->fetch_assoc()) {
+									echo '<div class="hr-line-dashed"></div>';
+									echo '<div class="search-result">';
+									echo '	<h3><a href="#">'.$row["name"].'</a></h3>';
+									echo '	<a href="#" class="search-link">'.$row["url"].'</a>';
+									echo '	<p>'.$row["description"].'</p>';
+									echo '</div>';
+								}
+							?>
 							<div class="hr-line-dashed"></div>
 							
 							<div class="text-center">
 								<div class="btn-group">
-									<button class="btn btn-white" type="button"><i class="glyphicon glyphicon-chevron-left"></i></button>
-									<button class="btn btn-white">1</button>
-									<button class="btn btn-white  active">2</button>
-									<button class="btn btn-white">3</button>
-									<button class="btn btn-white">4</button>
-									<button class="btn btn-white">5</button>
-									<button class="btn btn-white">6</button>
-									<button class="btn btn-white">7</button>
-									<button class="btn btn-white" type="button"><i class="glyphicon glyphicon-chevron-right"></i> </button>
+									<button class="btn btn-white active">1</button>
 								</div>
 							</div>
 						</div>
