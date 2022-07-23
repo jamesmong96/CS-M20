@@ -6,23 +6,20 @@ Kin Ip Mong (2143876), Swansea University
 
 Last Update: 2022-07-10
 
-Acknowledge the example I have used in Bootstrap
+Acknowledge the example I have used in Bootstrap and [Bootdey](https://www.bootdey.com/snippets/view/Search-Results)
 
 ```
-webpage idea
 
-keep the aritcheture level
+have a point system, gamify it
 
-add the discussion of the code
+put tools recommendation in the further readings
 
-setup a challegne example, without giving hints, let users try out
+docker
+
+A07, have a long data retention and log messy
 
 Question:
 
-should A04 be  more difficult? Have an api which do not do santization, all handle in front end
--> now challenge
-
-try hack me?
 
 ```
 
