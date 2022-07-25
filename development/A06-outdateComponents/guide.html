@@ -56,15 +56,9 @@
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
                         <div class="accordion-body text-start m-3">
-                            You, Michael Thomas, are one of the members of a shopping club, which recently launches a survey to collect customers' feedback. 
-                            As a penetration tester, you suspect the survey website is not secure and exploitable. 
-                            You are trying to conduct a proof of concept and let the club knows about it.
+                            You are a market analyst interested in the latest release of Random Company. You have found their products search console which seems vulnerable.
                             <br><br>
                             Click here to enter the <a href="./search.php" target="_blank">Search console</a>
-                            <br>
-                            Your identification code: <code>4d69636861656c2d54686f6d61732d31</code>
-                            <br><br>
-                            You can reset the database by visiting this page: <a href="./reset.php" target="_blank">Reset</a>
                         </div>
                     </div>
                 </div>
@@ -79,14 +73,14 @@
                             Before you start exploiting the survey page, please read what is cryptographic failures.
                             <figure class="text-center m-3">
                                 <blockquote class="blockquote">
-                                    <p><u>This category focuses on failures related to cryptography and often leads to sensitive data exposure or system compromise.</u></p>
+                                    <p><u>If the software is vulnerable, unsupported, or out of date. This includes the OS, web/application server, database management system (DBMS), applications, APIs and all components, runtime environments, and libraries.</u></p>
                                 </blockquote>
                                 <figcaption class="blockquote-footer">
                                     Description in <cite title="Source Title">OWASP Top 10:2021</cite>
                                 </figcaption>
                             </figure>
-                            There is one vulnerability exists in the survey page, your goal is to find it and exploit it. 
-                            A successful attack can complete the survey for other members in the club, such that their gifts can be shipped to your address.
+                            There is one vulnerability exists in the search console, your goal is to find it and exploit it. 
+                            A successful attack can find the hidden brand of Random Company and exposes its details. Current brands include <code>Summer</code>, <code>Pear</code> and <code>Sonic</code>.
                             <p>
                                 <button class="btn btn-primary my-3 me-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Show hint #1</button>
                                 <button class="btn btn-primary my-3 mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Show hint #2</button>
@@ -98,9 +92,9 @@
                                         <div class="card card-body">
                                             <h5>Hint #1</h5>
                                             <p>
-                                                The identification code of Colin Ward is: <code>436f6c696e2d576172642d37</code>
+                                                Check what is being deprecated in PHP 7.2 above.
                                                 <br>
-                                                (Try to find the common characteristics between your code and his)
+                                                (You may find this <a href="https://www.php.net/manual/en/migration72.deprecated.php" target="_blank">link</a> useful)
                                             </p>
                                         </div>
                                     </div>
@@ -110,9 +104,9 @@
                                         <div class="card card-body">
                                             <h5>Hint #2</h5>
                                             <p>
-                                                The identification code is <u>NOT</u> a combination of 26 letters and 10 numbers, find out what is missing.
+                                                The variable you need to exploit is <code>stmt</code>, which stores the SQL statement.
                                                 <br>
-                                                (You may want to do some researches on the Internet for what you have now)
+                                                (The payload you require is something similar to this <code>SELECT * from products where 1=1 or brand=?</code>)
                                             </p>
                                         </div>
                                     </div>
@@ -124,11 +118,11 @@
                                         <div class="card card-body">
                                             <h5>Vulnerability</h5>
                                             <p>
-                                                This vulnerability is related to the weak generation method of the identification code. 
-                                                The survey page relies on the identification code to verify the members' identity is a common practice, assuming only the members known their own code.
-                                                However the problem with the survey page is the generation of identification code is problematic and easy to forge. 
-                                                For malicious attackers who do not know any identification codes, this may be difficult to guess or break. 
-                                                But any internal attackers can easily figure out the patterns and impersonate other users.
+                                                This vulnerability is related to an outdated component, which is the PHP library version 7.2. 
+                                                The latest version of PHP is 8.1, but the search console is using a major version behind the latest version. 
+                                                Also the PHP 7.2 is no longer supported after 2021, it will not receive security patches or fixes from the official source. 
+                                                This makes the sites vulnerable to different new threats and attacks, hindering the security of the whole application. 
+                                                This exploitation is using one of the deprecated version of a function to launch the attack, causing sensitive information leakage.
                                             </p>
                                             <h6>Exploitation</h6>
                                             <ol>

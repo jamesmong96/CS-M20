@@ -15,14 +15,17 @@
     // log post body
     error_log('"'.str_replace("/var/www/html", "", __FILE__).'" "GET" "'.http_build_query($_GET).'"');
 
-	// prepare the required statement
-	$stmt = "SELECT * from products WHERE brand=?;";
+	// prepare the required statement, exclude Special brand
+	$stmt = "SELECT * from products WHERE brand=? AND NOT brand='Special';";
 	
 	// check the login credential from database
 	parse_str($_GET["search"]); // expected brand=xxx
 
 	// payload
+	// in address bar
 	// search=brand%3D123%26stmt%3DSELECT%20*%20from%20products%20where%201%3D1%20or%20brand%3D%3F%3B
+	// in search bar
+	// 123&stmt=SELECT * from products where 1=1 or brand=?;
 	
 	if (isset($brand) && $brand != "") {
 		$sql = $conn->prepare($stmt);
@@ -60,7 +63,7 @@
 				<div class="row">
 					<div class="col-sm-8 col-md-7 py-4">
 					<h4 class="text-white">About</h4>
-					<p style="color: #6c757d!important;">This is the product search console of Random Company. You can browse all the available catalog here and find the products you like.</p>
+					<p style="color: #6c757d!important;">This is the product search console of Random Company powered by PHP 7.2. You can browse all the available catalog here and find the products you like.</p>
 					</div>
 					<div class="col-sm-4 offset-md-1 py-4">
 					<h4 class="text-white">Contact</h4>
