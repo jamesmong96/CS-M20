@@ -21,12 +21,6 @@
 	// check the login credential from database
 	parse_str($_GET["search"]); // expected brand=xxx
 
-	// payload
-	// in address bar
-	// search=brand%3D123%26stmt%3DSELECT%20*%20from%20products%20where%201%3D1%20or%20brand%3D%3F%3B
-	// in search bar
-	// 123&stmt=SELECT * from products where 1=1 or brand=?;
-	
 	if (isset($brand) && $brand != "") {
 		$sql = $conn->prepare($stmt);
 		$sql->bind_param("s", $brand);
@@ -36,6 +30,7 @@
 	}
 	
 	$conn->close();
+	
 ?>
 <html>
     <head>
@@ -124,13 +119,15 @@
 							</div>
 
 							<?php
-								while($row = $result->fetch_assoc()) {
-									echo '<div class="hr-line-dashed"></div>';
-									echo '<div class="search-result">';
-									echo '	<h3><a href="#">'.$row["name"].'</a></h3>';
-									echo '	<a href="#" class="search-link">'.$row["url"].'</a>';
-									echo '	<p>'.$row["description"].'</p>';
-									echo '</div>';
+								if (isset($result)) {
+									while($row = $result->fetch_assoc()) {
+										echo '<div class="hr-line-dashed"></div>';
+										echo '<div class="search-result">';
+										echo '	<h3><a href="#">'.$row["name"].'</a></h3>';
+										echo '	<a href="#" class="search-link">'.$row["url"].'</a>';
+										echo '	<p>'.$row["description"].'</p>';
+										echo '</div>';
+									}
 								}
 							?>
 							<div class="hr-line-dashed"></div>

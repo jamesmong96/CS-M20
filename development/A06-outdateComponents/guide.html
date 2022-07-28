@@ -120,26 +120,27 @@
                                             <p>
                                                 This vulnerability is related to an outdated component, which is the PHP library version 7.2. 
                                                 The latest version of PHP is 8.1, but the search console is using a major version behind the latest version. 
-                                                Also the PHP 7.2 is no longer supported after 2021, it will not receive security patches or fixes from the official source. 
-                                                This makes the sites vulnerable to different new threats and attacks, hindering the security of the whole application. 
-                                                This exploitation is using one of the deprecated version of a function to launch the attack, causing sensitive information leakage.
+                                                Also PHP 7.2 is no longer officially supported after 2021, it will not receive any security patches or fixes from the official source. 
+                                                This makes the site vulnerable to different new threats and attacks, hindering the security of the whole application. 
+                                                This exploitation is done by using a deprecated version of the function <code>parse_str()</code>, leaking sensitive information of the database.
                                             </p>
                                             <h6>Exploitation</h6>
                                             <ol>
-                                                <li>The identification code is in fact a hex representation of the a string, a hex to string and string to hex converter is provided in the Resources & Further Readings session.</li>
-                                                <li>If you convert the identification code from hex to string, you will get the following result: <code>Michael-Thomas-1</code></li>
-                                                <li>Therefore you can tell the format of the string is <code>{first name}-{last name}-{id}</code>.</li>
-                                                <li>With the above information, you can forge the identification code of others.</li>
-                                                <li>Example of Colin Ward (hint #1): from <code>Colin-Ward-7</code> to <code>436f6c696e2d576172642d37</code></li>
-                                                <li>Then you can complete the survey for other users!</li>
+                                                <li>When you submit a query, you should notice that the query terms of the url becomes <code>?search=brand%3D{xxx}#</code>, which <code>xxx</code> is the search term you entered.</li>
+                                                <li>From hint #1, we know that the server is running PHP version is 7.2 which has a vulnerable version of the function <code>parse_str()</code>.</li>
+                                                <li>Judging from the query term, we can infer that the program is using <code>parse_str()</code> to get the <code>brand</code> variable.</li>
+                                                <li>Therefore we can try to change the values of other variables by injecting different variable names and values.</li>
+                                                <li>From hint #2, we fund out that the variable we should exploit is <code>stmt</code> and this is a common variable name of SQl statement.</li>
+                                                <li>So we can try to inject the payload to the query terms by typing <code>123&stmt=SELECT * from products where 1=1 or brand=?;</code> into the search box.</li>
+                                                <li>We can find the Special brand in the search result!</li>
                                             </ol>
                                             <h6>Explanation</h6>
                                             <p>
-                                                This vulnerability is an example of weak cryptographic algorithm, using hex representation of a string is hardly classified as an algorithm.
-                                                Hex representation of strings is technically still the same string, but each character is replaced by the corresponding hex number. 
-                                                It is relatively easy to spot because only 6 letters and 10 numbers are being used in hex. 
-                                                We may found it hard to understand the content, but for experienced penetration tester it is very obvious that the identification code is just a hex number. 
-                                                Some of the common practices of generating unique identification code includes using a strong hash function.
+                                                This vulnerability exits in a vulnerable version of the function <code>parse_str()</code>. 
+                                                Without the second parameter in this function, a carefully crafted input can alter the value of local variables. 
+                                                Similar to the above exploitation, after the attackers notice the possible usage of <code>parse_str()</code> by observing the query terms <code>?search=brand%3D{xxx}#</code>, they can try to craft numerous payloads with common variables names, like <code>valid</code>, <code>conn</code> and <code>sql</code> etc. 
+                                                However the usage of such a dangerous function will only emit warnings into the error logs in PHP 7.2. 
+                                                In PHP 7.2 above, invoking this function without the second parameter will throw an error to avoid malicious uses abusing this function.
                                             </p>
                                         </div>
                                     </div>
@@ -158,59 +159,64 @@
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                         <div class="accordion-body text-start m-3">
                             <p>
-                                There are a lot of methods to fix the above vulnerability, but we will focus on the usage of strong hash function in this session. 
+                                There are a lot of methods to fix the above vulnerability, but we will focus on updating PHP and the function parameters. 
                             </p>
                             <h5>Code Explanation</h5>
                             <p>
                                 Before you implement the countermeasures, you have to know what the code is doing and which part of the code you should change.
                                 Below is the code snippet of the relevant logic, please fully understand the code before you proceed.
                             </p>
-                            <h6>survey.php</h6>
+                            <h6>search.php</h6>
                             <p>
-                                This is the file responsible for checking the validity of the identification code. 
-                                Most of the applications verify the code by computing the hash at the backend and see whether it matches with the input code.
-                                <code>survey.php</code> uses the name to get the entry from database and compute the identification code with the user's information.
-                                Then compare the computed code and the input code is the same or not. 
+                                This is the file responsible for parsing the query terms and use them to search the database. 
+                                It is a very common practice for developers to store different values into custom variables to improve the code readability and modularity. 
+                                Putting the SQL statement into a variable can let the developers reuse the same code segment for executing the statement in target database without writing the statement every single time.
                                 <br><br>
-                                Identification code comparison part (line 27-54):
+                                Parsing search terms and query the database (line 18-30):
                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                     <tbody>
-                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>// retrieve the user identity </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("SELECT * from users WHERE firstName=? AND lastName=?;");</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("ss", $first_name, $last_name);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code>$result = $sql->get_result();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code>if ($result->num_rows == 1) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>    while($row = $result->fetch_assoc()) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>        $id = $row["id"];</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>// if the identity is valid, i.e. id is set</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>if ($id != "-1") {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>    // generate the identification code using the user's information</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code>    $code = bin2hex($first_name."-".$last_name."-".$id);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">45</code></td><td style="white-space: break-spaces;"><code>    // check if the generated identification code matches with the input code</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">46</code></td><td style="white-space: break-spaces;"><code>    if ($code == trim($_POST["code"])) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">47</code></td><td style="white-space: break-spaces;"><code>        $valid = 2;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">48</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">49</code></td><td style="white-space: break-spaces;"><code>        // update the responses status</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">50</code></td><td style="white-space: break-spaces;"><code>        $sql = $conn->prepare("UPDATE users SET responses='1' where id=?;");</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">51</code></td><td style="white-space: break-spaces;"><code>        $sql->bind_param("s", $id);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">52</code></td><td style="white-space: break-spaces;"><code>        $sql->execute();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">53</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">54</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>// prepare the required statement, exclude Special brand</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>$stmt = "SELECT * from products WHERE brand=? AND NOT brand='Special';";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">20</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">21</code></td><td style="white-space: break-spaces;"><code>// check the login credential from database</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code>parse_str($_GET["search"]); // expected brand=xxx</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>if (isset($brand) && $brand != "") {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>	$sql = $conn->prepare($stmt);</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>	$sql->bind_param("s", $brand);</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>	$sql->execute();</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>	$result = $sql->get_result();</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>	$sql->close();</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
                                     </tbody>
                                 </table>
-                                This code snippet starts with retrieving the data from database using the name given in the form (line 27-37). 
-                                Then it combines the data into the specified format and convert it to hex numbers (line 43). 
-                                After getting the computed identification code, it is compared to the input identification code (line 46). 
-                                If the codes are the same, then the user is verified and update the responses status (line 47-52). 
-                                Otherwise the program will do nothing and prompts the user for invalid identification code. 
-                                However this code snippet has omitted several details for simplicity, including dealing with members who have same name and recording the actual responses.
+                                This code snippet shows that the SQL statement is stored in <code>stmt</code> and the subsequent logic executes the statement without double checking the value. 
+                                Therefore attackers can craft a new SQL query to replace the original query, in order to retrieve the sensitive information from the database. 
+                                We can see from line 19 that the original query will filter out the result of Special brand to avoid users getting any information of it. 
+                                However the statement can be changed with the payload and expose the Special brand. 
+
+                            </p>
+                            <br>
+                            <h6>PHP version</h6>
+                            <p>
+                                The vulnerable function <code>parse_str()</code> in PHP 7.2, only has one required parameter, which is the input string. 
+                                The second parameter, which is an array for storing the variables, is optional. 
+                                PHP 7.2 notices the dangerous of this function, but it only emits a deprecated warning to the users. 
+                                In order words, the users can still invoke the function without second parameter, making the application vulnerable to the above attack. 
+                                <br><br>
+                                Current running PHP version:
+                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                    <tbody>
+                                        <tr><td style="white-space: break-spaces;"><code>$ php --version</code><br></td></tr>
+                                        <tr><td style="white-space: break-spaces;"><code>PHP 7.2.9-1+b2 (cli) (built: Aug 19 2018 06:56:13) ( NTS )</code><br></td></tr>
+                                        <tr><td style="white-space: break-spaces;"><code>Copyright (c) 1997-2018 The PHP Group</code><br></td></tr>
+                                        <tr><td style="white-space: break-spaces;"><code>Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies</code><br></td></tr>
+                                        <tr><td style="white-space: break-spaces;"><code>    with Zend OPcache v7.2.9-1+b2, Copyright (c) 1999-2018, by Zend Technologies</code><br></td></tr>
+                                    </tbody>
+                                </table>
+                                After updating to PHP 8.1, the second parameter is no longer optional. 
+                                Thus all the input variables will be stored in the array and unable to impact the local variables of the script. 
+                                If the developers omit the second parameter like PHP 7.2, the script will throw an error and the page is not viewable by the users.
                             </p>
                             <br>
                             <h5>Defense Explanation</h5>
@@ -221,9 +227,9 @@
                             </p>
                             <h6>Vulnerability</h6>
                             <p>
-                                Since the vulnerability exists because of the weak cryptographic algorithm, we need to find a more secure way to generate the identification code for all the users. 
-                                One of the ways to do it is by using some default hash functions provided by the programming languages. 
-                                Most of the modern high-level programming languages have implemented built-in hash functions for users to invoke, PHP is no exception.
+                                Since the vulnerability exists because of the outdated PHP version, the first step is to update PHP to the latest version (PHP 8.1). 
+                                If we don't modify the parameters of <code>parse_str()</code> after updating to PHP 8.1, the page should show a 500 error. 
+                                In order to resolve this error, we also need to add the second parameter to the function and change the script accordingly.
                             </p>
                             <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample4" aria-expanded="false" aria-controls="multiCollapseExample4">Show solution</button>
                             <div class="row">
@@ -232,16 +238,42 @@
                                         <div class="card card-body">
                                             <h5>Solution</h5>
                                             <p>
-                                                survey.php (line 42-43):
+                                                PHP version:
                                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                                     <tbody>
-                                                        <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>    // generate the identification code using the user's information</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code>    $code = hash("sha256", $first_name."-".$last_name."-".$id);</code><br></td></tr>
+                                                        <tr><td style="white-space: break-spaces;"><code>$ sudo a2dismod php7.2</code><br></td></tr>
+                                                        <tr><td style="white-space: break-spaces;"><code>$ sudo a2enmod php8.1</code><br></td></tr>
+                                                        <tr><td style="white-space: break-spaces;"><code>$ sudo systemctl restart apache2</code><br></td></tr>
                                                     </tbody>
                                                 </table>
-                                                PHP has built-in function <code>hash()</code> which allows users to use different hashing algorithms. 
-                                                Users can simply supply the desired algorithm and the target string to generate a safe identification code for all the members. 
-                                                Then the identification code will not show clear patterns or easily correlate to other members.
+                                                Since multiple versions of PHP are installed on the machine, we need to enable the most updated module to use the latest PHP. 
+                                                We first need to disable the PHP 7.2 module and then enable the PHP 8.1 module. 
+                                                After switching the module, we can now restart the Apache service to deploy the changes.
+                                            </p>
+                                            <br>
+                                            <p>
+                                                search.php (line 18-30, 94):
+                                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                                    <tbody>
+                                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>// prepare the required statement, exclude Special brand</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>$stmt = "SELECT * from products WHERE brand=? AND NOT brand='Special';";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">20</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">21</code></td><td style="white-space: break-spaces;"><code>// check the login credential from database</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code>parse_str($_GET["search"], $query); // expected brand=xxx</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>if (isset($query['brand']) && $query['brand'] != "") {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>	$sql = $conn->prepare($stmt);</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>	$sql->bind_param("s", $query['brand']);</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>	$sql->execute();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>	$result = $sql->get_result();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>	$sql->close();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">..</code></td><td style="white-space: break-spaces;"><code>...</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">94</code></td><td style="white-space: break-spaces;"><code>echo strval($result->num_rows)." results found for: &lt;strong&gt;".htmlspecialchars($query['brand'])."&lt;/strong&gt;" ;</code><br></td></tr>
+                                                    </tbody>
+                                                </table>
+                                                By adding the second parameter <code>$query</code>, the result is now stored in it as an array. 
+                                                Therefore we also need to change the way of referencing the variable, from <code>$brand</code> to <code>$query['brand']</code> to retrieve the value of user input. 
                                             </p>
                                         </div>
                                     </div>
@@ -264,27 +296,14 @@
                                 If you are interested in this topic and eager to learn more, here are some good references for you:
                             </p>
                             <ul>
-                                <li><a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/" target="_blank">A02 Cryptographic Failures - OWASP Top 10:2021</a></li>
-                                <li><a href="https://www.geeksforgeeks.org/convert-a-string-to-hexadecimal-ascii-values/" target="_blank">Convert a string to hexadecimal ASCII values - GeeksforGeeks</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.bin2hex.php" target="_blank">PHP: bin2hex - Manual</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.hex2bin.php" target="_blank">PHP: hex2bin - Manual</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.hash.php" target="_blank">PHP: hash - Manual</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.hash-algos.php" target="_blank">PHP: hash_algos - Manual</a></li>
-                                <li><a href="https://en.wikipedia.org/wiki/SHA-2" target="_blank">SHA-2 - Wikipedia</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.hash-algos.php" target="_blank">PHP: hash_algos - Manual</a></li>
+                                <li><a href="https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/" target="_blank">A06 Vulnerable and Outdated Components - OWASP Top 10:2021</a></li>
+                                <li><a href="https://www.php.net/manual/en/migration72.deprecated.php" target="_blank">PHP: Deprecated features in PHP 7.2.x - Manual</a></li>
+                                <li><a href="https://www.php.net/manual/en/function.parse-str.php" target="_blank">PHP: parse_str - Manual</a></li>
+                                <li><a href="https://www.php.net/supported-versions.php" target="_blank">PHP: Supported Versions</a></li>
+                                <li><a href="https://www.unix.com/man-page/linux/8/a2enmod/" target="_blank">a2enmod(8)  [linux man page]</a></li>
+                                <li><a href="https://www.unix.com/man-page/linux/8/a2dismod/" target="_blank">a2dismod(8)  [linux man page]</a></li>
+                                <li><a href="https://www.php.net/releases/8.1/en.php" target="_blank">PHP: PHP 8.1.0 Release Announcement</a></li>
                             </ul>
-                            <div class="col-12">
-                                <label for="str2hex" class="form-label">String to Hex converter</label>
-                                <input type="text" id="str2hex" placeholder="" value="">
-                                <button class="btn btn-primary btn-sm" onclick="str2hex();">Convert</button>
-                                <code><label for="str2hex" class="form-label" id="str2hex_result"></label></code>
-                            </div>
-                            <div class="col-12">
-                                <label for="hex2str" class="form-label">Hex to String converter</label>
-                                <input type="text" id="hex2str" placeholder="" value="">
-                                <button class="btn btn-primary btn-sm" onclick="hex2str();">Convert</button>
-                                <code><label for="hex2str" class="form-label" id="hex2str_result"></label></code>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -297,14 +316,8 @@
                     </h2>
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
                         <div class="accordion-body text-start m-3">
-                            The club has improved the survey page, but you think the website is still vulnerable.
-                            Try to complete the survey on behalf of other members! 
-                            <br><br>
-                            Your new identification code: <code>2c6561</code>
-                            <br>
-                            (The format of the identification code before hashing is still <code>{first name}-{last name}-{id}</code>)
-                            <br>
-                            <a href="./challenge.php" target="_blank">Challenge</a>
+                            There are a lot of commercial applications and systems not using the latest softwares and components because it takes a lot of time to patch one software and complicated compatibility issues. 
+                            You are encouraged to research online and find out more outdated features which are exploitable.
                         </div>
                     </div>
                 </div>
