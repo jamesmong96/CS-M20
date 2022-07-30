@@ -20,6 +20,10 @@ A07, have a long data retention and log messy
 
 Question:
 
+A07, too difficult? brute force script is way harder than I thought
+should I keep the unsafe forgot password?
+
+review all the content?
 
 ```
 
