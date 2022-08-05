@@ -26,7 +26,7 @@
         } else {
 
             // check if the user exist in the database
-            $sql = $conn->prepare("SELECT * from users WHERE username=?;");
+            $sql = $conn->prepare("SELECT * from users WHERE binary username=?;");
             $sql->bind_param("s", $_POST["username"]);
             $sql->execute();
             $result = $sql->get_result();
@@ -35,7 +35,7 @@
                 $message = "User doesn't exist";
             } else {
                 // select the login info from database
-                $sql = $conn->prepare("SELECT * from users WHERE username=? AND password=?;");
+                $sql = $conn->prepare("SELECT * from users WHERE binary username=? AND password=?;");
                 $sql->bind_param("ss", $_POST["username"], $_POST["password"]);
                 $sql->execute();
                 $result = $sql->get_result();

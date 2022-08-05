@@ -14,7 +14,8 @@
 
     // indicate the transaction status
     $succeed = NULL;
-    if (isset($_POST["from"]) && isset($_POST["to"]) && isset($_POST["new_amount_from"]) && isset($_POST["new_amount_to"])) {
+    $cookie_name = "A08_challenge";
+    if (isset($_POST["from"]) && isset($_POST["to"]) && isset($_POST["amount"])) {
 
         // log post body
         error_log('"'.str_replace("/var/www/html", "", __FILE__).'" "POST" "'.http_build_query($_POST).'"');
@@ -24,33 +25,46 @@
         $sql->bind_param("s", $_POST["from"]);
         $sql->execute();
         $username_from = $sql->get_result();
+        $from_amount = -1;
+        while($row = $username_from->fetch_assoc()) {
+            $from_amount = intval($row["balance"]);
+        }
         $sql->close();
-
+         
         $sql = $conn->prepare("SELECT * from users where username=?;");
         $sql->bind_param("s", $_POST["to"]);
         $sql->execute();
         $username_to = $sql->get_result();
+        $to_amount = -1;
+        while($row = $username_to->fetch_assoc()) {
+            $to_amount = intval($row["balance"]);
+        }
         $sql->close();
-
+         
         if ($username_from->num_rows != 1 || $username_to->num_rows != 1) {
             // invalid username
             $succeed = FALSE;
-        } else if (!is_numeric($_POST["new_amount_from"]) || !is_numeric($_POST["new_amount_to"]) || intval($_POST["new_amount_from"]) < 0 || intval($_POST["new_amount_to"]) < 0) {
+        } else if (!is_numeric($_POST["amount"]) || intval($_POST["amount"]) < 0) {
             // invalid balance
+            $succeed = FALSE;
+        } else if (isset($_COOKIE[$cookie_name]) && $_COOKIE[$cookie_name] != bin2hex($_POST["from"])) {
+            // invalid user
             $succeed = FALSE;
         } else {
             // update from account
             $sql = $conn->prepare("UPDATE users SET balance=? where username=?;");
-            $sql->bind_param("ss", $_POST["new_amount_from"], $_POST["from"]);
+            $amount = $from_amount - intval($_POST["amount"]);
+            $sql->bind_param("ss", $amount, $_POST["from"]);
             $sql->execute();
             $sql->close();
-
+         
             // update to account
             $sql = $conn->prepare("UPDATE users SET balance=? where username=?;");
-            $sql->bind_param("ss", $_POST["new_amount_to"], $_POST["to"]);
+            $amount = $to_amount + intval($_POST["amount"]);
+            $sql->bind_param("ss", $amount, $_POST["to"]);
             $sql->execute();
             $sql->close();
-
+         
             $succeed = TRUE;
         }
     }
@@ -69,6 +83,8 @@
     $sql->close();
     $conn->close();
 
+    // set the identification cookie
+    setcookie($cookie_name, "67726168616d2e687567686573393734", time() + (86400 * 365), "/");
 ?>
 <html>
     <head>
@@ -81,23 +97,6 @@
         <script src="../resources/js/bootstrap.min.js"></script>
         <!-- custom css for this page -->
         <link rel="stylesheet" href="css/console.css">
-        <script>
-			function formatQuery() {
-                var balances = {
-                    <?php
-                        // get the balance for calculation
-                        if (count($data) > 0) {
-                            foreach ($data as $row) {
-                                echo '"'.$row["username"].'": '.$row["balance"].', '; 
-                            }
-                        }
-                    ?>
-                };
-				document.getElementsByTagName('form')[0].new_amount_from.value = document.getElementsByTagName('form')[0].from.value in balances && !Number.isNaN(parseInt(document.getElementsByTagName('form')[0].amount.value)) ? parseInt(balances[document.getElementsByTagName('form')[0].from.value]) - parseInt(document.getElementsByTagName('form')[0].amount.value) : "NA";
-				document.getElementsByTagName('form')[0].new_amount_to.value = document.getElementsByTagName('form')[0].to.value in balances && !Number.isNaN(parseInt(document.getElementsByTagName('form')[0].amount.value)) ? parseInt(balances[document.getElementsByTagName('form')[0].to.value]) + parseInt(document.getElementsByTagName('form')[0].amount.value) : "NA";
-  				return true;
-			}
-		</script>
     </head>
     <body>
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
@@ -256,7 +255,7 @@
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action = "./console.php" method = "post" onsubmit="formatQuery();">
+                    <form action = "./challenge.php" method = "post">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Transaction</h5>
                         </div>
@@ -273,8 +272,6 @@
                                 </div>
 
                                 <input type="text" class="form-control" name="from" placeholder="" value="graham.hughes974" hidden>
-                                <input type="text" class="form-control" name="new_amount_from" placeholder="" value="" hidden>
-                                <input type="text" class="form-control" name="new_amount_to" placeholder="" value="" hidden>
                             </div>
                         </div>
                         <div class="modal-footer">
