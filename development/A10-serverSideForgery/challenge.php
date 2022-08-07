@@ -11,7 +11,7 @@
 		$url = $_POST["url"];
 
 		// check if protocol is included in the url
-		if (strpos($url, "://") == FALSE) {
+		if (strpos($url, "http://") !== 0 && strpos($url, "https://") !== 0) {
 			$url = "http://".$url;
 		}
 
@@ -23,7 +23,7 @@
 ?>
 <html>
     <head>
-        <title>A10 - Search</title>
+        <title>A10 - Challenge</title>
         <link rel="icon" href="../resources/image/favicon.ico">
         <!-- bootstrap css and js -->
         <link rel="stylesheet" href="../resources/css/bootstrap.min.css">
@@ -93,7 +93,7 @@
 							</small>
 				
 							<div class="search-form">
-								<form action="./search.php" method="post">
+								<form action="./challenge.php" method="post">
 									<div class="input-group">
 										<input type="text" placeholder="URL" name="url" class="form-control input-lg">
 										<div class="input-group-btn">

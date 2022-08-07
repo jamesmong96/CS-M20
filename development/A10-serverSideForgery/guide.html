@@ -56,9 +56,10 @@
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
                         <div class="accordion-body text-start m-3">
-                            You are a market analyst interested in the latest release of Random Company. You have found their products search console which seems vulnerable.
+                            You have found an online URL scraping console, which can help you to get the content of any URLs without connecting your machines to the sites directly. 
+                            Even though you find this tool very useful during penetration testing, you suspect this tool is vulnerable to some attacks.
                             <br><br>
-                            Click here to enter the <a href="./search.php" target="_blank">Search console</a>
+                            Click here to enter the <a href="./search.php" target="_blank">Console</a>
                         </div>
                     </div>
                 </div>
@@ -70,17 +71,17 @@
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                         <div class="accordion-body text-start m-3">
-                            Before you start exploiting the survey page, please read what is cryptographic failures.
+                            Before you start exploiting the console page, please read what is server-side request forgery(SSRF).
                             <figure class="text-center m-3">
                                 <blockquote class="blockquote">
-                                    <p><u>If the software is vulnerable, unsupported, or out of date. This includes the OS, web/application server, database management system (DBMS), applications, APIs and all components, runtime environments, and libraries.</u></p>
+                                    <p><u>SSRF flaws occur whenever a web application is fetching a remote resource without validating the user-supplied URL.</u></p>
                                 </blockquote>
                                 <figcaption class="blockquote-footer">
                                     Description in <cite title="Source Title">OWASP Top 10:2021</cite>
                                 </figcaption>
                             </figure>
-                            There is one vulnerability exists in the search console, your goal is to find it and exploit it. 
-                            A successful attack can find the hidden brand of Random Company and exposes its details. Current brands include <code>Summer</code>, <code>Pear</code> and <code>Sonic</code>.
+                            There is one vulnerability exists in the scraping console, your goal is to find it and exploit it. 
+                            A successful attack can find the hidden credentials of the database.
                             <p>
                                 <button class="btn btn-primary my-3 me-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Show hint #1</button>
                                 <button class="btn btn-primary my-3 mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Show hint #2</button>
@@ -92,9 +93,9 @@
                                         <div class="card card-body">
                                             <h5>Hint #1</h5>
                                             <p>
-                                                Check what is being deprecated in PHP 7.2 above.
+                                                You can check the symbolic links of this directory. You may find the target through there.
                                                 <br>
-                                                (You may find this <a href="https://www.php.net/manual/en/migration72.deprecated.php" target="_blank">link</a> useful)
+                                                (In case you have no idea of what is symbolic links, try to visit the directory of this page)
                                             </p>
                                         </div>
                                     </div>
@@ -104,9 +105,9 @@
                                         <div class="card card-body">
                                             <h5>Hint #2</h5>
                                             <p>
-                                                The variable you need to exploit is <code>stmt</code>, which stores the SQL statement.
+                                                Most of the configurations of this Apache server remains the same as the default settings.
                                                 <br>
-                                                (The payload you require is something similar to this <code>SELECT * from products where 1=1 or brand=?</code>)
+                                                (Knowing the full path to the credential file is very helpful in this exploitation)
                                             </p>
                                         </div>
                                     </div>
@@ -118,29 +119,32 @@
                                         <div class="card card-body">
                                             <h5>Vulnerability</h5>
                                             <p>
-                                                This vulnerability is related to an outdated component, which is the PHP library version 7.2. 
-                                                The latest version of PHP is 8.1, but the search console is using a major version behind the latest version. 
-                                                Also PHP 7.2 is no longer officially supported after 2021, it will not receive any security patches or fixes from the official source. 
-                                                This makes the site vulnerable to different new threats and attacks, hindering the security of the whole application. 
-                                                This exploitation is done by using a deprecated version of the function <code>parse_str()</code>, leaking sensitive information of the database.
+                                                This vulnerability is related to server-side request forgery. 
+                                                While original purpose of the page is to fetch different content from external resources, it can be leveraged to fetch internal resources as well. 
+                                                Some of the files or services are protected against external access for security reasons, such as the password file. 
+                                                The weakness of this page provides a method for the attackers to fetch some internal resources which are not meant to be public. 
+                                                The internal resources will treat the request from the page as internal access and thus allow the page to read its content. 
+                                                In the case here, the page will display the information of the file <code>database_credential</code><div class=""></div>
                                             </p>
                                             <h6>Exploitation</h6>
                                             <ol>
-                                                <li>When you submit a query, you should notice that the query terms of the url becomes <code>?search=brand%3D{xxx}#</code>, which <code>xxx</code> is the search term you entered.</li>
-                                                <li>From hint #1, we know that the server is running PHP version is 7.2 which has a vulnerable version of the function <code>parse_str()</code>.</li>
-                                                <li>Judging from the query term, we can infer that the program is using <code>parse_str()</code> to get the <code>brand</code> variable.</li>
-                                                <li>Therefore we can try to change the values of other variables by injecting different variable names and values.</li>
-                                                <li>From hint #2, we fund out that the variable we should exploit is <code>stmt</code> and this is a common variable name of SQl statement.</li>
-                                                <li>So we can try to inject the payload to the query terms by typing <code>123&stmt=SELECT * from products where 1=1 or brand=?;</code> into the search box.</li>
-                                                <li>We can find the Special brand in the search result!</li>
+                                                <li>When an URL without protocol is provided, like <code>facebook.com</code>, you should notice that the default protocol <code>http://</code> is added to the given URL on the returned result.</li>
+                                                <li>This indicates that one of the ways to access local files is using the <code>file://</code> protocol.</li>
+                                                <li>However we need to provide the full path of <code>database_credential</code> in order to view it via file protocol.</li>
+                                                <li>Thus we can lookup on the Internet and discover that the default directory of websites is <code>/var/www/html</code>.</li>
+                                                <li>Therefore we can try with the URL <code>file:///var/www/html/A10-serverSideForgery/database_credential</code>.</li>
+                                                <li>Now we can see the content of <code>database_credential</code>.</li>
                                             </ol>
                                             <h6>Explanation</h6>
                                             <p>
-                                                This vulnerability exits in a vulnerable version of the function <code>parse_str()</code>. 
-                                                Without the second parameter in this function, a carefully crafted input can alter the value of local variables. 
-                                                Similar to the above exploitation, after the attackers notice the possible usage of <code>parse_str()</code> by observing the query terms <code>?search=brand%3D{xxx}#</code>, they can try to craft numerous payloads with common variables names, like <code>valid</code>, <code>conn</code> and <code>sql</code> etc. 
-                                                However the usage of such a dangerous function will only emit warnings into the error logs in PHP 7.2. 
-                                                In PHP 7.2 above, invoking this function without the second parameter will throw an error to avoid malicious uses abusing this function.
+                                                This vulnerability exits because the script only checks whether the scheme and authority (<code>://</code>) are included in the URL or not. 
+                                                This offers more flexibility to users as they may want to use different protocols, such as <code>http</code>, <code>https</code> or <code>ftp</code> etc. 
+                                                However this also offers a chance to attackers to exploit the file protocol and use it to view the content of protected file. 
+                                                The file <code>database_credential</code> is protected from any online access by the configurations of Apache server. 
+                                                In order words, any attempts of browsing it through the web server will fail because the access is controlled by the web server. 
+                                                But the file is still accessible in the host system and allow different files to interact with it. 
+                                                Therefore when we supplied the crafted URL to the script, the script will access the <code>database_credential</code> file like an internal interactions. 
+                                                Such that the content can be retrieved and displayed on the page for everyone to view it.
                                             </p>
                                         </div>
                                     </div>
@@ -159,7 +163,7 @@
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                         <div class="accordion-body text-start m-3">
                             <p>
-                                There are a lot of methods to fix the above vulnerability, but we will focus on updating PHP and the function parameters. 
+                                There are a lot of methods to fix the above vulnerability, but we will focus on input validation of the given URL. 
                             </p>
                             <h5>Code Explanation</h5>
                             <p>
@@ -168,55 +172,27 @@
                             </p>
                             <h6>search.php</h6>
                             <p>
-                                This is the file responsible for parsing the query terms and use them to search the database. 
-                                It is a very common practice for developers to store different values into custom variables to improve the code readability and modularity. 
-                                Putting the SQL statement into a variable can let the developers reuse the same code segment for executing the statement in target database without writing the statement every single time.
+                                This is the file responsible for getting the URL and retrieving the content from the input URL. 
+                                One of the attempts made by the developers to validate the input is checking whether the scheme and authority present in the URL to avoid direct access to local files with relative paths. 
+                                When the scheme and authority does not exist, it will add the prefix of <code>http://</code> to make sure the request is directed to extern resources.
                                 <br><br>
-                                Parsing search terms and query the database (line 18-30):
+                                Checking the existence of scheme and authority and grabbing the content from URL (line 11-19):
                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                     <tbody>
-                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>// prepare the required statement, exclude Special brand</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>$stmt = "SELECT * from products WHERE brand=? AND NOT brand='Special';";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">20</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">21</code></td><td style="white-space: break-spaces;"><code>// check the login credential from database</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code>parse_str($_GET["search"]); // expected brand=xxx</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>if (isset($brand) && $brand != "") {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>	$sql = $conn->prepare($stmt);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>	$sql->bind_param("s", $brand);</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>	$sql->execute();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>	$result = $sql->get_result();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>	$sql->close();</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">11</code></td><td style="white-space: break-spaces;"><code>$url = $_POST["url"];</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">12</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">13</code></td><td style="white-space: break-spaces;"><code>// check if protocol is included in the url</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">14</code></td><td style="white-space: break-spaces;"><code>if (strpos($url, "://") == FALSE) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">15</code></td><td style="white-space: break-spaces;"><code>	$url = "http://".$url;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">16</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">17</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>// get the content from the url</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>$result = htmlspecialchars(file_get_contents($url));</code><br></td></tr>
                                     </tbody>
                                 </table>
-                                This code snippet shows that the SQL statement is stored in <code>stmt</code> and the subsequent logic executes the statement without double checking the value. 
-                                Therefore attackers can craft a new SQL query to replace the original query, in order to retrieve the sensitive information from the database. 
-                                We can see from line 19 that the original query will filter out the result of Special brand to avoid users getting any information of it. 
-                                However the statement can be changed with the payload and expose the Special brand. 
-
-                            </p>
-                            <br>
-                            <h6>PHP version</h6>
-                            <p>
-                                The vulnerable function <code>parse_str()</code> in PHP 7.2, only has one required parameter, which is the input string. 
-                                The second parameter, which is an array for storing the variables, is optional. 
-                                PHP 7.2 notices the dangerous of this function, but it only emits a deprecated warning to the users. 
-                                In order words, the users can still invoke the function without second parameter, making the application vulnerable to the above attack. 
-                                <br><br>
-                                Current running PHP version:
-                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
-                                    <tbody>
-                                        <tr><td style="white-space: break-spaces;"><code>$ php --version</code><br></td></tr>
-                                        <tr><td style="white-space: break-spaces;"><code>PHP 7.2.9-1+b2 (cli) (built: Aug 19 2018 06:56:13) ( NTS )</code><br></td></tr>
-                                        <tr><td style="white-space: break-spaces;"><code>Copyright (c) 1997-2018 The PHP Group</code><br></td></tr>
-                                        <tr><td style="white-space: break-spaces;"><code>Zend Engine v3.2.0, Copyright (c) 1998-2018 Zend Technologies</code><br></td></tr>
-                                        <tr><td style="white-space: break-spaces;"><code>    with Zend OPcache v7.2.9-1+b2, Copyright (c) 1999-2018, by Zend Technologies</code><br></td></tr>
-                                    </tbody>
-                                </table>
-                                After updating to PHP 8.1, the second parameter is no longer optional. 
-                                Thus all the input variables will be stored in the array and unable to impact the local variables of the script. 
-                                If the developers omit the second parameter like PHP 7.2, the script will throw an error and the page is not viewable by the users.
+                                This code snippet shows the condition for adding <code>http://</code> prefix and the function <code>file_get_contents()</code>, which is used to retrieve the content. 
+                                In line 14, we can see that when <code>://</code> is not presented in the given URL, the string <code>http://</code> is added to the front of the given URL (line 15). 
+                                Then the function <code>file_get_contents()</code> is used to get the content and the function <code>htmlspecialchars()</code> is used to show the HTML content, otherwise the browser will treat the result as part of the web page.
                             </p>
                             <br>
                             <h5>Defense Explanation</h5>
@@ -227,9 +203,10 @@
                             </p>
                             <h6>Vulnerability</h6>
                             <p>
-                                Since the vulnerability exists because of the outdated PHP version, the first step is to update PHP to the latest version (PHP 8.1). 
-                                If we don't modify the parameters of <code>parse_str()</code> after updating to PHP 8.1, the page should show a 500 error. 
-                                In order to resolve this error, we also need to add the second parameter to the function and change the script accordingly.
+                                Since the vulnerability exists because there are no proper input validations, which leads to exposures of local files, the fix would like applying more controls on the URL. 
+                                One of the possible approaches is using a whitelist to make sure only allowed protocols can be used for the script. 
+                                Before implementing the defense solutions, keep in mind that we cannot simply delete the file or tighten the permissions of the file, such that no one can use it. 
+                                The point of the solution is to retain the interactions between both files, but no one can access it externally. 
                             </p>
                             <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample4" aria-expanded="false" aria-controls="multiCollapseExample4">Show solution</button>
                             <div class="row">
@@ -238,42 +215,23 @@
                                         <div class="card card-body">
                                             <h5>Solution</h5>
                                             <p>
-                                                PHP version:
+                                                search.php (line 11-19):
                                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                                     <tbody>
-                                                        <tr><td style="white-space: break-spaces;"><code>$ sudo a2dismod php7.2</code><br></td></tr>
-                                                        <tr><td style="white-space: break-spaces;"><code>$ sudo a2enmod php8.1</code><br></td></tr>
-                                                        <tr><td style="white-space: break-spaces;"><code>$ sudo systemctl restart apache2</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">11</code></td><td style="white-space: break-spaces;"><code>$url = $_POST["url"];</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">12</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">13</code></td><td style="white-space: break-spaces;"><code>// check if protocol is included in the url</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">14</code></td><td style="white-space: break-spaces;"><code>if (strpos($url, "http://") !== 0 && strpos($url, "https://") !== 0) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">15</code></td><td style="white-space: break-spaces;"><code>	$url = "http://".$url;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">16</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">17</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>// get the content from the url</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>$result = htmlspecialchars(file_get_contents($url));</code><br></td></tr>
                                                     </tbody>
                                                 </table>
-                                                Since multiple versions of PHP are installed on the machine, we need to enable the most updated module to use the latest PHP. 
-                                                We first need to disable the PHP 7.2 module and then enable the PHP 8.1 module. 
-                                                After switching the module, we can now restart the Apache service to deploy the changes.
-                                            </p>
-                                            <br>
-                                            <p>
-                                                search.php (line 18-30, 94):
-                                                <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
-                                                    <tbody>
-                                                        <tr><td><code style="color: #000000;">18</code></td><td style="white-space: break-spaces;"><code>// prepare the required statement, exclude Special brand</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">19</code></td><td style="white-space: break-spaces;"><code>$stmt = "SELECT * from products WHERE brand=? AND NOT brand='Special';";</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">20</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">21</code></td><td style="white-space: break-spaces;"><code>// check the login credential from database</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">22</code></td><td style="white-space: break-spaces;"><code>parse_str($_GET["search"], $query); // expected brand=xxx</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">23</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">24</code></td><td style="white-space: break-spaces;"><code>if (isset($query['brand']) && $query['brand'] != "") {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">25</code></td><td style="white-space: break-spaces;"><code>	$sql = $conn->prepare($stmt);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">26</code></td><td style="white-space: break-spaces;"><code>	$sql->bind_param("s", $query['brand']);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">27</code></td><td style="white-space: break-spaces;"><code>	$sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">28</code></td><td style="white-space: break-spaces;"><code>	$result = $sql->get_result();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">29</code></td><td style="white-space: break-spaces;"><code>	$sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">30</code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">..</code></td><td style="white-space: break-spaces;"><code>...</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">94</code></td><td style="white-space: break-spaces;"><code>echo strval($result->num_rows)." results found for: &lt;strong&gt;".htmlspecialchars($query['brand'])."&lt;/strong&gt;" ;</code><br></td></tr>
-                                                    </tbody>
-                                                </table>
-                                                By adding the second parameter <code>$query</code>, the result is now stored in it as an array. 
-                                                Therefore we also need to change the way of referencing the variable, from <code>$brand</code> to <code>$query['brand']</code> to retrieve the value of user input. 
+                                                The solution here makes sure the URL can only start with <code>http://</code> or <code>https://</code>. 
+                                                As the main purpose of the console is scraping some websites, enforcing HTTP protocol should not hinder the functionalities of the page. 
+                                                The original payload above will now become <code>http://file:///var/www/html/A10-serverSideForgery/database_credential</code>.
                                             </p>
                                         </div>
                                     </div>
@@ -296,13 +254,14 @@
                                 If you are interested in this topic and eager to learn more, here are some good references for you:
                             </p>
                             <ul>
-                                <li><a href="https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/" target="_blank">A06 Vulnerable and Outdated Components - OWASP Top 10:2021</a></li>
-                                <li><a href="https://www.php.net/manual/en/migration72.deprecated.php" target="_blank">PHP: Deprecated features in PHP 7.2.x - Manual</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.parse-str.php" target="_blank">PHP: parse_str - Manual</a></li>
-                                <li><a href="https://www.php.net/supported-versions.php" target="_blank">PHP: Supported Versions</a></li>
-                                <li><a href="https://www.unix.com/man-page/linux/8/a2enmod/" target="_blank">a2enmod(8)  [linux man page]</a></li>
-                                <li><a href="https://www.unix.com/man-page/linux/8/a2dismod/" target="_blank">a2dismod(8)  [linux man page]</a></li>
-                                <li><a href="https://www.php.net/releases/8.1/en.php" target="_blank">PHP: PHP 8.1.0 Release Announcement</a></li>
+                                <li><a href="https://owasp.org/Top10/A10_2021-Server-Side_Request_Forgery_%28SSRF%29/" target="_blank">A10 Server Side Request Forgery (SSRF) - OWASP Top 10:2021</a></li>
+                                <li><a href="https://httpd.apache.org/docs/2.4/howto/access.html" target="_blank">Access Control - Apache HTTP Server Version 2.4</a></li>
+                                <li><a href="https://ubuntu.com/server/docs/web-servers-apache" target="_blank">Web Servers - Apache | Ubuntu</a></li>
+                                <li><a href="https://www.php.net/manual/en/wrappers.file.php" target="_blank">PHP: file:// - Manual</a></li>
+                                <li><a href="https://www.php.net/manual/en/function.file-get-contents.php" target="_blank">PHP: file_get_contents - Manual</a></li>
+                                <li><a href="https://www.php.net/manual/en/wrappers.php" target="_blank">PHP: Supported Protocols and Wrappers - Manual</a></li>
+                                <li><a href="https://www.php.net/manual/en/function.strpos.php" target="_blank">PHP: strpos - Manual</a></li>
+                                <li><a href="https://datatracker.ietf.org/doc/html/rfc2396" target="_blank">RFC 2396 - Uniform Resource Identifiers (URI): Generic Syntax</a> (Look for this <code>&lt;scheme&gt;://&lt;authority&gt;&lt;path&gt;?&lt;query&gt;</code>)</li>
                             </ul>
                         </div>
                     </div>
@@ -316,8 +275,9 @@
                     </h2>
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
                         <div class="accordion-body text-start m-3">
-                            There are a lot of commercial applications and systems not using the latest softwares and components because it takes a lot of time to patch one software and complicated compatibility issues. 
-                            You are encouraged to research online and find out more outdated features which are exploitable.
+                            This is a similar URL scraping console page, use it to find the content of <code>database_credential_challenge</code>.
+                            <br>
+                            <a href="./challenge.php" target="_blank">Challenge</a>
                         </div>
                     </div>
                 </div>
