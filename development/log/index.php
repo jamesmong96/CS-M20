@@ -6,6 +6,20 @@
     // separate the log into array
     $data = explode('"', $log);
     // echo "$log";
+
+    // save all the data in the array
+    $log = [];
+    for ($i = 0; $i < count($data) - 20; $i += 20) {
+        $entry = [];
+        for ($j = 1; $j < 20; $j += 2) {
+            $k = $i + $j;
+            if ($data[$k] == "") {
+                $data[$k] = "-"; // replace emprty string with -
+            }
+            array_push($entry, $data[$k]);
+        }
+        array_push($log, $entry);
+    }
 	
 ?>
 
@@ -21,7 +35,7 @@
         <script src="../resources/js/bootstrap.bundle.min.js.map"></script>
     </head>
     <body>
-        <h1>This is a simple log paraser</h1>
+        <h1>Simple log parser</h1>
         <br>
         <table class="table table-striped table-hover" style="width: auto;">
             <thead>
@@ -40,15 +54,17 @@
             </thead>
             <tbody class="table-group-divider">
                 <?php 
-                    for ($i = 0; $i < count($data) - 20; $i += 20) {
+                    for ($i = count($log); $i > 0; $i--) {
+
+                        // check if the request comes from localhost
+                        if ($log[$i][1] == "::1") {
+                            continue;
+                        }
+
+                        // output the content to page
                         echo "<tr>";
-                        // output all the data in the array
-                        for ($j = 1; $j < 20; $j += 2) {
-                            $k = $i + $j;
-                            if ($data[$k] == "") {
-                                $data[$k] = "-"; // replace emprty string with -
-                            }
-                            echo "<td>$data[$k]</td>";
+                        for ($j = 0; $j < count($log[$i]); $j++) {
+                            echo "<td>".htmlspecialchars($log[$i][$j])."</td>";
                         }
                         echo "</tr>";
                     }
