@@ -14,16 +14,7 @@ have a point system, gamify it
 
 put tools recommendation in the further readings
 
-docker
-
-A07, have a long data retention and log messy
-
-Question:
-
-A07, too difficult? brute force script is way harder than I thought
-should I keep the unsafe forgot password?
-
-review all the content?
+survey
 
 ```
 
@@ -145,7 +136,7 @@ mysql  Ver 15.1 Distrib 10.3.34-MariaDB, for debian-linux-gnueabihf (armv8l) usi
     ```
 4. Add crontab job for retrieving the log content
     ```bash
-    * * * * * sudo rm /var/www/html/log/log.txt; sudo touch /var/www/html/log/log.txt; sudo chmod 666 /var/www/html/log/log.txt; sudo tail -n 20 /var/log/apache2/access.log >> /var/www/html/log/log.txt; sudo chmod 644 /var/www/html/log/log.txt;
+    * * * * * sudo rm /var/www/html/log/log.txt; sudo touch /var/www/html/log/log.txt; sudo chmod 666 /var/www/html/log/log.txt; sudo tail -n 200 /var/log/apache2/access.log >> /var/www/html/log/log.txt; sudo chmod 644 /var/www/html/log/log.txt;
     ```
 
 

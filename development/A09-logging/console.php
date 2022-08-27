@@ -6,6 +6,20 @@
     // separate the log into array
     $data = explode('"', $log);
     // echo "$log";
+
+    // save all the data in the array
+    $log = [];
+    for ($i = 0; $i < count($data) - 20; $i += 20) {
+        $entry = [];
+        for ($j = 1; $j < 20; $j += 2) {
+            $k = $i + $j;
+            if ($data[$k] == "") {
+                $data[$k] = "-"; // replace empty string with -
+            }
+            array_push($entry, $data[$k]);
+        }
+        array_push($log, $entry);
+    }
 	
 ?>
 
@@ -23,7 +37,7 @@
     </head>
     <body>
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-            <a class="navbar-brand col-md-3 col-lg-1 me-0 px-3 fs-6" href="#">Random Company</a>
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Random Company</a>
             <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -36,7 +50,7 @@
         </header>
         <div class="container-fluid">
             <div class="row">
-                <nav id="sidebarMenu" class="col-md-3 col-lg-1 d-md-block bg-light sidebar collapse">
+                <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
                             <li class="nav-item">
@@ -112,7 +126,7 @@
                     </div>
                 </nav>
 
-                <main class="col-md-9 ms-sm-auto col-lg-11 px-md-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
                 <br>    
                 <h2>Web server log</h2>
                     <div class="table-responsive">
@@ -122,8 +136,6 @@
                                     <th>Timestamp</th>
                                     <th>Remote hostname</th>
                                     <th>Request method</th>
-                                    <th>URL path</th>
-                                    <th>Query string</th>
                                     <th>Request protocol</th>
                                     <th>Status code</th>
                                     <th>Byte sent</th>
@@ -133,15 +145,14 @@
                             </thead>
                             <tbody class="table-group-divider">
                                 <?php 
-                                    for ($i = 0; $i < count($data) - 20; $i += 20) {
+                                    for ($i = 0; $i < count($log); $i++) {
+                                        // output the content to page
                                         echo "<tr>";
-                                        // output all the data in the array
-                                        for ($j = 1; $j < 20; $j += 2) {
-                                            $k = $i + $j;
-                                            if ($data[$k] == "") {
-                                                $data[$k] = "-"; // replace emprty string with -
+                                        for ($j = 0; $j < count($log[$i]); $j++) {
+                                            if ($j == 3 || $j == 4) {
+                                                continue;
                                             }
-                                            echo "<td>$data[$k]</td>";
+                                            echo "<td>".htmlspecialchars($log[$i][$j])."</td>";
                                         }
                                         echo "</tr>";
                                     }

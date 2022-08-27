@@ -57,12 +57,13 @@
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne">
                         <div class="accordion-body text-start m-3">
                             You are a cyber security expert who in charge of auditing the log of Random Company. 
-                            You notice the log is problematic and not very helpful in detecting malicious requests. 
+                            You have send some malicious requests to the page for testing the log system.
+                            But you notice the log is problematic and not very helpful in detecting malicious requests. 
                             Please edit the current log monitoring system and discover the potential attacks.
                             <br><br>
                             Click here to enter the <a href="./console.php" target="_blank">Log Console Page</a>
-                            <br>
-                            P.S. Balance shown in the console should not be visible in any scenarios, it is just a way for you to check your exploit works or not
+                            <br><br>
+                            You can generate the malicious requests by visiting this page: <a href="./attack.php" target="_blank">Attack</a>
                         </div>
                     </div>
                 </div>
@@ -74,31 +75,31 @@
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo">
                         <div class="accordion-body text-start m-3">
-                            Before you start exploiting the console, please read what is software and data integrity failures.
+                            Before you start exploiting the console, please read what is security logging and monitoring failures.
                             <figure class="text-center m-3">
                                 <blockquote class="blockquote">
-                                    <p><u>Software and data integrity failures relate to code and infrastructure that does not protect against integrity violations.</u></p>
+                                    <p><u>This category is to help detect, escalate, and respond to active breaches. Without logging and monitoring, breaches cannot be detected.</u></p>
                                 </blockquote>
                                 <figcaption class="blockquote-footer">
                                     Description in <cite title="Source Title">OWASP Top 10:2021</cite>
                                 </figcaption>
                             </figure>
-                            There are two vulnerabilities exist in the pages, they are related to software and data integrity failures.
-                            You can explore the pages by yourself and search for any traces of the weaknesses.
+                            There are two weaknesses exist in the page, they are related to security logging and monitoring failures.
+                            You can explore the page by yourself and search for any traces of the weaknesses.
                             <p>
                                 <button class="btn btn-primary my-3 me-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">Show hint #1</button>
                                 <button class="btn btn-primary my-3 mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Show hint #2</button>
-                                <button class="btn btn-primary my-3 ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">Show full exploitations</button>
+                                <button class="btn btn-primary my-3 ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample3" aria-expanded="false" aria-controls="multiCollapseExample3">Show full explanation</button>
                             </p>
                             <div class="row">
                                 <div class="col">
                                     <div class="collapse multi-collapse" id="multiCollapseExample1">
                                         <div class="card card-body">
-                                            <h5>Vulnerability #1</h5>
+                                            <h5>Weakness #1</h5>
                                             <p>
-                                                Do you notice the transaction form doesn't ask for the identity of the payer? Finding out how the form identify each customer is important.
+                                                Usually the payload exists in the query string and the request body.
                                                 <br>
-                                                (<kbd>F12</kbd> can be really useful here)
+                                                (The payload in this task exist in query string <code>?user=malicious</code>)
                                             </p>
                                         </div>
                                     </div>
@@ -106,11 +107,11 @@
                                 <div class="col">
                                         <div class="collapse multi-collapse" id="multiCollapseExample2">
                                         <div class="card card-body">
-                                            <h5>Vulnerability #2</h5>
+                                            <h5>Weakness #2</h5>
                                             <p>
-                                                There are certain applications do the computations on the client side to avoid excessive load on the server, this one is no exception.
+                                                Most of the attacks consist of multiple requests.
                                                 <br>
-                                                (You need more than just a browser to exploit this vulnerability)
+                                                (Only 20 row of records are insufficient to identify the malicious request)
                                             </p>
                                         </div>
                                     </div>
@@ -120,51 +121,22 @@
                                 <div class="col">
                                     <div class="collapse multi-collapse" id="multiCollapseExample3">
                                         <div class="card card-body">
-                                            <h5>Vulnerability #1</h5>
+                                            <h5>Weakness</h5>
                                             <p>
-                                                This vulnerability is related to weak integrity protection against the users of the current session. 
-                                                Since the form uses a hidden field to store the username of the current user, it is very easy for a malicious internal user to change the field and impersonate other users. 
-                                                Also the application relies solely on the user input values to perform the transaction, the integrity of the user identity is compromised when users can find a way to change the input username. 
-                                                Using HTML hidden form fields is not a recommended way to maintain the trust of users' identity.
+                                                This category unlike other categories which consist different exploitations for users to experiment. 
+                                                This is meant to be an example of showcasing how the effectiveness of a log system can be impacted by misconfigurations. 
+                                                You should find both hints helping you to understand the fixes needed for the log console. 
+                                                The below explanation will provide more details on what are the misconfigurations and how they affect the log console.
                                             </p>
-                                            <h6>Exploitation</h6>
-                                            <ol>
-                                                <li>Press <kbd>F12</kbd> and click on the <code>Elements</code> tab.</li>
-                                                <li>Press <kbd><kbd>ctrl + f</kbd></kbd> and type <code>Receiver</code> in the search box.</li>
-                                                <li>You should find that there are several hidden form fields with the format of <code>&lt;input type="text" class="form-control" name="xxx" placeholder="" value="xxx" hidden&gt;</code>.</li>
-                                                <li>Then you should notice one of them is related to the current user's username, which is <code>graham.hughes974</code>.</li>
-                                                <li>You can change it to other username, such as <code>barbara.evans522</code>, and put the current user's username into the receiver field.</li>
-                                                <li>After submitting the form, you should see the balance of the current user increase!</li>
-                                            </ol>
                                             <h6>Explanation</h6>
                                             <p>
-                                                As the HTML form elements can be easily modified by users, it is not a secure method to prove the identity of the users. 
-                                                The console page here relies on the integrity of the form elements, which it stores the username in the hidden form element and assume the users will not change it. 
-                                                There are no further integrity checking in the backend and confirm that the submitted requests come from the actual user. 
-                                                Therefore simply changing the hidden form values can manipulate the transaction and impersonate other customers.
-                                            </p>
-                                            <h5>Vulnerability #2</h5>
-                                            <p>
-                                                This vulnerability is related to weak integrity protection on the users' balance. 
-                                                As we can see that there is a script written in Javascript in the page responsible for calculating the new balances of both the payer and the payee, it means the backend will update the balance according to the input values without further processing. 
-                                                This gives attackers a chance to submit crafted data to trick the backend, causing a sudden increase or decrease in different customers' accounts. 
-                                                Meanwhile the backend server has no ways to check whether this is a legitimate transaction or a malicious invalid transaction.
-                                            </p>
-                                            <h6>Exploitation</h6>
-                                            <ol>
-                                                <li>Press <kbd>F12</kbd> and click on the <code>Elements</code> tab.</li>
-                                                <li>Press <kbd><kbd>ctrl + f</kbd></kbd> and type <code>&lt;form</code> in the search box.</li>
-                                                <li>You should be able to locate the form element and notice there is an <code>onsubmit</code> function called <code>formatQuery()</code>.</li>
-                                                <li>Type <code>function formatQuery</code> in the search box and you should see the script responsible for calculating the new balances of the payer and the payee.</li>
-                                                <li>By completing the above procedures, you can find out the parameters used by the backend endpoint, which are <code>to</code>, <code>from</code>, <code>new_amount_to</code> and <code>new_amount_from</code>.</li>
-                                                <li>By using the <code>curl</code> command, you can craft a request like <code>curl -d "to=mary.clark187&from=graham.hughes974&new_amount_from=3373&new_amount_to=4449" -X POST http://localhost/A08-dataIntegrity/console.php</code> to update the balance of any customers.</li>
-                                            </ol>
-                                            <h6>Explanation</h6>
-                                            <p>
-                                                This vulnerability occurs because the application hands all the processing work to the client side, leaving the backend service unable to verify the integrity of the new balances. 
-                                                It is quite common for some applications to leave the processing work on the client side to avoid a heavy load on the backend server, especially for applications that require extensive computation, such as first-person shooter(FPS) games. 
-                                                This is also one of the reasons why there are numerous cheating plugins in FPS games compare to other genres. 
-                                                The integrity of user data is very hard to maintain when such an approach is used.
+                                                The two misconfigurations include missing essential information and short data retention period. 
+                                                The current log console fails to display more important data, such as the query string. 
+                                                Most of the attack payloads are embedded in the request body or the query string depends on the HTTP method. 
+                                                In order to identify malicious requests, it is curial to include these information. 
+                                                On the other hand, the log console only shows the latest 20 records in each minute. 
+                                                This is an insufficient refresh rate as it is very easy to generate more than 20 requests in 1 minute. 
+                                                Important information can be lost or overflowed by large traffic.
                                             </p>
                                         </div>
                                     </div>
@@ -183,8 +155,8 @@
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree">
                         <div class="accordion-body text-start m-3">
                             <p>
-                                There are a lot of methods to defense against the above vulnerabilities. 
-                                The methods describe in this section may not be the best method, but are able to stop similar attacks. 
+                                There are a lot of methods to fix the above weaknesses. 
+                                The methods describe in this section may not be the best method, but are able to stop similar threats. 
                                 You are welcome to change the files and test your own defense mechanisms.
                             </p>
                             <h5>Code Explanation</h5>
@@ -192,102 +164,78 @@
                                 Before you implement the countermeasures, you have to know what the code is doing and which part of the code you should change.
                                 Below are the code snippets of the relevant logic, please fully understand the code before you proceed.
                             </p>
-                            <h6>console.php (Vulnerability #1)</h6>
+                            <h6>console.php (Weakness #1)</h6>
                             <p>
-                                This is the file responsible for setting the default values of the HTML hidden form elements of the transaction form. 
-                                For simplicity, the <code>from</code> element's value is always <code>graham.hughes974</code> because he is the user given in the scenario. 
-                                In other real-life applications, the value should be dynamically bound to the logged in users. 
-                                Please note that using HTML hidden form elements is a common practice in modern web applications, but a poorly managed usage can lead to various vulnerabilities. 
+                                This is the file responsible for displaying the log records and parsing them into table format. 
+                                The log are first stored in <code>log.txt</code>, which consists of all the required information for this log console. 
+                                Then the log console parse the content of <code>log.txt</code> into an array of objects. 
+                                Finally output the array in the table format for the readability of the console.
                                 <br><br>
-                                form element (line 259-283):
+                                outputting to table format (line 146-160):
                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                     <tbody>
-                                        <tr><td><code style="color: #000000;">259</code></td><td style="white-space: break-spaces;"><code>&lt;form action = "./console.php" method = "post" onsubmit="formatQuery();"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">260</code></td><td style="white-space: break-spaces;"><code>    &lt;div class="modal-header"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">261</code></td><td style="white-space: break-spaces;"><code>        &lt;h5 class="modal-title" id="exampleModalLabel"&gt;Transaction&lt;/h5&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">262</code></td><td style="white-space: break-spaces;"><code>    &lt;/div&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">263</code></td><td style="white-space: break-spaces;"><code>    &lt;div class="modal-body"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">264</code></td><td style="white-space: break-spaces;"><code>        &lt;div class="row g-3"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">265</code></td><td style="white-space: break-spaces;"><code>            &lt;div class="col-12"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">266</code></td><td style="white-space: break-spaces;"><code>                &lt;label for="to" class="form-label"&gt;Receiver:&lt;/label&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">267</code></td><td style="white-space: break-spaces;"><code>                &lt;input type="text" class="form-control" name="to" placeholder="Enter the receiver username" value="" required=""&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">268</code></td><td style="white-space: break-spaces;"><code>            &lt;/div&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">269</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">270</code></td><td style="white-space: break-spaces;"><code>            &lt;div class="col-12"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">271</code></td><td style="white-space: break-spaces;"><code>                &lt;label for="amount" class="form-label"&gt;Amount:&lt;/label&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">272</code></td><td style="white-space: break-spaces;"><code>                &lt;input type="text" class="form-control" name="amount" placeholder="Enter the transaction amount" value="" required=""&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">273</code></td><td style="white-space: break-spaces;"><code>            &lt;/div&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">274</code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">275</code></td><td style="white-space: break-spaces;"><code>            &lt;input type="text" class="form-control" name="from" placeholder="" value="graham.hughes974" hidden&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">276</code></td><td style="white-space: break-spaces;"><code>            &lt;input type="text" class="form-control" name="new_amount_from" placeholder="" value="" hidden&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">277</code></td><td style="white-space: break-spaces;"><code>            &lt;input type="text" class="form-control" name="new_amount_to" placeholder="" value="" hidden&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">278</code></td><td style="white-space: break-spaces;"><code>        &lt;/div&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">279</code></td><td style="white-space: break-spaces;"><code>    &lt;/div&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">280</code></td><td style="white-space: break-spaces;"><code>    &lt;div class="modal-footer"&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">281</code></td><td style="white-space: break-spaces;"><code>        &lt;button type="submit" class="btn btn-primary"&gt;Submit&lt;/button&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">282</code></td><td style="white-space: break-spaces;"><code>    &lt;/div&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">283</code></td><td style="white-space: break-spaces;"><code>&lt;/form&gt;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">146</code></td><td style="white-space: break-spaces;"><code>&lt;tbody class="table-group-divider"&gt;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">147</code></td><td style="white-space: break-spaces;"><code>    &lt;?php </code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">148</code></td><td style="white-space: break-spaces;"><code>        for ($i = 0; $i < count($log); $i++) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">149</code></td><td style="white-space: break-spaces;"><code>            // output the content to page</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">150</code></td><td style="white-space: break-spaces;"><code>            echo "&lt;tr&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">151</code></td><td style="white-space: break-spaces;"><code>            for ($j = 0; $j < count($log[$i]); $j++) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">152</code></td><td style="white-space: break-spaces;"><code>                if ($j == 3 || $j == 4) {</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">153</code></td><td style="white-space: break-spaces;"><code>                    continue;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">154</code></td><td style="white-space: break-spaces;"><code>                }</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">155</code></td><td style="white-space: break-spaces;"><code>                echo "&lt;td&gt;".htmlspecialchars($log[$i][$j])."&lt;/td&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">156</code></td><td style="white-space: break-spaces;"><code>            }</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">157</code></td><td style="white-space: break-spaces;"><code>            echo "&lt;/tr&gt;";</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">158</code></td><td style="white-space: break-spaces;"><code>        }</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">159</code></td><td style="white-space: break-spaces;"><code>    ?&gt;</code><br></td></tr>
+                                        <tr><td><code style="color: #000000;">160</code></td><td style="white-space: break-spaces;"><code>&lt;/tbody&gt;</code><br></td></tr>
                                     </tbody>
                                 </table>
-                                This code snippet is the part of the whole form element. 
-                                In line 275, we can see that the username <code>graham.hughes974</code> is hardcoded to the form as a hidden value, such that the username can be passed with the form to backend service for processing the new balance. 
-                                The username here represent the payer of the submitted transaction and the backend relies on this value to update the database. 
-                                However this hidden value can be easily changed by users to any arbitrary values, like username of other customers. 
-                                In this case, the payer of the transaction will become another user and backend server has no other ways to tell whether the username has been modified or not. 
-                                Therefore the integrity of the username is compromised and basically any internal users can leverage this vulnerability to create any transactions they want.
+                                This code snippet is the part of outputting the log array to table format. 
+                                In line 152, we can see that there are two items in the array have been skipped. 
+                                After looking into the source of <code>log.txt</code>, you would find out the missing items are URL path and query string. 
+                                In real world scenario, you should not expect the data is in the source by default. 
+                                Most of the effective log systems have to combine different parameters and data to form more meaningful fields. 
+                                Also the log format has been defined in the Apache configuration file for the ease of parsing and processing. 
+                                A well implemented log system has to go through multiple phases to create helpful log history.
                             </p>
                             <br>
-                            <h6>console.php (Vulnerability #2)</h6>
+                            <h6>crontab (Weakness #2)</h6>
                             <p>
-                                This is the same file as above, but we will be looking at the Javascript part where all client side calculations occur. 
-                                We can see that the function computes the new balances and send the values to backend server directly. 
-                                Even though the users cannot change the function or its variables through the browsers, it gives sufficient information to attackers for exploiting the service.
+                                The data retention period is determined by a cron job. 
+                                Since the shortest cron schedule is every minute, thus the log console can at most refresh once every minute. 
+                                The cron job responsible for extracting the latest records from the Apache log file to the <code>log.txt</code> for the <code>console.php</code> to use. 
+                                Hence the number of records being displayed on the console is controlled via crontab.
                                 <br><br>
-                                Javascript function (line 84-100):
+                                crontab:
                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                     <tbody>
-                                        <tr><td><code style="color: #000000;">84 </code></td><td style="white-space: break-spaces;"><code>&lt;script&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">85 </code></td><td style="white-space: break-spaces;"><code>    function formatQuery() {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">86 </code></td><td style="white-space: break-spaces;"><code>        var balances = {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">87 </code></td><td style="white-space: break-spaces;"><code>            &lt;?php</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">88 </code></td><td style="white-space: break-spaces;"><code>                // get the balance for calculation</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">89 </code></td><td style="white-space: break-spaces;"><code>                if (count($data) > 0) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">90 </code></td><td style="white-space: break-spaces;"><code>                    foreach ($data as $row) {</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">91 </code></td><td style="white-space: break-spaces;"><code>                        echo '"'.$row["username"].'": '.$row["balance"].', '; </code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">92 </code></td><td style="white-space: break-spaces;"><code>                    }</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">93 </code></td><td style="white-space: break-spaces;"><code>                }</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">94 </code></td><td style="white-space: break-spaces;"><code>            ?&gt;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">95 </code></td><td style="white-space: break-spaces;"><code>        };</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">96 </code></td><td style="white-space: break-spaces;"><code>        document.getElementsByTagName('form')[0].new_amount_from.value = document.getElementsByTagName('form')[0].from.value in balances && !Number.isNaN(parseInt(document.getElementsByTagName('form')[0].amount.value)) ? parseInt(balances[document.getElementsByTagName('form')[0].from.value]) - parseInt(document.getElementsByTagName('form')[0].amount.value) : "NA";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">97 </code></td><td style="white-space: break-spaces;"><code>        document.getElementsByTagName('form')[0].new_amount_to.value = document.getElementsByTagName('form')[0].to.value in balances && !Number.isNaN(parseInt(document.getElementsByTagName('form')[0].amount.value)) ? parseInt(balances[document.getElementsByTagName('form')[0].to.value]) + parseInt(document.getElementsByTagName('form')[0].amount.value) : "NA";</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">98 </code></td><td style="white-space: break-spaces;"><code>          return true;</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">99 </code></td><td style="white-space: break-spaces;"><code>    }</code><br></td></tr>
-                                        <tr><td><code style="color: #000000;">100</code></td><td style="white-space: break-spaces;"><code>&lt;/script&gt;</code><br></td></tr>
+                                        <tr><td style="white-space: break-spaces;"><code>* * * * * sudo rm /var/www/html/A09-logging/log.txt; sudo touch /var/www/html/A09-logging/log.txt; sudo chmod 666 /var/www/html/A09-logging/log.txt; sudo tail -n 20 /var/log/apache2/access.log >> /var/www/html/A09-logging/log.txt; sudo chmod 644 /var/www/html/A09-logging/log.txt;</code><br></td></tr>
                                     </tbody>
                                 </table>
-                                This code snippet is responsible for the client side calculation. 
-                                The variable <code>balance</code> is populated by PHP script and it stores the username and the corresponding balance (line 86 - 95). 
-                                Then the hidden input elements, <code>new_amount_from</code> and <code>new_amount_to</code>, are calculated by subtracting or adding the transaction amount to the original balance. 
-                                The backend server can rely on the calculated values and update the balance in the database. 
-                                But the calculated values on the client side can be easily manipulated and replaced by some arbitrary values. 
-                                An attacker can submit a crafted request with the same fields and different values to update the database. 
-                                The data integrity of the new balance is compromised here.
+                                This code snippet is the cron job command. 
+                                The first five asterisks represent the cron schedule, which means running the following command every minute in this case. 
+                                Then all the commands after the cron schedule are for refreshing the log files. 
+                                The chain of commands first remove the old log files and create an empty log file in the same directory. 
+                                Then change the permission of the log files for writing content to it. 
+                                After that, the latest 20 records in the Apache log file is directed to the empty log file. 
+                                At last the permission is reset for security purpose. 
+                                The reason of using a separate log file to store the content is because Apache log file is highly protected to avoid any users from tampering it. 
+                                Therefore a less protected temporary log file is created as a medium to prevent changing the Apache log file. 
                             </p>
                             <br>
                             <h5>Defense Explanation</h5>
                             <p>
-                                After knowing what the code is doing and how does the vulnerabilities occur, we can start to know more about how to fix them. 
+                                After knowing what the code is doing and how does the weaknesses occur, we can start to know more about how to fix them. 
                                 Please try to change the code base on your understanding at least once before directly looking into the solutions. 
                                 You should retry the above exploitations after you have fixed the code to find out whether you have done it correctly or not.
                             </p>
-                            <h6>Vulnerability #1</h6>
+                            <h6>Weakness #1</h6>
                             <p>
-                                The vulnerability exists because there is no ways to verify the username in the hidden form value is tampered or not. 
-                                One of the solutions to check the validity of the username is by adding a hash of the username at the end of the username. 
-                                Given that a cryptographically secure hashing algorithm is used to produce the hash, attackers cannot generate a matching hash of other usernames. 
-                                Thus when the backend server receives a request from the users, it can first check whether the provided usernames matches with the hashes or not. 
-                                If not, it is very likely that the username is modified and the request is not coming from a legitimate user. 
-                                Then we can protect the customers by rejecting these kinds of malicious requests.
+                                This weakness exists because there are two items have been skipped when outputting the array. 
+                                Therefore the most intuitive solution would be removing the condition and populating the required fields. 
+                                Besides, you should also add the header for the new columns to identify which kind of data the column is referring to. 
+                                Apart from the given data, please also try to investigate and research into different fields of data to discover more possibilities or new data.
                             </p>
                             <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample4" aria-expanded="false" aria-controls="multiCollapseExample4">Show solution #1</button>
                             <div class="row">
@@ -296,50 +244,39 @@
                                         <div class="card card-body">
                                             <h5>Solution #1</h5>
                                             <p>
-                                                console.php (line 22-55, 275):
+                                                console.php (line 134-159):
                                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                                     <tbody>
-                                                        <tr><td><code style="color: #000000;">22 </code></td><td style="white-space: break-spaces;"><code>// check the usernames validity</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">23 </code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("SELECT * from users where username=?;");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">24 </code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("s", explode(";", $_POST["from"])[0]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">25 </code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">26 </code></td><td style="white-space: break-spaces;"><code>$username_from = $sql->get_result();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">27 </code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">28 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">29 </code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("SELECT * from users where username=?;");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">30 </code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("s", $_POST["to"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">31 </code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">32 </code></td><td style="white-space: break-spaces;"><code>$username_to = $sql->get_result();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">33 </code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">34 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">35 </code></td><td style="white-space: break-spaces;"><code>if ($username_from->num_rows != 1 || $username_to->num_rows != 1 || trim(hash("sha256", explode(";", $_POST["from"])[0])) != trim(explode(";", $_POST["from"])[1])) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">36 </code></td><td style="white-space: break-spaces;"><code>    // invalid username</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">37 </code></td><td style="white-space: break-spaces;"><code>    $succeed = FALSE;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">38 </code></td><td style="white-space: break-spaces;"><code>} else if (!is_numeric($_POST["new_amount_from"]) || !is_numeric($_POST["new_amount_to"]) || intval($_POST["new_amount_from"]) < 0 || intval($_POST["new_amount_to"]) < 0) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">39 </code></td><td style="white-space: break-spaces;"><code>    // invalid balance</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">40 </code></td><td style="white-space: break-spaces;"><code>    $succeed = FALSE;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">41 </code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">42 </code></td><td style="white-space: break-spaces;"><code>    // update from account</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">43 </code></td><td style="white-space: break-spaces;"><code>    $sql = $conn->prepare("UPDATE users SET balance=? where username=?;");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">44 </code></td><td style="white-space: break-spaces;"><code>    $sql->bind_param("ss", $_POST["new_amount_from"], explode(";", $_POST["from"])[0]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">45 </code></td><td style="white-space: break-spaces;"><code>    $sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">46 </code></td><td style="white-space: break-spaces;"><code>    $sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">47 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">48 </code></td><td style="white-space: break-spaces;"><code>    // update to account</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">49 </code></td><td style="white-space: break-spaces;"><code>    $sql = $conn->prepare("UPDATE users SET balance=? where username=?;");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">50 </code></td><td style="white-space: break-spaces;"><code>    $sql->bind_param("ss", $_POST["new_amount_to"], $_POST["to"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">51 </code></td><td style="white-space: break-spaces;"><code>    $sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">52 </code></td><td style="white-space: break-spaces;"><code>    $sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">53 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">54 </code></td><td style="white-space: break-spaces;"><code>    $succeed = TRUE;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">55 </code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">.. </code></td><td style="white-space: break-spaces;"><code>...</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">275</code></td><td style="white-space: break-spaces;"><code>&lt;input type="text" class="form-control" name="from" placeholder="" value="graham.hughes974;04ca2d2dde787d50d026f1a41e0baa2af3ee8abb99391ee574af7094b5873312" hidden&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">134</code></td><td style="white-space: break-spaces;"><code>&lt;thead&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">135</code></td><td style="white-space: break-spaces;"><code>    &lt;tr&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">136</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;Timestamp&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">137</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;Remote hostname&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">138</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;Request method&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">139</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;URL path&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">140</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;Query string&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">141</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;Request protocol&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">142</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;Status code&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">143</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;Byte sent&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">144</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;Referer header&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">145</code></td><td style="white-space: break-spaces;"><code>        &lt;th&gt;User-Agent header&lt;/th&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">146</code></td><td style="white-space: break-spaces;"><code>    &lt;/tr&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">147</code></td><td style="white-space: break-spaces;"><code>&lt;/thead&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">148</code></td><td style="white-space: break-spaces;"><code>&lt;tbody class="table-group-divider"&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">149</code></td><td style="white-space: break-spaces;"><code>    &lt;?php </code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">150</code></td><td style="white-space: break-spaces;"><code>        for ($i = 0; $i < count($log); $i++) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">151</code></td><td style="white-space: break-spaces;"><code>            // output the content to page</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">152</code></td><td style="white-space: break-spaces;"><code>            echo "&lt;tr&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">153</code></td><td style="white-space: break-spaces;"><code>            for ($j = 0; $j < count($log[$i]); $j++) {</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">154</code></td><td style="white-space: break-spaces;"><code>                echo "&lt;td&gt;".htmlspecialchars($log[$i][$j])."&lt;/td&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">155</code></td><td style="white-space: break-spaces;"><code>            }</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">156</code></td><td style="white-space: break-spaces;"><code>            echo "&lt;/tr&gt;";</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">157</code></td><td style="white-space: break-spaces;"><code>        }</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">158</code></td><td style="white-space: break-spaces;"><code>    ?&gt;</code><br></td></tr>
+                                                        <tr><td><code style="color: #000000;">159</code></td><td style="white-space: break-spaces;"><code>&lt;/tbody&gt;</code><br></td></tr>
                                                     </tbody>
                                                 </table>
-                                                A hash generated from the username by SHA256 is added to the end of the username. 
-                                                An additional checking condition is added in line 35 as well, which is checking whether the hash sent by the request matches with the generated hash or not. 
-                                                Therefore the post variable <code>form</code> has to extract the first part for all the queries. 
+                                                The headers <code>URL path</code> and <code>Query string</code> are added to the log console for showing the fields. 
+                                                Also the condition to remove the URL path and query string is deleted and the console now can show the essential data to identify the malicious requests.
                                             </p>
                                         </div>
                                     </div>
@@ -347,12 +284,13 @@
                                 <div class="col"></div>
                             </div>
                             <br>
-                            <h6>Vulnerability #2</h6>
+                            <h6>Weakness #2</h6>
                             <p>
-                                This vulnerability is related to the calculations are done on the client side. 
-                                Since the calculations required in this web application is not very complicated, it is possible to migrate all the calculations to the backend. 
-                                This can prevent attackers from submitting random requests and hindering the integrity of the balance. 
-                                One of the approaches is to send the transaction amount to the backend and let the backend comes up with the update balance.
+                                This weakness exists because the cron job is not refreshing sufficient amount of records. 
+                                Thus one of the possible ways to fix this to increase the number of rows directed out from the Apache log file. 
+                                Keep in mind that the exact number of rows required should not be set randomly. 
+                                It should be set to a suitable number such that enough information can be retrieved from the Apache log file, while preventing too much information in the console causing confusions. 
+                                Usually the number is determined by the rate limit of the web server.
                             </p>
                             <button class="btn btn-primary mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample5" aria-expanded="false" aria-controls="multiCollapseExample5">Show solution #2</button>
                             <div class="row">
@@ -361,61 +299,15 @@
                                         <div class="card card-body">
                                             <h5>Solution #2</h5>
                                             <p>
-                                                login.php (line 22-65, 269):
+                                                crontab:
                                                 <table class="table table-striped table-hover table-sm table-bordered mt-2" style="width: auto;">
                                                     <tbody>
-                                                        <tr><td><code style="color: #000000;">22 </code></td><td style="white-space: break-spaces;"><code>// check the usernames validity</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">23 </code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("SELECT * from users where username=?;");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">24 </code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("s", $_POST["from"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">25 </code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">26 </code></td><td style="white-space: break-spaces;"><code>$username_from = $sql->get_result();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">27 </code></td><td style="white-space: break-spaces;"><code>$from_amount = -1;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">28 </code></td><td style="white-space: break-spaces;"><code>while($row = $username_from->fetch_assoc()) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">29 </code></td><td style="white-space: break-spaces;"><code>    $from_amount = intval($row["balance"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">30 </code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">31 </code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">32 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">33 </code></td><td style="white-space: break-spaces;"><code>$sql = $conn->prepare("SELECT * from users where username=?;");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">34 </code></td><td style="white-space: break-spaces;"><code>$sql->bind_param("s", $_POST["to"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">35 </code></td><td style="white-space: break-spaces;"><code>$sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">36 </code></td><td style="white-space: break-spaces;"><code>$username_to = $sql->get_result();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">37 </code></td><td style="white-space: break-spaces;"><code>$to_amount = -1;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">38 </code></td><td style="white-space: break-spaces;"><code>while($row = $username_to->fetch_assoc()) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">39 </code></td><td style="white-space: break-spaces;"><code>    $to_amount = intval($row["balance"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">40 </code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">41 </code></td><td style="white-space: break-spaces;"><code>$sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">42 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">43 </code></td><td style="white-space: break-spaces;"><code>if ($username_from->num_rows != 1 || $username_to->num_rows != 1) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">44 </code></td><td style="white-space: break-spaces;"><code>    // invalid username</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">45 </code></td><td style="white-space: break-spaces;"><code>    $succeed = FALSE;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">46 </code></td><td style="white-space: break-spaces;"><code>} else if (!is_numeric($_POST["amount"]) || intval($_POST["amount"]) < 0) {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">47 </code></td><td style="white-space: break-spaces;"><code>    // invalid balance</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">48 </code></td><td style="white-space: break-spaces;"><code>    $succeed = FALSE;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">49 </code></td><td style="white-space: break-spaces;"><code>} else {</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">50 </code></td><td style="white-space: break-spaces;"><code>    // update from account</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">51 </code></td><td style="white-space: break-spaces;"><code>    $sql = $conn->prepare("UPDATE users SET balance=? where username=?;");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">52 </code></td><td style="white-space: break-spaces;"><code>    $amount = $from_amount - intval($_POST["amount"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">53 </code></td><td style="white-space: break-spaces;"><code>    $sql->bind_param("ss", $amount, $_POST["from"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">54 </code></td><td style="white-space: break-spaces;"><code>    $sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">55 </code></td><td style="white-space: break-spaces;"><code>    $sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">56 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">57 </code></td><td style="white-space: break-spaces;"><code>    // update to account</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">58 </code></td><td style="white-space: break-spaces;"><code>    $sql = $conn->prepare("UPDATE users SET balance=? where username=?;");</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">59 </code></td><td style="white-space: break-spaces;"><code>    $amount = $to_amount + intval($_POST["amount"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">60 </code></td><td style="white-space: break-spaces;"><code>    $sql->bind_param("ss", $amount, $_POST["to"]);</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">61 </code></td><td style="white-space: break-spaces;"><code>    $sql->execute();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">62 </code></td><td style="white-space: break-spaces;"><code>    $sql->close();</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">63 </code></td><td style="white-space: break-spaces;"><code> </code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">64 </code></td><td style="white-space: break-spaces;"><code>    $succeed = TRUE;</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">65 </code></td><td style="white-space: break-spaces;"><code>}</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">.. </code></td><td style="white-space: break-spaces;"><code>...</code><br></td></tr>
-                                                        <tr><td><code style="color: #000000;">269</code></td><td style="white-space: break-spaces;"><code>&lt;form action = "./console.php" method = "post"&gt;</code><br></td></tr>
+                                                        <tr><td style="white-space: break-spaces;"><code>* * * * * sudo rm /var/www/html/A09-logging/log.txt; sudo touch /var/www/html/A09-logging/log.txt; sudo chmod 666 /var/www/html/A09-logging/log.txt; sudo tail -n 200 /var/log/apache2/access.log >> /var/www/html/A09-logging/log.txt; sudo chmod 644 /var/www/html/A09-logging/log.txt;</code><br></td></tr>
                                                     </tbody>
                                                 </table>
-                                                The variables originally indicates the new balance are taken away and replaced by the calculations of original balance and the transaction amount. 
-                                                The original balance is taken before doing the calculations in line 28-30 and line 38-40. 
-                                                Then the subtraction/addition are done in line 52 and line 59, which replaced the variables from the request. 
-                                                Also the <code>onsubmit</code> attribute is removed from the form because no calculations are required from the client side.
+                                                The number of rows is changed to 200 in the solution. 
+                                                This number is determined by normal operations of the server, assuming no malicious users will send numerous requests to the server continuously. 
+                                                A better way to implement the refreshing should be a marker remembering where the previous refresh ends and start from there for the next refresh. 
                                             </p>
                                         </div>
                                     </div>
@@ -438,14 +330,12 @@
                                 If you are interested in this topic and eager to learn more, here are some good references for you:
                             </p>
                             <ul>
-                                <li><a href="https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/" target="_blank">A08 Software and Data Integrity Failures - OWASP Top 10:2021</a></li>
-                                <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/hidden" target="_blank">&lt;input type="hidden"&gt; - HTML: HyperText Markup Language | MDN</a></li>
-                                <li><a href="https://linux.die.net/man/1/curl" target="_blank">curl(1): transfer URL - Linux man page</a></li>
+                                <li><a href="https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/" target="_blank">A09 Security Logging and Monitoring Failures - OWASP Top 10:2021</a></li>
+                                <li><a href="https://en.wikipedia.org/wiki/Data_retention" target="_blank">Data retention - Wikipedia</a></li>
+                                <li><a href="https://crontab.guru/" target="_blank">Crontab.guru - The cron schedule expression editor</a></li>
+                                <li><a href="https://man7.org/linux/man-pages/man5/crontab.5.html" target="_blank">crontab(5) - Linux manual page</a></li>
+                                <li><a href="https://www.php.net/manual/en/function.shell-exec.php" target="_blank">PHP: shell_exec - Manual</a></li>
                                 <li><a href="https://www.php.net/manual/en/function.explode.php" target="_blank">PHP: explode - Manual</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.intval.php" target="_blank">PHP: intval - Manual</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.is-numeric.php" target="_blank">PHP: is_numeric - Manual</a></li>
-                                <li><a href="https://www.php.net/manual/en/function.hash.php" target="_blank">PHP: hash - Manual</a></li>
-                                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/submit_event" target="_blank">HTMLFormElement: submit event - Web APIs | MDN</a></li>
                             </ul>
                         </div>
                     </div>
@@ -459,9 +349,8 @@
                     </h2>
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive">
                         <div class="accordion-body text-start m-3">
-                            This is an update console page, but it is still vulnerable. Try to exploit the page!
-                            <br>
-                            <a href="./challenge.php" target="_blank">Challenge</a>
+                            The challenge task for this category is to implement your own log system with the Apache log file and the PHP log file. 
+                            This can provide more details of the requests coming in to the server and easier to spot any malicious requests.
                         </div>
                     </div>
                 </div>

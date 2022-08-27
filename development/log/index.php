@@ -14,7 +14,7 @@
         for ($j = 1; $j < 20; $j += 2) {
             $k = $i + $j;
             if ($data[$k] == "") {
-                $data[$k] = "-"; // replace emprty string with -
+                $data[$k] = "-"; // replace empty string with -
             }
             array_push($entry, $data[$k]);
         }
