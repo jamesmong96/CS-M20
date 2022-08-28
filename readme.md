@@ -212,6 +212,22 @@ d-wx--x--x 4 root root 4096 Jun 25 00:26 ..
     FLUSH PRIVILEGES;
     ```
 
+## Backup
+
+In order to reset the environment after each user, a `resource/backup` directory is created. Two files are included in the directory, which are `backup.zip` and `backup.sql`. 
+
+### backup.zip
+
+This file consists all the HTML and PHP files required for the vulnerable system. Users can run the following command and copy the files to the web server root directory to reset the environment. 
+```bash
+unzip backup.zip
+```
+
+### backup.sql
+
+This file consists all the SQL command required to create the databases and tables and populate them with dummy data. Users can use this file to repair or clear the database by first dropping all the databases and import this file.
+
+
 ## References
 - [Examples · Bootstrap v5.2](https://getbootstrap.com/docs/5.2/examples/)
 - [How to Enable SSH on Ubuntu 20.04](https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-20-04/)
