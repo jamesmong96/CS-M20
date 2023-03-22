@@ -4,21 +4,11 @@
 
 Kin Ip Mong (2143876), Swansea University
 
-Last Update: 2022-08-28
+Last Update: 2023-03-22
 
-Acknowledge the example I have used in Bootstrap and [Bootdey](https://www.bootdey.com/snippets/view/Search-Results)
+Acknowledge the example I have used in [Bootstrap](https://getbootstrap.com/) and [Bootdey](https://www.bootdey.com/snippets/view/Search-Results)
 
 Survey Link: [https://forms.office.com/Pages/ResponsePage.aspx?id=LrXKu76f1kOi859mxD3yaC6xsxyaDcNNu6god35JNHBUOUFQMThXNVRGR0hGNjZOVURWUTlNNkMwRi4u](https://forms.office.com/Pages/ResponsePage.aspx?id=LrXKu76f1kOi859mxD3yaC6xsxyaDcNNu6god35JNHBUOUFQMThXNVRGR0hGNjZOVURWUTlNNkMwRi4u)
-
-```
-
-have a point system, gamify it
-
-put tools recommendation in the further readings
-
-survey
-
-```
 
 ## Raspberry Pi Version
 
@@ -228,6 +218,11 @@ unzip backup.zip
 ### backup.sql
 
 This file consists all the SQL command required to create the databases and tables and populate them with dummy data. Users can use this file to repair or clear the database by first dropping all the databases and import this file.
+
+### Future improvements
+
+- Implement a point system, gamify it
+- Put tools recommendation in the further readings
 
 
 ## References
